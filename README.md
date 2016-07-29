@@ -2,8 +2,8 @@
 
 JavaScript Canvas Framework
 
-==Status
+## Status
 In development
 
-==License
+## License
 Published under Apache 2.0
