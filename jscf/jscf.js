@@ -50,4 +50,8 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
             return canvasHeight;
     }
 
+    this.FPS2AnimSpeed = function(fps) {
+        return fps * this.fps;
+    };
+
 }
