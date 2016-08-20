@@ -38,7 +38,7 @@ function Rect(game, x, y, width, height)
 
 }
 
-function Plain(game, x, y, width, height, color)
+function Plane(game, x, y, width, height, color)
 {
     this.rect = new Rect(game, x, y, width, height);
 

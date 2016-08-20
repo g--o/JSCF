@@ -4,10 +4,10 @@ function AssetManager(assetsDir)
 
     this.rules = {};
 
-    function getExtention(name)
+    this.getExtention = function(name)
     {
-        //TODO: todo!
-    }
+        return name.substring(name.lastIndexOf("."), name.length);
+    };
 
     this.getAssetPath = function(name)
     {
