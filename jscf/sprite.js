@@ -25,7 +25,6 @@ function Sprite(game, x, y, width, height, url)
 
         game.graphics.context.drawImage(this.image, 0, 0, this.image.width, this.image.height,
                                                     this.rect.width/-2,this.rect.height/-2,this.rect.width, this.rect.height);
-
         this.end_update();
     };
 

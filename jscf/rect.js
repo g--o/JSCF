@@ -1,11 +1,14 @@
 
-function Rect(game, x, y, width, height)
+function Rect(game, x, y, width, height, collDetectorType)
 {
     this.width = width;
     this.height = height;
     this.x = x;
     this.y = y;
     this.angle = 0;
+
+    if (!collDetectorType)
+        collDetectorType = "box";
 
     this.render = function()
     {
@@ -19,34 +22,19 @@ function Rect(game, x, y, width, height)
         ctx.restore();
     };
 
-    this.isColliding = function(rect)
+    this.containsPoint = function(x, y)
     {
-        var x1 = this.x - this.width/2;
-        var x2 = rect.x - rect.width/2;
-        var y1 =  this.y - this.height/2;
-        var y2 = rect.y - rect.height/2;
+        return ((x > this.x) && (x < this.x + this.width)) && ((y > this.y) && (y < this.y + this.height));
+    };
 
-        if (x1 < x2 + rect.width &&
-        x1 + this.width > x2 &&
-        y1 > y2 - rect.height &&
-        -this.height + this.y < y2) {
-            return true;
+    this.isColliding = function(otherRect)
+    {
+        var detector = CollDetectors[collDetectorType];
+        if (detector) {
+            return detector(this, otherRect);
+        } else {
+            console.warn("[JSCF] invalid detector was given to rect object!");
+            return false;
         }
-
-        return false;
-    }
-
-}
-
-function Plane(game, x, y, width, height, color)
-{
-    this.rect = new Rect(game, x, y, width, height);
-
-    this.render = function()
-    {
-        ctx = game.graphics.context;
-        ctx.fillStyle = color;
-
-        this.rect.render();
     };
 }

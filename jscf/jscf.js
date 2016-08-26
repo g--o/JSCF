@@ -10,7 +10,6 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         this.inputManager = null;
         this.assetManager = null;
         this.graphics = null;
-        this.inputManager = new InputManager();
         this.assetManager = new AssetManager(assetDir);
     };
     // calling c'tor
@@ -20,6 +19,7 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
     this.setup = function()
     {
         this.graphics = new Graphics(canvasWidth, canvasHeight);
+        this.inputManager = new InputManager(this.graphics.canvas);
     };
 
     this.start = function(update) {
@@ -53,5 +53,14 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
     this.FPS2AnimSpeed = function(fps) {
         return fps * this.fps;
     };
+
+    this.renderText = function(x, y, txt, color, font) {
+        var ctx = this.graphics.context;
+        if (font)
+            ctx.font = font;
+        if (color)
+            ctx.fillStyle = color;
+        ctx.fillText(txt, x, y);
+    }
 
 }
