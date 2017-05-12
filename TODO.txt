@@ -1,0 +1,7 @@
+* FIX SCENE UTILS AND EXTEND!
+--------------------------------------------------------
+* More complex overall management and performance.
+* Scene management.
+* Blending.
+* Lighting.
+* Shaders.

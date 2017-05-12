@@ -10,7 +10,10 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         this.inputManager = null;
         this.assetManager = null;
         this.graphics = null;
+        this.update = null;
+        this.automated = true;
         this.assetManager = new AssetManager(assetDir);
+        this.sceneManager = new SceneManager();
     };
     // calling c'tor
     this.init();
@@ -22,10 +25,12 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         this.inputManager = new InputManager(this.graphics.canvas);
     };
 
-    this.start = function(update) {
+    this.start = function(update, automated) {
         if (this.state != "running") {
-            this.interval = setInterval(update, 1000.0/fps);
+            this.update = update;
+            this.automated = automated;
             this.state = "running";
+            this.interval = setInterval(this.handler, 1000.0/fps);
         }
     };
 
@@ -33,6 +38,18 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         if (this.interval != null)
             clearInterval(this.interval);
     }
+
+    // Automated handler fucntions
+
+    this.handler = function()
+    {
+        if (this.automated) {
+            this.sceneManager.update();
+            this.sceneManager.render();
+        }
+        if (this.update)
+            this.update();
+    };
 
     // Graphics functions
 
