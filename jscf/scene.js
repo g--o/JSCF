@@ -1,7 +1,7 @@
 
 function Scene()
 {
-    this.max_eid = 0;
+    this.max_euid = 0;
     this.entities = {};
     this.paused = false;
 
@@ -62,14 +62,23 @@ function Scene()
         }
     };
 
-    this.createEmptyEntity = function(name, spr_handler)
+    this.createManualEntity = function(name, spr_handler) {
+        return this.addEntity(new Entity(name, true, spr_handler, false));
+    };
+
+    this.createEntity = function(name, spr_handler)
     {
-        return this.entites["empty_entity_"+max_euid] = new Entity(name, true, spr_handler, true);
+        return this.addEntity(new Entity(name, true, spr_handler, true));
+    };
+
+    this.createNewEntity = function(spr_handler)
+    {
+        return this.addEntity(new Entity(this.getEntityName(), true, spr_handler, true));
     };
 
     this.getEntityName = function()
     {
-        max_euid++;
-        return "entity_" + max_euid;
+        this.max_euid++;
+        return "entity_" + this.max_euid;
     };
 }

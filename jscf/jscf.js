@@ -12,6 +12,7 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         this.graphics = null;
         this.update = null;
         this.automated = true;
+        this.resourceManager = new ResourceManager();
         this.assetManager = new AssetManager(assetDir);
         this.sceneManager = new SceneManager();
     };
@@ -30,14 +31,17 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
             this.update = update;
             this.automated = automated;
             this.state = "running";
-            this.interval = setInterval(this.handler, 1000.0/fps);
+            var self = this;
+            this.interval = setInterval(function() {
+                self.handler();
+            }, 1000.0/fps);
         }
     };
 
     this.stop = function() {
         if (this.interval != null)
             clearInterval(this.interval);
-    }
+    };
 
     // Automated handler fucntions
 
@@ -45,10 +49,16 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
     {
         if (this.automated) {
             this.sceneManager.update();
+            this.graphics.clear();
             this.sceneManager.render();
         }
         if (this.update)
             this.update();
+    };
+
+    this.getCurrentScene = function()
+    {
+        return this.sceneManager.getCurrentScene();
     };
 
     // Graphics functions
