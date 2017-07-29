@@ -1,14 +1,14 @@
 
-function Plane(game, x, y, width, height, color)
+function Plane(game, width, height, color)
 {
-    this.rect = new Rect(game, x, y, width, height);
+    this.width = width;
+    this.height = height;
     this.color = color;
 
     this.render = function()
     {
         ctx = game.graphics.context;
         ctx.fillStyle = this.color;
-
-        this.rect.render();
+        ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
     };
 }

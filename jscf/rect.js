@@ -1,5 +1,5 @@
 
-function Rect(game, x, y, width, height, collDetectorType)
+function Rect(x, y, width, height, collDetectorType)
 {
     this.width = width;
     this.height = height;
@@ -9,18 +9,6 @@ function Rect(game, x, y, width, height, collDetectorType)
 
     if (!collDetectorType)
         collDetectorType = "box";
-
-    this.render = function()
-    {
-        var ctx = game.graphics.context;
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-
-        game.graphics.context.fillRect(this.width / -2, this.height / -2, this.width, this.height);
-
-        ctx.restore();
-    };
 
     this.containsPoint = function(x, y)
     {

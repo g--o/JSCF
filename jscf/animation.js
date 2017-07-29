@@ -35,14 +35,10 @@ function Animation(game, sprite, frameWidth, frameHeight, speed)
 
     this.render = function()
     {
-        this.spr.start_update();
-
         game.graphics.context.drawImage(this.spr.image,
             this.frame.px ,this.frame.py,
             this.frame.w, this.frame.h,
-            this.spr.rect.width/-2, this.spr.rect.height/-2,
-            this.spr.rect.width, this.spr.rect.height);
-
-        this.spr.end_update();
+            this.spr.width/-2, this.spr.height/-2,
+            this.spr.width, this.spr.height);
     };
 }

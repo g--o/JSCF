@@ -62,18 +62,18 @@ function Scene()
         }
     };
 
-    this.createManualEntity = function(name, spr_handler) {
-        return this.addEntity(new Entity(name, true, spr_handler, false));
+    this.createManualEntity = function(name, x, y, spr_handler) {
+        return this.addEntity(new Entity(name, true, x, y, spr_handler, false));
     };
 
-    this.createEntity = function(name, spr_handler)
+    this.createEntity = function(name, x, y, spr_handler)
     {
-        return this.addEntity(new Entity(name, true, spr_handler, true));
+        return this.addEntity(new Entity(name, true, x, y, spr_handler, true));
     };
 
     this.createNewEntity = function(spr_handler)
     {
-        return this.addEntity(new Entity(this.getEntityName(), true, spr_handler, true));
+        return this.addEntity(new Entity(this.getEntityName(), true, 0, 0, spr_handler, true));
     };
 
     this.getEntityName = function()

@@ -34,7 +34,7 @@ function update()
 function gameStart()
 {
     game.setup();
-    player = new AnimSprite(game, 23, 20, 46, 40, game.assetManager.getAssetPath("coin.png"),  44, 40, 30);
+    player = new AnimSprite(game, 46, 40, game.assetManager.getAssetPath("coin.png"),  44, 40, 30);
     player.startAnimation();
-    game.start(update);
+    game.start(update, false);
 }
