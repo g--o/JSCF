@@ -23,6 +23,8 @@ function Scene()
         for (entityName in this.entities) {
             if (this.entities.hasOwnProperty(entityName)) {
                 var entity = this.entities[entityName];
+                if (!entity)
+                    continue;
                 if(entity.auto_physics) {
                     // TODO: physics.
                 }
@@ -43,7 +45,7 @@ function Scene()
         for (entityName in this.entities) {
             if (this.entities.hasOwnProperty(entityName)) {
                 var entity = this.entities[entityName];
-                if (entity.auto_render) {
+                if (entity && entity.auto_render) {
                     entity.render();
                 }
             }

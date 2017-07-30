@@ -44,6 +44,10 @@ function Vector2d(x, y)
     this.normalize = function()
     {
         var len = this.length();
+        if (!len) {
+            this.x = 0, this.y = 0;
+            return;
+        }
         this.x /= len;
         this.y /= len;
     };
