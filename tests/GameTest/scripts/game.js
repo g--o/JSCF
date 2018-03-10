@@ -23,32 +23,32 @@ function input()
     // Movement
     if (game.inputManager.isKeyDown(RIGHT)) {
         // scroll
-        if (player.s.rect.x < game.getCanvasWidth()) {
+        if (player.rect.x < game.getCanvasWidth()) {
             bg.rect.x+=SPEED;
             game.graphics.context.translate(-SPEED,0);
         }
 
-        player.s.rect.angle = MathUtils.toRad(tweak+90);
-        player.s.rect.x+=SPEED;
+        player.rect.angle = MathUtils.toRad(tweak+90);
+        player.rect.x+=SPEED;
     }
 
     if(game.inputManager.isKeyDown(LEFT)) {
         // scroll
-        if(player.s.rect.x < game.getCanvasWidth()) {
+        if(player.rect.x < game.getCanvasWidth()) {
             bg.rect.x-=SPEED;
             game.graphics.context.translate(SPEED,0);
         }
         // rotate
-        player.s.rect.angle = MathUtils.toRad(tweak+270);
-        player.s.rect.x-=SPEED;
+        player.rect.angle = MathUtils.toRad(tweak+270);
+        player.rect.x-=SPEED;
     }
 
     // no ups or downs if FLATY
     if(player.type != FLATY) {
         if(game.inputManager.isKeyDown(UP))
-            player.s.rect.angle = MathUtils.toRad(tweak+0);
+            player.rect.angle = MathUtils.toRad(tweak+0);
         if(game.inputManager.isKeyDown(DOWN))
-            player.s.rect.angle = MathUtils.toRad(tweak+180);
+            player.rect.angle = MathUtils.toRad(tweak+180);
     }
 
     // Reshape
@@ -66,14 +66,14 @@ function collisions()
     var isFalling = true;
 
     for (var i = 0; i < platforms.length; i++) {
-        if (player.s.rect.isColliding(platforms[i].rect)) {
+        if (player.rect.isColliding(platforms[i].rect)) {
             isFalling = false;
             break;
         }
     }
 
     if(isFalling)
-        player.s.rect.y+=SPEED;
+        player.rect.y+=SPEED;
 }
 
 function logic()
@@ -81,7 +81,7 @@ function logic()
     input();       // handle input
     collisions();
 
-    if (player.s.rect.y-64 > game.getCanvasHeight()) {
+    if (player.rect.y-64 > game.getCanvasHeight()) {
         document.getElementById('status').innerHTML = "<h1>Game Over!</h1>";
         clearInterval(game.interval);
     }

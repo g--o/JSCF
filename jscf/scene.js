@@ -54,6 +54,22 @@ function Scene()
         return true;
     };
 
+    this.getEntity = function(name)
+    {
+        var e = this.entities[name];
+        if (e)
+            return e;
+
+        for (var entity in this.entities) {
+            if (this.entities.hasOwnProperty(entity) && this.entities[entity].getChild) {
+                var res = this.entities[entity].getChild(name);
+                if (res)
+                    return res;
+            }
+        }
+        console.log("fuck");
+    }
+
     this.addEntity = function(entity)
     {
         if (!(entity.name in this.entities)) {
@@ -64,18 +80,31 @@ function Scene()
         }
     };
 
-    this.createManualEntity = function(name, x, y, spr_handler) {
-        return this.addEntity(new Entity(name, true, x, y, spr_handler, false));
+    this.createManualEntity = function(name, x, y, firstChild) {
+        var e = new Entity(name, true, x, y, false);
+        e.children[this.getChildName(e, firstChild)] = firstChild;
+        return this.addEntity(e);
     };
 
-    this.createEntity = function(name, x, y, spr_handler)
+    this.createEntity = function(name, x, y, firstChild)
     {
-        return this.addEntity(new Entity(name, true, x, y, spr_handler, true));
+        var e = new Entity(name, true, x, y, true);
+        e.children[this.getChildName(e, firstChild)] = firstChild;
+        return this.addEntity(e);
     };
 
-    this.createNewEntity = function(spr_handler)
+    this.createNewEntity = function(firstChild)
     {
-        return this.addEntity(new Entity(this.getEntityName(), true, 0, 0, spr_handler, true));
+        var e = new Entity(this.getEntityName(), true, 0, 0, true);
+        e.children[this.getChildName(e, firstChild)] = firstChild;
+        return this.addEntity(e);
+    };
+
+    this.getChildName = function(parent, child)
+    {
+        if (child.name)
+            return child.name;
+        return parent.getChildName();
     };
 
     this.getEntityName = function()

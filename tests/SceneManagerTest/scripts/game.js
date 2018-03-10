@@ -15,20 +15,22 @@ function loadScene()
     game.getCurrentScene().createManualEntity("manual", 0, 300, new Plane(game, 150, 150, "green"));     // create a manual object, shouldn't be rendered
     game.getCurrentScene().createManualEntity("manual_2", 0, 450, new Plane(game, 150, 150, "blue"));     // create a manual object, render manually
 
-
     // empty entity creation
     game.getCurrentScene().createEntity("script", 0, 0, {
         custom_action : function() {
-            console.log("I can also log!");
+            console.log("I can log!");
+        },
+        custom_action2 : function() {
+            console.log("Another log!");
         },
         render : function() {
 
         },
         update : function() {
-            game.getCurrentScene().entities["entity_1"].rect.x += 3;
-            game.getCurrentScene().entities["entity_2"].rect.x += 2;
-            game.getCurrentScene().entities["red_rect"].rect.x += 1;
-            game.getCurrentScene().entities["manual"].rect.x += 1;
+            game.getCurrentScene().getEntity("entity_1").rect.x += 3;
+            game.getCurrentScene().getEntity("entity_2").rect.x += 2;
+            game.getCurrentScene().getEntity("red_rect").rect.x += 1;
+            game.getCurrentScene().getEntity("manual").rect.x += 1;
         }
     });
 }
@@ -36,8 +38,9 @@ function loadScene()
 function update()
 {
     // global update
-    game.getCurrentScene().entities["manual_2"].render();
-    game.getCurrentScene().entities["script"].spr.custom_action();
+    game.getCurrentScene().getEntity("manual_2").render();
+    game.getCurrentScene().getEntity("script").getChildAt(0).custom_action();
+    game.getCurrentScene().getEntity("script.0").custom_action2();
 }
 
 function gameStart()
