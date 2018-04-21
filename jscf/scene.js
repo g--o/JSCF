@@ -67,7 +67,7 @@ function Scene()
                     return res;
             }
         }
-        console.log("fuck");
+        console.warn("[JSCF] scene couldn't find requested object: " + name);
     }
 
     this.addEntity = function(entity)

@@ -67,8 +67,8 @@ function Entity(name, alive, x, y, automated)
         // Set default width & height as width & height of first component
         var w, h;
         var firstChild = this.getChildAt(0);
-        if (firstChild && firstChild.width && firstChild.width)
-            w = p.getX(), h = p.getY();
+        if (firstChild && firstChild.width && firstChild.height)
+            w = firstChild.width, h = firstChild.height;
         else
             w = 0, h = 0;
 
