@@ -25,8 +25,8 @@ function gameStart()
 {
     game.setup();
     // create entities
-    s1 = new Entity("asd", true, 100, 100, false);
-    s2 = new Entity("asd1", true, 150, 150, false);
+    s1 = new Entity(game, "asd", true, 100, 100, false);
+    s2 = new Entity(game, "asd1", true, 150, 150, false);
 
     // set sprites
     s1.AddShapedChild(0, new Plane(game, 50, 40, "green"));

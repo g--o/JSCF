@@ -1,9 +1,10 @@
 
-function Scene()
+function Scene(game, tick_duration)
 {
     this.max_euid = 0;
     this.entities = {};
     this.paused = false;
+    this.physicsEngine = new PhysicsEngine(this.entities, tick_duration);
 
     this.pause = function()
     {
@@ -20,19 +21,20 @@ function Scene()
         if (this.paused)
             return false;
 
+        // Normal update
         for (entityName in this.entities) {
             if (this.entities.hasOwnProperty(entityName)) {
                 var entity = this.entities[entityName];
                 if (!entity)
                     continue;
-                if(entity.auto_physics) {
-                    // TODO: physics.
-                }
-                if (entity.auto_update) {
+                if (entity.update && entity.auto_update) {
                     entity.update();
                 }
             }
         }
+
+        // Physics update
+        this.physicsEngine.update();
 
         return true;
     };
@@ -81,21 +83,21 @@ function Scene()
     };
 
     this.createManualEntity = function(name, x, y, firstChild) {
-        var e = new Entity(name, true, x, y, false);
+        var e = new Entity(game, name, true, x, y, false);
         e.children[this.getChildName(e, firstChild)] = firstChild;
         return this.addEntity(e);
     };
 
     this.createEntity = function(name, x, y, firstChild)
     {
-        var e = new Entity(name, true, x, y, true);
+        var e = new Entity(game, name, true, x, y, true);
         e.children[this.getChildName(e, firstChild)] = firstChild;
         return this.addEntity(e);
     };
 
     this.createNewEntity = function(firstChild)
     {
-        var e = new Entity(this.getEntityName(), true, 0, 0, true);
+        var e = new Entity(game, this.getEntityName(), true, 0, 0, true);
         e.children[this.getChildName(e, firstChild)] = firstChild;
         return this.addEntity(e);
     };

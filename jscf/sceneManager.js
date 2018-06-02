@@ -1,7 +1,8 @@
 
-function SceneManager()
+function SceneManager(game, tick_duration)
 {
-    this.scenes = { "splash":new Scene() };
+    this.tickDuration = tick_duration;
+    this.scenes = { "splash": new Scene(game, this.tickDuration) };
     this.cur_scene = this.scenes["splash"];
 
     this.update = function()
@@ -38,7 +39,7 @@ function SceneManager()
             console.warn("[JSCF] scene " + sceneName + " already exists (scene creation)!");
             return false;
         }
-        this.scenes[sceneName] = new Scene();
+        this.scenes[sceneName] = new Scene(game, this.tickDuration);
         return true;
     };
 

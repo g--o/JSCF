@@ -14,7 +14,7 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         this.automated = true;
         this.resourceManager = new ResourceManager();
         this.assetManager = new AssetManager(assetDir);
-        this.sceneManager = new SceneManager();
+        this.sceneManager = new SceneManager(this, 1.0/this.fps);
     };
     // calling c'tor
     this.init();

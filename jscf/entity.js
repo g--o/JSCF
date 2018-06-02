@@ -1,5 +1,5 @@
 
-function Entity(name, alive, x, y, automated)
+function Entity(game, name, alive, x, y, automated)
 {
     this.start_render = function()
     {
@@ -19,7 +19,7 @@ function Entity(name, alive, x, y, automated)
         this.start_render();
         // Update all children
         for (var child in this.children) {
-            if (this.children.hasOwnProperty(child) && this.children[child].render)
+            if (this.children[child] && this.children[child].render)
                 this.children[child].render();
         }
         this.end_update();
@@ -28,14 +28,19 @@ function Entity(name, alive, x, y, automated)
     this.update = function() {
         // Update all children
         for (var child in this.children) {
-            if (this.children.hasOwnProperty(child) && this.children[child].update)
+            if (this.children[child] && this.children[child].update)
                 this.children[child].update();
         }
     };
 
+    this.hasOwnChild = function(name)
+    {
+        return this.children[name];
+    };
+
     this.getChild = function(name)
     {
-        var e = this.children[name];
+        var e = this.hasOwnChild(name);
         if (e)
             return e;
 
@@ -51,6 +56,17 @@ function Entity(name, alive, x, y, automated)
     this.getChildAt = function(i)
     {
         return Object.values(this.children)[i];
+    };
+
+    this.AddComponent = function(comp)
+    {
+        var c = new comp(this);
+        this.children[c.name] = c;
+    };
+
+    this.AddChild = function(name, child)
+    {
+        this.children[name] = child;
     };
 
     this.AddShapedChild = function(name, child)
@@ -90,6 +106,7 @@ function Entity(name, alive, x, y, automated)
         this.auto_physics = automated;
         this.auto_render = automated;
         this.auto_update = automated;
+        this.game = game;
     };
 
     this.init();

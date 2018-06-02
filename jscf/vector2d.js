@@ -52,6 +52,20 @@ function Vector2d(x, y)
         this.y /= len;
     };
 
+    this.scalarMul = function(scalar)
+    {
+        this.x *= scalar;
+        this.y *= scalar;
+    };
+
+    this.scalarDiv = function(scalar)
+    {
+        if (scalar == 0)
+            return;
+        this.x /= scalar;
+        this.y /= scalar;
+    };
+
     this.dotProduct = function(vec)
     {
         return this.x * vec.x + this.y * vec.y;
