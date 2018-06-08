@@ -1,43 +1,59 @@
-
+const VELOCITY = 1;
 var game = new Game(JSCF_CANVAS_WIDTH, JSCF_CANVAS_HEIGHT, JSC_FPS, JSC_ASSETDIR);
+var box_num = 0;
 
 function loadResources()
 {
-	game.resourceManager.add("rect", new Plane(game, 100, 50, "white"));
+	game.resourceManager.add("white-rect", new Plane(game, 100, 50, "white"));
+	game.resourceManager.add("green-rect", new Plane(game, 105, 55, "green"));
 	game.resourceManager.add("floor", new Plane(game, game.graphics.canvas.width, 50, "blue"));
+}
+
+function getBoxName()
+{
+	return "box"+box_num;
+}
+
+function createBox(x, y)
+{
+	box_num++;
+	var box = game.getCurrentScene().createEntity(getBoxName(), x, y, game.resourceManager.get("green-rect"));
+	box.insertChild(game.resourceManager.get("white-rect"));
+	box.addComponent(Collider);
+	box.addComponent(Rigidbody);
+	box.getComponentOfType(Rigidbody).cor = 0;
+
+	return box;
 }
 
 function loadScene()
 {
-    var box = game.getCurrentScene().createEntity("box", 100, 100, game.resourceManager.get("rect"));
-	box.rect = box.getDefaultRect();
-    box.AddComponent(Collider);
-    box.AddComponent(Rigidbody);
+	createBox(800, 400);
+	createBox(500, 100);
+	var box = createBox(100, 100);
+	box.getBuiltinComponent("rigidbody").applyVelocity(new Vector2d(3,0));
 
-	var box2 = game.getCurrentScene().createEntity("box2", 500, 100, game.resourceManager.getClone("rect"));
-	box2.rect = box2.getDefaultRect();
-	box2.AddComponent(Collider);
-    box2.AddComponent(Rigidbody);
-
-	box.getChild("[builtin_rigidbody]").applyVelocity(new Vector2d(10,0));
-
-	var box3 = game.getCurrentScene().createEntity("box3", 800, 400, game.resourceManager.getClone("rect_clone"));
-	box3.rect = box3.getDefaultRect();
-	box3.AddComponent(Collider);
-    box3.AddComponent(Rigidbody);
-
-	var floor = game.getCurrentScene().createEntity("floor", game.graphics.canvas.width/2, 500, game.resourceManager.getClone("floor"));
-	floor.rect = floor.getDefaultRect();
-	floor.AddComponent(Collider);
-	floor.AddComponent(Rigidbody);
-	var floorRB = floor.getChild("[builtin_rigidbody]");
-	floorRB.auto_gravity = false;
-	floorRB.static = true;
+	var floor = game.getCurrentScene().createEntity("floor", game.graphics.canvas.width/2, game.graphics.canvas.height, game.resourceManager.getClone("floor"));
+	floor.addComponent(Collider);
+	floor.addComponent(Rigidbody);
+	// Set floor as static body
+	floor.getComponentOfType(Rigidbody).setStaticBody();
 }
 
 function update()
 {
-
+	if (game.inputManager.IsMouseDown()) {
+		var mousePos = new Vector2d(game.inputManager.getMouseX(), game.inputManager.getMouseY());
+		if (game.inputManager.getMouseEvent().which == 3) { // right click
+			var entity = game.getCurrentScene().getEntity(getBoxName());
+			var direction = Vector.subVector(mousePos, entity.transform.pos);
+			var vel = direction.getNormal();
+			vel.scalarMul(VELOCITY);
+			entity.getComponentOfType(Rigidbody).applyVelocity(vel);
+		} else {
+			createBox(mousePos.x, mousePos.y);
+		}
+	}
 }
 
 function gameStart()

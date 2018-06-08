@@ -7,11 +7,25 @@
 		in c'tor.
 *****************************************************/
 
+const __COMPONENT_NAME = "[builtin_component]";
+
 // blank component
-var component = function(owner)
+var Component = function(owner)
 {
-	this.name = "[builtin_component]";
+	this.name = __COMPONENT_NAME;
 	this.parent = owner;
 	this.init = function() {};
 	this.update = function() {};
+};
+
+Component.component_name = __COMPONENT_NAME;
+
+// Additional Component utilities
+
+Component.typeToName = function(type)
+{
+	var name = type.component_name;
+	if (!name)
+		name = type.name.toLowerCase();
+	return name;
 };

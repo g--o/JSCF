@@ -2,35 +2,35 @@
 /***************************
 	rigid body component.
 ***************************/
+const __RIGIDBODY_NAME = "[builtin_rigidbody]";
+
 var Rigidbody = function(owner, tick_duration)
 {
 
-	this.backupRect = function()
+	this.setStaticBody = function()
 	{
-		this.oldRect.x = this.parent.rect.x;
-		this.oldRect.y = this.parent.rect.y;
+		this.static = true;
+		this.auto_gravity = false;
+		this.mass = Infinity;
 	};
 
 	this.update = function()
 	{
-		this.backupRect();
 		// displace
-		this.parent.rect.x += this.velocity.x;
-		this.parent.rect.y += this.velocity.y;
-
-		this.displacement = new Vector2d(this.parent.rect.x - this.oldRect.x, this.parent.rect.y - this.oldRect.y);
+		this.parent.transform.pos.x += this.velocity.x;
+		this.parent.transform.pos.y += this.velocity.y;
 	};
 
-	this.calcCollision = function(otherRigidBody, normal)
+	this.calcCollision = function(other, normal, penVec)
 	{
 		// DEFINITIONS:
 		let massA = this.mass;
-		let massB = otherRigidBody.mass;
-		let fCor = (this.cor + otherRigidBody.cor)/2;
+		let massB = other.mass;
+		let fCor = (this.cor + other.cor)/2;
 
     	let ut = new Vector2d(-normal.y,normal.x); 								// Tangent
 		let v1 = this.velocity;
-		let v2 = otherRigidBody.velocity;
+		let v2 = other.velocity;
 
     	var v1n = v1.dotProduct(normal); 										// Velocity in normal direction
     	var v1t = ut.dotProduct(v1); 											// Velocity in tangent direction
@@ -53,8 +53,22 @@ var Rigidbody = function(owner, tick_duration)
 
 		if (!this.static)
 			this.velocity = fV1;
-		if (!otherRigidBody.static)
-			otherRigidBody.velocity = fV2;
+		if (!other.static)
+			other.velocity = fV2;
+
+		// penetration bias
+		const epsilon = 1e-5;
+		const k_slop = epsilon; // Penetration allowance
+		const percent = 1-epsilon; // Penetration percentage to correct
+		var bias = (Math.max( penVec.length() - k_slop, 0.0 ) / (1/this.mass + 1/other.mass)) * percent;
+		var penBias = penVec.getNormal();
+		penBias.scalarMul(bias);
+
+		if (!this.static)
+			this.parent.transform.pos.addVector(penBias);
+		if (!other.static)
+			other.parent.transform.pos.subVector(penBias);
+
 	};
 
 	this.applyVelocity = function(velocity)
@@ -64,7 +78,7 @@ var Rigidbody = function(owner, tick_duration)
 
 	this.init = function()
 	{
-		this.name = "[builtin_rigidbody]";
+		this.name = __RIGIDBODY_NAME;
 		this.parent = owner;
 
 		if (tick_duration)
@@ -76,16 +90,16 @@ var Rigidbody = function(owner, tick_duration)
 		this.velocity = new Vector2d(0, 0);
 		this.ro = 1;
 		this.cor = 1;
-		this.mass = this.parent.rect.x * this.parent.rect.y * this.ro;
+		this.mass = this.parent.transform.scale.x * this.parent.transform.scale.y * this.ro;
 		this.auto_gravity = true;
 		this.static = false;
 
-		if (!this.parent.hasOwnChild("[builtin_collider]"))
+		if (!this.parent.hasComponentOfType(Collider))
 			console.error("[jscf/components/rigidbody] parent doesn't have collider.");
-		if (!this.parent.rect)
-			console.error("[jscf/components/rigidbody] parent doesn't have rect! Not an entity?");
-
-		this.oldRect = new Rect(this.parent.x, this.parent.y, this.parent.width, this.parent.height, this.parent.type);
+		if (!this.parent.transform)
+			console.error("[jscf/components/rigidbody] parent doesn't have transform! Not an entity?");
 	};
 	this.init();
 };
+
+Rigidbody.component_name = __RIGIDBODY_NAME;

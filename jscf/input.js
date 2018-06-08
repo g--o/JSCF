@@ -2,7 +2,9 @@
 function InputManager(canvas)
 {
     var keys = [];
-    var mouseX, mouseY;
+    var mouseX = 0, mouseY = 0;
+    var mouseDown = false;
+    var mouseEvent = -1;
 
     this.isKeyDownChar = function(c) {
         return keys[c.toUpperCase().charCodeAt()];
@@ -22,11 +24,47 @@ function InputManager(canvas)
         return mouseY;
     }
 
-    function updateKeyTrue(e) {
+    this.IsMouseDown = function()
+    {
+        return mouseDown;
+    };
+
+    this.getMouseEvent = function()
+    {
+        return mouseEvent;
+    };
+
+    this.setOnMouseUp = function(callback)
+    {
+        document.addEventListener("mouseup", callback);
+    };
+
+    this.setOnMouseDown = function(callback)
+    {
+        document.addEventListener("mousedown", callback);
+    };
+
+    function updateMouseDown(e)
+    {
+        e.preventDefault();
+        mouseEvent = e;
+        mouseDown = true;
+    }
+
+    function updateMouseUp(e)
+    {
+        e.preventDefault();
+        mouseEvent = e;
+        mouseDown = false;
+    }
+
+    function updateKeyTrue(e)
+    {
         keys[e.keyCode] = true;
     }
 
-    function updateKeyFalse(e) {
+    function updateKeyFalse(e)
+    {
         keys[e.keyCode] = false;
     }
 
@@ -37,9 +75,10 @@ function InputManager(canvas)
     }
 
     document.addEventListener("keydown", updateKeyTrue);
-
     document.addEventListener("keyup", updateKeyFalse);
-
-    document.addEventListener("mousemove", updateMousePosition)
+    document.addEventListener("mousemove", updateMousePosition);
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    this.setOnMouseDown(updateMouseDown);
+    this.setOnMouseUp(updateMouseUp);
 
 }

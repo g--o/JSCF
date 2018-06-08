@@ -1,8 +1,10 @@
 
 function Vector2d(x, y)
 {
-    this.x = x;
-    this.y = y;
+    this.x = x ? x : 0;
+    this.y = y ? y : 0;
+
+    // Easy access
 
     this.add = function(ax, ay)
     {
@@ -17,6 +19,34 @@ function Vector2d(x, y)
         return this.add(-ax, -ay);
     };
 
+    // Scalar stuff
+
+    this.scalarAdd = function(d)
+    {
+        return this.add(d, d);
+    };
+
+    this.scalarSub = function(d)
+    {
+        return this.sub(d, d);
+    };
+
+    this.scalarMul = function(scalar)
+    {
+        this.x *= scalar;
+        this.y *= scalar;
+    };
+
+    this.scalarDiv = function(scalar)
+    {
+        if (scalar == 0)
+            return;
+        this.x /= scalar;
+        this.y /= scalar;
+    };
+
+    // Vector - vector operations
+
     this.addVector = function(vec)
     {
         return this.add(vec.x, vec.y);
@@ -26,6 +56,13 @@ function Vector2d(x, y)
     {
         return this.sub(vec.x, vec.y);
     };
+
+    this.dotProduct = function(vec)
+    {
+        return this.x * vec.x + this.y * vec.y;
+    };
+
+    // Other vector operations
 
     this.length = function()
     {
@@ -50,25 +87,6 @@ function Vector2d(x, y)
         }
         this.x /= len;
         this.y /= len;
-    };
-
-    this.scalarMul = function(scalar)
-    {
-        this.x *= scalar;
-        this.y *= scalar;
-    };
-
-    this.scalarDiv = function(scalar)
-    {
-        if (scalar == 0)
-            return;
-        this.x /= scalar;
-        this.y /= scalar;
-    };
-
-    this.dotProduct = function(vec)
-    {
-        return this.x * vec.x + this.y * vec.y;
     };
 
     this.makeArray = function()

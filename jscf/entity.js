@@ -6,8 +6,8 @@ function Entity(game, name, alive, x, y, automated)
         var ctx = game.graphics.context;
 
         ctx.save();
-        ctx.translate(this.rect.x, this.rect.y);
-        ctx.rotate(this.rect.angle);
+        ctx.translate(this.transform.pos.x, this.transform.pos.y);
+        ctx.rotate(this.transform.angle);
     };
 
     this.end_update = function()
@@ -58,38 +58,68 @@ function Entity(game, name, alive, x, y, automated)
         return Object.values(this.children)[i];
     };
 
-    this.AddComponent = function(comp)
+    this.getComponent = function(compName)
+    {
+        return this.getChild("[" + compName + "]");
+    };
+
+    this.getBuiltinComponent = function(compName)
+    {
+        return this.getComponent("builtin_" + compName);
+    };
+
+    this.getComponentOfType = function(type)
+    {
+        var name = Component.typeToName(type);
+        var comp = this.getChild(name);
+        if (!comp)
+            comp = this.getBuiltinComponent(name);
+        return comp;
+    };
+
+    this.hasComponentOfType = function(type)
+    {
+        var name = Component.typeToName(type);
+        return (this.hasOwnChild(name) || this.hasOwnChild("[builtin_" + name+"]"));
+    };
+
+    this.addComponent = function(comp)
     {
         var c = new comp(this);
         this.children[c.name] = c;
     };
 
-    this.AddChild = function(name, child)
+    this.addChild = function(name, child)
     {
         this.children[name] = child;
     };
 
-    this.AddShapedChild = function(name, child)
+    this.insertChild = function(c)
     {
-        this.children[name] = child;
-        if (child.width && child.height) {
-            this.rect.width = child.width;
-            this.rect.height = child.height;
+        this.children[this.getChildName()] = c;
+    };
+
+    this.getShapeByChild = function()
+    {
+        var shape = null;
+
+        for (var childName in this.children) {
+            if (this.children.hasOwnProperty(childName) && this.children[childName]) {
+                var child = this.children[childName];
+                if (child.width && child.height) {
+                    shape = new Vector2d(child.width, child.height);
+                    break;
+                }
+
+            }
         }
+
+        if (shape != null)
+            return shape;
+
+        // wasn't found, return scale transform
+        return new Vector2d(this.transform.scale.x, this.transform.scale.y);
     }
-
-    this.getDefaultRect = function()
-    {
-        // Set default width & height as width & height of first component
-        var w, h;
-        var firstChild = this.getChildAt(0);
-        if (firstChild && firstChild.width && firstChild.height)
-            w = firstChild.width, h = firstChild.height;
-        else
-            w = 0, h = 0;
-
-        return new Rect(x, y, w, h);
-    };
 
     this.getChildName = function()
     {
@@ -102,7 +132,7 @@ function Entity(game, name, alive, x, y, automated)
         this.alive = alive;
         this.max_cid = 0;
         this.children = {};
-        this.rect = this.getDefaultRect();
+        this.transform = new Transform(x, y);
         this.auto_physics = automated;
         this.auto_render = automated;
         this.auto_update = automated;

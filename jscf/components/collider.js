@@ -1,17 +1,21 @@
 
+/***************************
+	collider component.
+***************************/
+
+const __COLLIDER_NAME = "[builtin_collider]";
+
 var Collider = function(owner, collisionResolver, potential_entities)
 {
 
 	this.getNormal = function(otherCollider)
 	{
-		if (otherCollider.resolver.type == this.resolver.type)
-		{
-			return this.resolver.getNormal(otherCollider.resolver);
-		}
+		return this.resolver.getNormal(otherCollider.resolver);
 	};
 
 	this.update = function()
 	{
+		this.resolver.setTransform(this.parent.transform);
 		this.others = [];
 
 		if (this.potential_entities == null) {
@@ -25,7 +29,9 @@ var Collider = function(owner, collisionResolver, potential_entities)
                 var entity = this.potential_entities[entityName];
                 if (!entity)
                     continue;
+
 				var otherCollider = entity.getChild(this.name);
+
 				if (otherCollider && this.resolver.isColliding(otherCollider.resolver)) {
 					this.others.push(entity);
 				}
@@ -36,18 +42,25 @@ var Collider = function(owner, collisionResolver, potential_entities)
 
 	this.init = function()
 	{
-		this.name = "[builtin_collider]";
+		this.name = __COLLIDER_NAME;
 		this.parent = owner;
 		this.normal = new Vector2d(0, 0);
 		this.others = [];
+
 		if (potential_entities)
 			this.potential_entities = potential_entities;
 		else
 			this.potential_entities = null;
-		if (collisionResolver)
+
+		if (collisionResolver) {
 			this.resolver = collisionResolver;
-		else
-			this.resolver = this.parent.rect;
+		} else {
+			var pos = this.parent.transform.pos;
+			var dims = this.parent.getShapeByChild();
+			this.resolver = new AABB(pos.x, pos.y, dims.x, dims.y);
+		}
 	};
 	this.init();
-}
+};
+
+Collider.component_name = __COLLIDER_NAME;

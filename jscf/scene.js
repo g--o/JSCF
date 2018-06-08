@@ -84,21 +84,21 @@ function Scene(game, tick_duration)
 
     this.createManualEntity = function(name, x, y, firstChild) {
         var e = new Entity(game, name, true, x, y, false);
-        e.children[this.getChildName(e, firstChild)] = firstChild;
+        e.addChild(this.getChildName(e, firstChild), firstChild);
         return this.addEntity(e);
     };
 
     this.createEntity = function(name, x, y, firstChild)
     {
         var e = new Entity(game, name, true, x, y, true);
-        e.children[this.getChildName(e, firstChild)] = firstChild;
+        e.addChild(this.getChildName(e, firstChild), firstChild);
         return this.addEntity(e);
     };
 
     this.createNewEntity = function(firstChild)
     {
         var e = new Entity(game, this.getEntityName(), true, 0, 0, true);
-        e.children[this.getChildName(e, firstChild)] = firstChild;
+        e.addChild(this.getChildName(e, firstChild), firstChild);
         return this.addEntity(e);
     };
 

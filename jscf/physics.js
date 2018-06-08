@@ -10,7 +10,7 @@ function PhysicsEngine(entities, tick_duration)
 
 	this.applyNaturalForces = function(rigidbody)
 	{
-		if (rigidbody.auto_gravity) {
+		if (rigidbody.auto_gravity && ! rigidbody.static) {
 			var gravityVelocity = this.gravity.clone();
 			gravityVelocity.scalarMul(this.tickDuration);
 			rigidbody.velocity.addVector(gravityVelocity);
@@ -26,8 +26,10 @@ function PhysicsEngine(entities, tick_duration)
 
 		if (rigidBody1 && rigidBody2 && collider1 && collider2) {
 			var normal = collider1.getNormal(collider2);
-			rigidBody1.calcCollision(rigidBody2, normal);
+			var penVec = collider1.resolver.getPenetration(collider2.resolver);
+			rigidBody1.calcCollision(rigidBody2, normal, penVec);
 		}
+
 	};
 
 	this.update = function()
@@ -42,14 +44,14 @@ function PhysicsEngine(entities, tick_duration)
                     continue;
                 if (entity.auto_physics) {
 					// get rigidbody
-					var rigidbody = entity.getChild("[builtin_rigidbody]");
+					var rigidbody = entity.getComponentOfType(Rigidbody);
 					if (!rigidbody)
 						continue;
 					// set forces
 					this.applyNaturalForces(rigidbody);
 
 					// set collision forces
-					var collider = entity.getChild("[builtin_collider]");
+					var collider = entity.getComponentOfType(Collider);
 					if (!(collider && collider.others))
 						continue;
 
@@ -59,6 +61,7 @@ function PhysicsEngine(entities, tick_duration)
 						if (otherEntity) {
 							if (this.collisionCache[entity.name] && this.collisionCache[entity.name][otherEntity.name])
 								break;
+
 							if (!this.collisionCache[otherEntity.name])
 								this.collisionCache[otherEntity.name] = {};
 							this.collisionCache[otherEntity.name][entity.name] = true;
