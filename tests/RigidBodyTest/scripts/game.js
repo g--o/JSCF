@@ -21,7 +21,7 @@ function createBox(x, y)
 	box.insertChild(game.resourceManager.get("white-rect"));
 	box.addComponent(Collider);
 	box.addComponent(Rigidbody);
-	box.getComponentOfType(Rigidbody).cor = 0;
+	box.getComponentOfType(Rigidbody).cor = 0.5;
 
 	return box;
 }
@@ -37,7 +37,9 @@ function loadScene()
 	floor.addComponent(Collider);
 	floor.addComponent(Rigidbody);
 	// Set floor as static body
-	floor.getComponentOfType(Rigidbody).setStaticBody();
+	var rb = floor.getComponentOfType(Rigidbody);
+	rb.setStaticBody();
+	rb.cor = 0.5;
 }
 
 function update()

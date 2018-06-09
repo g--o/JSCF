@@ -1,11 +1,13 @@
 
 // Consts
-var RIGHT = 39;
-var LEFT = 37;
-var DOWN = 40;
-var UP = 38;
+const RIGHT = 39;
+const LEFT = 37;
+const DOWN = 40;
+const UP = 38;
 
-var SPEED = 5;
+const SPEED = 5;
+const SPRITE_WIDTH = 46;
+const SPRITE_HEIGHT = 40;
 
 // Game objects
 var player;
@@ -20,7 +22,8 @@ function logic()
 
 function render()
 {
-    game.graphics.clear();   // clear canvas
+    // clear canvas
+    game.graphics.clear();
     // render player.
     player.render();
 }
@@ -34,7 +37,8 @@ function update()
 function gameStart()
 {
     game.setup();
-    player = new AnimSprite(game, 46, 40, game.assetManager.getAssetPath("coin.png"),  44, 40, 30);
+    player = new AnimSprite(game, SPRITE_WIDTH, SPRITE_HEIGHT, game.assetManager.getAssetPath("coin.png"),  44, 40, 30);
     player.startAnimation();
+
     game.start(update, false);
 }

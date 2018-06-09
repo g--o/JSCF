@@ -27,10 +27,10 @@ function loadScene()
 
         },
         update : function() {
-            game.getCurrentScene().getEntity("entity_1").rect.x += 3;
-            game.getCurrentScene().getEntity("entity_2").rect.x += 2;
-            game.getCurrentScene().getEntity("red_rect").rect.x += 1;
-            game.getCurrentScene().getEntity("manual").rect.x += 1;
+            game.getCurrentScene().getEntity("entity_1").transform.pos.x += 3;
+            game.getCurrentScene().getEntity("entity_2").transform.pos.x += 2;
+            game.getCurrentScene().getEntity("red_rect").transform.pos.x += 1;
+            game.getCurrentScene().getEntity("manual").transform.pos.x += 1;
         }
     });
 }

@@ -11,7 +11,7 @@ var Rigidbody = function(owner, tick_duration)
 	{
 		this.static = true;
 		this.auto_gravity = false;
-		this.mass = Infinity;
+		this.mass = Number.MAX_VALUE/100;
 	};
 
 	this.update = function()
@@ -24,13 +24,13 @@ var Rigidbody = function(owner, tick_duration)
 	this.calcCollision = function(other, normal, penVec)
 	{
 		// DEFINITIONS:
-		let massA = this.mass;
-		let massB = other.mass;
-		let fCor = (this.cor + other.cor)/2;
+		const massA = this.mass;
+		const massB = other.mass;
+		const fCor = (this.cor + other.cor)/2;
 
-    	let ut = new Vector2d(-normal.y,normal.x); 								// Tangent
-		let v1 = this.velocity;
-		let v2 = other.velocity;
+    	const ut = new Vector2d(-normal.y,normal.x); 								// Tangent
+		const v1 = this.velocity;
+		const v2 = other.velocity;
 
     	var v1n = v1.dotProduct(normal); 										// Velocity in normal direction
     	var v1t = ut.dotProduct(v1); 											// Velocity in tangent direction

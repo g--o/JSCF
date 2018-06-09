@@ -6,18 +6,25 @@ function render()
 {
     game.graphics.clear();   // clear canvas
     // render square as test.
-    s2.render();
     s1.render();
+    s2.render();
 }
 
 function update()
 {
-    s1.rect.x = game.inputManager.getMouseX();
-    s1.rect.y = game.inputManager.getMouseY();
-    if (s1.rect.isColliding(s2.rect))
+    // change s1
+    s1.transform.pos.x = game.inputManager.getMouseX();
+    s1.transform.pos.y = game.inputManager.getMouseY();
+    // update changes
+    s1.update();
+
+    // check collision
+    if (s1.getComponentOfType(Collider).resolver.isColliding(s2.getComponentOfType(Collider).resolver))
         s2.getChildAt(0).color = "black";
     else
         s2.getChildAt(0).color = "red";
+
+    // render
     render();
 }
 
@@ -29,8 +36,12 @@ function gameStart()
     s2 = new Entity(game, "asd1", true, 150, 150, false);
 
     // set sprites
-    s1.AddShapedChild(0, new Plane(game, 50, 40, "green"));
-    s2.AddShapedChild(0, new Plane(game, 100, 40, "red"));
+    s1.insertChild(new Plane(game, 50, 40, "green"));
+    s2.insertChild(new Plane(game, 100, 40, "red"));
+
+    // set components
+    s1.addComponent(Collider);
+    s2.addComponent(Collider);
 
     game.start(update);
 }

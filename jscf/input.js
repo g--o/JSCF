@@ -77,7 +77,7 @@ function InputManager(canvas)
     document.addEventListener("keydown", updateKeyTrue);
     document.addEventListener("keyup", updateKeyFalse);
     document.addEventListener("mousemove", updateMousePosition);
-    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('contextmenu', function() { event.preventDefault() } );
     this.setOnMouseDown(updateMouseDown);
     this.setOnMouseUp(updateMouseUp);
 

@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title> test </title>
+    <script type = "text/javascript" src="../../jscf/vector2d.js"></script>
+    <script type = "text/javascript" src="../../jscf/physics.js"></script>
+    <script type = "text/javascript" src="../../jscf/scene.js"></script>
+    <script type = "text/javascript" src="../../jscf/sceneManager.js"></script>
+    <script type = "text/javascript" src="../../jscf/resourceManager.js"></script>
     <script type = "text/javascript" src="../../jscf/soundPlayer.js"></script>
     <script type = "text/javascript" src="../../jscf/animFrame.js"></script>
     <script type = "text/javascript" src="../../jscf/animation.js"></script>
@@ -11,7 +15,7 @@
     <script type = "text/javascript" src="../../jscf/graphics.js"></script>
     <script type = "text/javascript" src="../../jscf/assets.js"></script>
     <script type = "text/javascript" src="../../jscf/jscf.js"></script>
-    <script type = "text/javascript" src="../../jscf/rect.js"></script>
+    <script type = "text/javascript" src="../../jscf/plane.js"></script>
     <script type = "text/javascript" src="../../jscf/sprite.js"></script>
     <script type = "text/javascript" src="../../jscf/sceneUtils.js"></script>
     <script type = "text/javascript" src="../../jscf/mathUtils.js"></script>
@@ -24,7 +28,8 @@
         }
     </style>
 </head>
-<body onload = "gameStart();">
+<body>
     <br/>
+    <button onclick = "this.style.display = 'none'; gameStart();">Start Game (must until Chrome allows autoplay)</button>
 </body>
 </html>
