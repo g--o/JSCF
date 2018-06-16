@@ -1,4 +1,6 @@
-const VELOCITY = 1;
+const VELOCITY = 100;
+const COR = 0.5;
+
 var game = new Game(JSCF_CANVAS_WIDTH, JSCF_CANVAS_HEIGHT, JSC_FPS, JSC_ASSETDIR);
 var box_num = 0;
 
@@ -6,7 +8,7 @@ function loadResources()
 {
 	game.resourceManager.add("white-rect", new Plane(game, 100, 50, "white"));
 	game.resourceManager.add("green-rect", new Plane(game, 105, 55, "green"));
-	game.resourceManager.add("floor", new Plane(game, game.graphics.canvas.width, 50, "blue"));
+	game.resourceManager.add("floor", new Plane(game, game.graphics.canvas.width*0.8, 50, "blue"));
 }
 
 function getBoxName()
@@ -21,7 +23,7 @@ function createBox(x, y)
 	box.insertChild(game.resourceManager.get("white-rect"));
 	box.addComponent(Collider);
 	box.addComponent(Rigidbody);
-	box.getComponentOfType(Rigidbody).cor = 0.5;
+	box.getComponentOfType(Rigidbody).cor = COR;
 
 	return box;
 }
@@ -31,7 +33,7 @@ function loadScene()
 	createBox(800, 400);
 	createBox(500, 100);
 	var box = createBox(100, 100);
-	box.getBuiltinComponent("rigidbody").applyVelocity(new Vector2d(3,0));
+	box.getBuiltinComponent("rigidbody").applyVelocity(new Vector2d(VELOCITY,0));
 
 	var floor = game.getCurrentScene().createEntity("floor", game.graphics.canvas.width/2, game.graphics.canvas.height, game.resourceManager.getClone("floor"));
 	floor.addComponent(Collider);
@@ -39,7 +41,7 @@ function loadScene()
 	// Set floor as static body
 	var rb = floor.getComponentOfType(Rigidbody);
 	rb.setStaticBody();
-	rb.cor = 0.5;
+	rb.cor = COR;
 }
 
 function update()

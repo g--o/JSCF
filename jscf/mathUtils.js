@@ -1,4 +1,6 @@
 
+const __EPSILON = 1e-8;
+
 var MathUtils = {
 
     toRad : function(deg)
@@ -9,5 +11,20 @@ var MathUtils = {
     square : function(n)
     {
         return n*n;
+    },
+
+    greaterThan: function(a,b)
+    {
+        return a-b >= __EPSILON;
+    },
+
+    lesserThan: function(a,b)
+    {
+        return MathUtils.greaterThan(b,a);
+    },
+
+    sign: function(n)
+    {
+        return n/Math.abs(n);
     }
 };

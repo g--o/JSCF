@@ -3,6 +3,9 @@
 	rigid body component.
 ***************************/
 const __RIGIDBODY_NAME = "[builtin_rigidbody]";
+const __RIGIDBODY_BIAS = 10000;
+const __RIGIDBODY_EPSILON = __RIGIDBODY_BIAS/Number.MAX_VALUE; //1/Infinity;
+const __RIGIDBODY_STAIC_MASS = 1/__RIGIDBODY_EPSILON;
 
 var Rigidbody = function(owner, tick_duration)
 {
@@ -11,17 +14,23 @@ var Rigidbody = function(owner, tick_duration)
 	{
 		this.static = true;
 		this.auto_gravity = false;
-		this.mass = Number.MAX_VALUE/100;
+		this.mass = __RIGIDBODY_STAIC_MASS;
 	};
 
 	this.update = function()
 	{
-		// displace
-		this.parent.transform.pos.x += this.velocity.x;
-		this.parent.transform.pos.y += this.velocity.y;
+		if (this.auto_update)
+			this.tick_update();
 	};
 
-	this.calcCollision = function(other, normal, penVec)
+	this.tick_update = function()
+	{
+		// displace (integrate)
+		this.parent.transform.pos.x += this.velocity.x * this.tickDuration;
+		this.parent.transform.pos.y += this.velocity.y * this.tickDuration;
+	};
+
+	this.calcCollision = function(other, normal)
 	{
 		// DEFINITIONS:
 		const massA = this.mass;
@@ -55,20 +64,26 @@ var Rigidbody = function(owner, tick_duration)
 			this.velocity = fV1;
 		if (!other.static)
 			other.velocity = fV2;
+	};
 
-		// penetration bias
-		const epsilon = 1e-5;
-		const k_slop = epsilon; // Penetration allowance
-		const percent = 1-epsilon; // Penetration percentage to correct
-		var bias = (Math.max( penVec.length() - k_slop, 0.0 ) / (1/this.mass + 1/other.mass)) * percent;
-		var penBias = penVec.getNormal();
-		penBias.scalarMul(bias);
+	this.fixPenetration = function(other, penVec)
+	{
+		var biasVec = penVec.clone();
+		// biasVec.scalarMul(correction);
 
 		if (!this.static)
-			this.parent.transform.pos.addVector(penBias);
+			this.parent.transform.pos.addVector(penVec);
 		if (!other.static)
-			other.parent.transform.pos.subVector(penBias);
+			other.parent.transform.pos.subVector(penVec);
+	};
 
+	this.applyAcceleration = function(acceleration)
+	{
+		// integrate to velocity & apply
+		var vel = acceleration.clone();
+		vel.scalarMul(this.tickDuration);
+
+		this.applyVelocity(vel);
 	};
 
 	this.applyVelocity = function(velocity)
@@ -92,6 +107,7 @@ var Rigidbody = function(owner, tick_duration)
 		this.cor = 1;
 		this.mass = this.parent.transform.scale.x * this.parent.transform.scale.y * this.ro;
 		this.auto_gravity = true;
+		this.auto_update = false;
 		this.static = false;
 
 		if (!this.parent.hasComponentOfType(Collider))

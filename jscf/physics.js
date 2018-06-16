@@ -4,72 +4,120 @@
 ***************************/
 function PhysicsEngine(entities, tick_duration)
 {
-	this.tickDuration = tick_duration;
-	this.gravity = new Vector2d(0, 9.8); // acceleration (m/s^2)
-	this.collisionCache = {};
+	this.pixelMeterRatio = 50; // px/meter
+	this.numIterations = 5;
+	this.tickDuration = tick_duration/this.numIterations;
+	this.gravity = new Vector2d(0, 9.8 * this.pixelMeterRatio); // acceleration (m/s^2)
 
 	this.applyNaturalForces = function(rigidbody)
 	{
 		if (rigidbody.auto_gravity && ! rigidbody.static) {
-			var gravityVelocity = this.gravity.clone();
-			gravityVelocity.scalarMul(this.tickDuration);
-			rigidbody.velocity.addVector(gravityVelocity);
+			rigidbody.applyAcceleration(this.gravity);
 		}
 	};
 
-	this.applyCollision = function(e1, e2) // accepts entity1, entity2
+	this.applyCollision = function(manifold) // accepts collision manifold
 	{
-		var rigidBody1 = e1.getChild("[builtin_rigidbody]");
-		var rigidBody2 = e2.getChild("[builtin_rigidbody]");
-		var collider1 = e1.getChild("[builtin_collider]");
-		var collider2 = e2.getChild("[builtin_collider]");
-
-		if (rigidBody1 && rigidBody2 && collider1 && collider2) {
-			var normal = collider1.getNormal(collider2);
-			var penVec = collider1.resolver.getPenetration(collider2.resolver);
-			rigidBody1.calcCollision(rigidBody2, normal, penVec);
+		if (manifold.valid) {
+			var normal = manifold.getNormal();
+			manifold.rigidBody1.calcCollision(manifold.rigidBody2, normal);
 		}
-
 	};
 
-	this.update = function()
+	this.fixPenetration = function(manifold)
 	{
-		this.collisionCache = {};
+		if (manifold.valid) {
+			var penVec = manifold.getPenetration();
+			manifold.rigidBody1.fixPenetration(manifold.rigidBody2, penVec);
+		}
+	};
 
-		// iterate entities and update physics
-        for (entityName in entities) {
-            if (entities.hasOwnProperty(entityName)) {
-                var entity = entities[entityName];
-                if (!entity)
-                    continue;
-                if (entity.auto_physics) {
+	this.detectCollisions = function()
+	{
+		var collisionCache = {};
+		var manifolds = [];
+
+		// Resolve collisions for each pair of entities
+		for (entityName in entities) {
+			if (entities.hasOwnProperty(entityName)) {
+				var entity = entities[entityName];
+				if (!entity)
+					continue;
+				if (entity.auto_physics) {
 					// get rigidbody
 					var rigidbody = entity.getComponentOfType(Rigidbody);
 					if (!rigidbody)
 						continue;
-					// set forces
-					this.applyNaturalForces(rigidbody);
+
+					rigidbody.tick_update();
 
 					// set collision forces
 					var collider = entity.getComponentOfType(Collider);
 					if (!(collider && collider.others))
 						continue;
 
+					collider.update();
+
 					// check collisions
 					for (var j = 0; j < collider.others.length; j++) {
 						var otherEntity = collider.others[j];
 						if (otherEntity) {
-							if (this.collisionCache[entity.name] && this.collisionCache[entity.name][otherEntity.name])
+							if (collisionCache[entity.name] && collisionCache[entity.name][otherEntity.name])
 								break;
 
-							if (!this.collisionCache[otherEntity.name])
-								this.collisionCache[otherEntity.name] = {};
-							this.collisionCache[otherEntity.name][entity.name] = true;
-							this.applyCollision(entity, otherEntity);
+							if (!collisionCache[otherEntity.name])
+								collisionCache[otherEntity.name] = {};
+							collisionCache[otherEntity.name][entity.name] = true;
+							var man = new Manifold(entity, otherEntity);
+							manifolds.push(man);
 						}
 					}
 				}
 			}
+		}
+
+		return manifolds;
+	};
+
+	this.resolveNaturalForces = function()
+	{
+		// Update natural forces for each entity
+		for (entityName in entities) {
+			if (entities.hasOwnProperty(entityName)) {
+				var entity = entities[entityName];
+				if (!entity)
+					continue;
+				if (entity.auto_physics) {
+					// get rigidbody
+					var rigidbody = entity.getComponentOfType(Rigidbody);
+					if (!rigidbody)
+						continue;
+					// set forces
+					this.applyNaturalForces(rigidbody);
+				}
+			}
+		}
+	};
+
+	this.resolveCollisions = function(manifolds)
+	{
+		// apply collisions
+		for (var i = 0; i < manifolds.length; i++)
+			this.applyCollision(manifolds[i]);
+
+		// fix penetrations
+		for (var i = 0; i < manifolds.length; i++)
+			this.fixPenetration(manifolds[i]);
+	};
+
+	this.update = function()
+	{
+		for (var i = 0; i < this.numIterations; i++) {
+			this.resolveNaturalForces();
+
+			var manifolds = this.detectCollisions();
+
+			this.resolveCollisions(manifolds);
 		}
 	};
 }

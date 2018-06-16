@@ -1,13 +1,17 @@
 
 var game = new Game(JSCF_CANVAS_WIDTH, JSCF_CANVAS_HEIGHT, JSC_FPS, JSC_ASSETDIR);
 var s1, s2;
+var text = "";
 
 function render()
 {
     game.graphics.clear();   // clear canvas
     // render square as test.
-    s1.render();
     s2.render();
+    s1.render();
+
+    // render results
+    game.renderText(10, 50, text, "green", "30px Arial");
 }
 
 function update()
@@ -19,10 +23,15 @@ function update()
     s1.update();
 
     // check collision
-    if (s1.getComponentOfType(Collider).resolver.isColliding(s2.getComponentOfType(Collider).resolver))
+    if (s1.getComponentOfType(Collider).resolver.isColliding(s2.getComponentOfType(Collider).resolver)) {
+        var normal = s1.getComponentOfType(Collider).getNormal(s2.getComponentOfType(Collider));
+        if (normal)
+            text = "normal: ("+normal.x+","+normal.y+")";
         s2.getChildAt(0).color = "black";
-    else
+    } else {
+        text = "";
         s2.getChildAt(0).color = "red";
+    }
 
     // render
     render();

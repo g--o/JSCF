@@ -81,9 +81,8 @@ function loadScene()
 	// set ball speed
 	ballSpeed = new Vector2d((Math.random()-0.5)/2, (Math.random()-0.5)/2);
 	ballSpeed.normalize();
-	const dt = (1/game.fps);
-	ballSpeed.x *= BALL_SPEED * dt;
-	ballSpeed.y *= BALL_SPEED * dt;
+	ballSpeed.x *= BALL_SPEED;
+	ballSpeed.y *= BALL_SPEED;
 	// apply velocity
 	ballRB.applyVelocity(ballSpeed);
 	ballRB.auto_gravity = false;
