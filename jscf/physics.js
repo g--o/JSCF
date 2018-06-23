@@ -9,6 +9,11 @@ function PhysicsEngine(entities, tick_duration)
 	this.tickDuration = tick_duration/this.numIterations;
 	this.gravity = new Vector2d(0, 9.8 * this.pixelMeterRatio); // acceleration (m/s^2)
 
+	if (typeof(Rigidbody) == "undefined") {
+		console.warn("[JSCF][PhysicsEngine] Rigidbody component not included! Disabled!");
+		this.numIterations = 0;
+	}
+
 	this.applyNaturalForces = function(rigidbody)
 	{
 		if (rigidbody.auto_gravity && ! rigidbody.static) {

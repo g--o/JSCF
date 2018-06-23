@@ -12,6 +12,7 @@ function Graphics(canvasWidth, canvasHeight)
         }
 
         this.canvas = document.createElement("canvas");
+        this.canvas.id = "GameCanvas";
 
         if (canvasWidth < 0)
             this.canvas.width = window.innerWidth-50;

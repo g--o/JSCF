@@ -8,6 +8,7 @@ function Entity(game, name, alive, x, y, automated)
         ctx.save();
         ctx.translate(this.transform.pos.x, this.transform.pos.y);
         ctx.rotate(this.transform.angle);
+        ctx.scale(this.transform.scale.x, this.transform.scale.y);
     };
 
     this.end_update = function()

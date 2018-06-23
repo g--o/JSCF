@@ -7,11 +7,13 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         this.state = "loading";
         this.fps = fps;
         this.interval = null;
-        this.inputManager = null;
-        this.assetManager = null;
         this.graphics = null;
         this.update = null;
         this.automated = true;
+        // Managers
+        this.inputManager = null;
+        this.assetManager = null;
+        this.guiManager = null;
         this.resourceManager = new ResourceManager();
         this.assetManager = new AssetManager(assetDir);
         this.sceneManager = new SceneManager(this, 1.0/this.fps);
@@ -24,6 +26,7 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
     {
         this.graphics = new Graphics(canvasWidth, canvasHeight);
         this.inputManager = new InputManager(this.graphics.canvas);
+        this.guiManager = new GuiManager(this);
     };
 
     this.start = function(update, automated) {
@@ -81,12 +84,12 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         return fps * this.fps;
     };
 
-    this.renderText = function(x, y, txt, color, font) {
+    this.renderText = function(x, y, txt, style, font) {
         var ctx = this.graphics.context;
         if (font)
             ctx.font = font;
-        if (color)
-            ctx.fillStyle = color;
+        if (style)
+            ctx.fillStyle = style;
         ctx.fillText(txt, x, y);
     }
 

@@ -10,8 +10,8 @@ function AABB(_x, _y, _width, _height)
 
     this.containsPoint = function(x, y)
     {
-        return ((x > this.pos.x - this.dims.width/2) && (x < this.pos.x + this.dims.width/2)) &&
-				((y > this.pos.y - this.dims.height/2) && (y < this.pos.y + this.dims.height/2));
+        return ((x > this.xMin) && (x < this.xMax)) &&
+				((y < this.yMax) && (y > this.yMin));
     };
 
     this.isColliding = function(other)
