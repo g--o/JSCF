@@ -90,14 +90,40 @@ function Entity(game, name, alive, x, y, automated)
         this.children[c.name] = c;
     };
 
+    this.setParent = function(entity)
+    {
+        this.parent = entity;
+    };
+
+    this.clearParent = function()
+    {
+        this.parent = null;
+    };
+
     this.addChild = function(name, child)
     {
+        if (child.setParent)
+            child.setParent(this);
+        else if (child.parent)
+            child.parent = this;
+
         this.children[name] = child;
     };
 
     this.insertChild = function(c)
     {
+        if (c.setParent)
+            c.setParent(this);
+        else if (c.parent)
+            c.parent = this;
         this.children[this.getChildName()] = c;
+    };
+
+    this.getGlobalTransform = function()
+    {
+        if (this.parent == null)
+            return this.transform;
+        return Transform.add(this.transform, this.parent.getGlobalTransform());
     };
 
     this.getShapeByChild = function()
@@ -120,7 +146,7 @@ function Entity(game, name, alive, x, y, automated)
 
         // wasn't found, return scale transform
         return new Vector2d(this.transform.scale.x, this.transform.scale.y);
-    }
+    };
 
     this.getChildName = function()
     {
@@ -132,6 +158,7 @@ function Entity(game, name, alive, x, y, automated)
         this.name = name;
         this.alive = alive;
         this.max_cid = 0;
+        this.parent = null;
         this.children = {};
         this.transform = new Transform(x, y);
         this.auto_physics = automated;

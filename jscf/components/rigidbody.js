@@ -10,6 +10,11 @@ const __RIGIDBODY_STAIC_MASS = 1/__RIGIDBODY_EPSILON;
 var Rigidbody = function(owner, tick_duration)
 {
 
+	this.setParent = function(p)
+	{
+		this.parent = p;
+	};
+
 	this.setStaticBody = function()
 	{
 		this.static = true;

@@ -15,7 +15,7 @@ var Collider = function(owner, collisionResolver, potential_entities)
 
 	this.update = function()
 	{
-		this.resolver.setTransform(this.parent.transform);
+		this.resolver.setTransform(this.parent.getGlobalTransform());
 		this.others = [];
 
 		if (this.potential_entities == null) {
@@ -55,7 +55,7 @@ var Collider = function(owner, collisionResolver, potential_entities)
 		if (collisionResolver) {
 			this.resolver = collisionResolver;
 		} else {
-			var pos = this.parent.transform.pos;
+			var pos = this.parent.getGlobalTransform().pos;
 			var dims = this.parent.getShapeByChild();
 			this.resolver = new AABB(pos.x, pos.y, dims.x, dims.y);
 		}

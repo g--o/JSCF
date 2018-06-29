@@ -14,20 +14,17 @@ function ButtonHandler(owner, speed)
 	this.hover_speed = speed ? speed : __BUTTON_HANDLER_HOVER_SPEED;
 	this.pressed = false;
 
-	// set bounding box
-	var shape = owner.getShapeByChild();
-	this.bb = new AABB(owner.transform.x, owner.transform.y, shape.x, shape.y);
-
 	this.update = function()
 	{
-		this.bb.setTransform(owner.transform);
+		var transform = owner.getGlobalTransform();
+		this.bb.setTransform(transform);
 
 		var mx = owner.game.inputManager.getMouseX();
 		var my = owner.game.inputManager.getMouseY();
 		var mDown = owner.game.inputManager.IsMouseDown();
 
 		if (this.bb.containsPoint(mx, my)) {
-			if (owner.transform.scale.length() < __BUTTON_HANDLER_HOVER_MAX)
+			if (transform.scale.length() < __BUTTON_HANDLER_HOVER_MAX)
 				owner.transform.scale.scalarMul(this.hover_speed);
 
 			if (mDown)
@@ -46,6 +43,16 @@ function ButtonHandler(owner, speed)
 	{
 		console.log("[JSCF][ButtonHandler] button press");
 	};
+
+	this.init = function()
+	{
+		// set bounding box
+		var shape = owner.getShapeByChild();
+		var transform = owner.getGlobalTransform();
+		this.bb = new AABB(transform, transform, shape.x, shape.y);
+	};
+
+	this.init();
 
 }
 

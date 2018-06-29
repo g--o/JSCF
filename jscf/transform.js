@@ -12,3 +12,13 @@ function Transform(x, y, xscale, yscale)
     // rotating
     this.angle = 0;
 }
+
+Transform.add = function(t1, t2)
+{
+    t = new Transform();
+    t.pos = Vector.addVector(t1.pos, t2.pos);
+    t.scale = new Vector2d(t1.scale.x * t2.scale.x, t1.scale.y * t2.scale.y);
+    t.angle = t1.angle + t2.angle;
+
+    return t;
+};
