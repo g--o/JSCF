@@ -11,7 +11,7 @@ function Entity(game, name, alive, x, y, automated)
         ctx.scale(this.transform.scale.x, this.transform.scale.y);
     };
 
-    this.end_update = function()
+    this.end_render = function()
     {
         game.graphics.context.restore();
     };
@@ -23,7 +23,7 @@ function Entity(game, name, alive, x, y, automated)
             if (this.children[child] && this.children[child].render)
                 this.children[child].render();
         }
-        this.end_update();
+        this.end_render();
     };
 
     this.update = function() {
