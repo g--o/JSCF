@@ -1,7 +1,15 @@
-* FIX SCENE UTILS AND EXTEND!
+Goals for the near future
 --------------------------------------------------------
-* Gui
-* Blending.
-* Lighting.
-* Shaders.
-* Finish Physics.
+- Entities:
+	- Consider moving to unity's System + Behavior style. (currently Components only)
+- Scene Management:
+	- Using spacial trees to speed up management. (e.g: QuadTree)
+- 2D rendering:
+	- Test rotation.
+- Colliders
+	- Test AABB with rotation.
+	- Add Circle collider.
+- Physics Engine: finish or extend it via existing code - angular momentum, friction for main focus.
+- GUI:
+	- Add layouts.
+	- Finish debug panel.
