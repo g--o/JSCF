@@ -1,5 +1,7 @@
 # JSCF
 
+[![Join the chat at https://gitter.im/JSCF/Lobby](https://badges.gitter.im/JSCF/Lobby.svg)](https://gitter.im/JSCF/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **JavaScript Canvas Framework.**
 
 This is a game & ui library **based on vanilla JS & CanvasInput only!**
