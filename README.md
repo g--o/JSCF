@@ -42,7 +42,7 @@ jscf.js is a *minified* version. To work with non-compact code you need to manua
 
 ## Documentation
 
-Documentation is currently in progress but the source code is clear enough so that one can find whatever he seeks quickly and see the relevant API.
+Documentation is currently in progress but you can check our [wiki](https://github.com/g--o/JSCF/wiki) and the API docs are already in [release/docs/index.html](release/docs/index.html).
 
 ## Help up!
 
