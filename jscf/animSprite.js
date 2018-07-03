@@ -1,5 +1,16 @@
 
-// animSpeed is relative to fps. (keeps time constant)
+/**
+ * Animated Sprite class
+ * @param       {Game} game             the game object
+ * @param       {Number} width          the sprite width
+ * @param       {Number} height         the sprite height
+ * @param       {String} url            URL to the resource
+ * @param       {Number} frameWidth     sprite frame tile width
+ * @param       {Number} frameHeight    sprite frame tile height
+ * @param       {Number} animSpeed      animation speed - relative to fps. (keeps time constant)
+ * @note
+ * @constructor
+ */
 function AnimSprite(game, width, height, url, frameWidth, frameHeight, animSpeed)
 {
     this.spr = new Sprite(game, width, height, url);

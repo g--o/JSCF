@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: resourceManager.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: resourceManager.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+function _clone(item) {
+    if (!item) { return item; } // null, undefined values check
+
+    var types = [ Number, String, Boolean ],
+        result;
+
+    // normalizing primitives if someone did new String('aaa'), or new Number('444');
+    types.forEach(function(type) {
+        if (item instanceof type) {
+            result = type( item );
+        }
+    });
+
+    if (typeof result == "undefined") {
+        if (Object.prototype.toString.call( item ) === "[object Array]") {
+            result = [];
+            item.forEach(function(child, index, array) {
+                result[index] = clone( child );
+            });
+        } else if (typeof item == "object") {
+            // testing that this is DOM
+            if (item.nodeType &amp;&amp; typeof item.cloneNode == "function") {
+                var result = item.cloneNode( true );
+            } else if (!item.prototype) { // check that this is a literal
+                if (item instanceof Date) {
+                    result = new Date(item);
+                } else {
+                    // it is an object literal
+                    result = {};
+                    for (var i in item) {
+                        result[i] = _clone( item[i] );
+                    }
+                }
+            } else {
+                // depending what you would like here,
+                // just keep the reference, or create new object
+                if (false &amp;&amp; item.constructor) {
+                    // would not advice to do that, reason? Read below
+                    result = new item.constructor();
+                } else {
+                    result = item;
+                }
+            }
+        } else {
+            result = item;
+        }
+    }
+
+    return result;
+}
+
+/**
+ * The resource manager. Handles URL resources as well as objects.
+ * @constructor
+ */
+function ResourceManager()
+{
+    this.resources = {};
+
+    this.getResourceName = function(resource) {
+        for (var i = 0, len = this.resources.length; i &lt; len; i++) {
+            if (resource == this.resources.data[i]) {
+                return this.resources.data[i].name;
+            }
+        }
+    };
+
+    this.get = function(key)
+    {
+        if (!key || !this.resources[key]) {
+            console.warn("[JSCF] resrouce manager get() - got invalid key.");
+            return null;
+        }
+
+        return this.resources[key];
+    };
+
+    this.getClone = function(key) {
+        var original = this.get(key);
+        var clone = _clone(original);
+
+        // don't deep copy the game.
+        if (clone["game"]) {
+            clone["game"] = original["game"];
+        }
+
+        if (this.add(key + "_clone", clone))
+            return clone;
+
+        return original;
+    };
+
+    this.add = function(key, resource) {
+        if (!key) {
+            console.warn("[JSCF] resource manager set() - got invalid key.");
+            return false;
+        }
+        if (this.resources[key]) {
+            console.warn("[JSCF] resource manager set() - resource already exists!");
+            return false;
+        }
+
+        this.resources[key] = resource;
+        return true;
+    };
+
+    this.remove = function(key) {
+        if (!key || !this.resources[key]) {
+            console.warn("[JSCF] resrouce manager remove() - got invalid key.");
+            return null;
+        }
+        this.resources[key] = null;
+        return true;
+    };
+
+    this.removeByValue = function(resource) {
+        var name = this.getResourceName(resource);
+        if (!name)
+            return false;
+        return this.remove(name);
+    };
+
+
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

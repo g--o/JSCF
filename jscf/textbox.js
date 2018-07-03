@@ -1,4 +1,14 @@
 
+/**
+ * @class
+ * @classdsc textbox graphic class
+ *
+ * @param       {Entity} parent entity to attach to
+ * @param       {Number} w      the width
+ * @param       {Number} h      the height
+ * @param       {String} txt    the default text to display (defaults to "")
+ * @constructor
+ */
 function Textbox(parent, w, h, txt)
 {
 	const TEXT_HEIGHT_RATIO = 0.8;

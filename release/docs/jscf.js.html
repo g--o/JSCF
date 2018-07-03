@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: jscf.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: jscf.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+ /**
+  * @class
+  * @classdesc Game is the engine's game object to interface with.
+  *
+  * @param  {Number} canvasWidth  The width of the game canvas
+  * @param  {Number} canvasHeight The height of the game canvas
+  * @param  {Number} fps          The frames per second to lock to
+  * @param  {String} assetDir     The assets directory
+  * @constructor
+  */
+function Game(canvasWidth, canvasHeight, fps, assetDir) {
+
+    // c'tor
+    this.init = function()
+    {
+        this.state = "loading";
+        this.fps = fps;
+        this.interval = null;
+        this.graphics = null;
+        this.update = null;
+        this.automated = true;
+        // Managers
+        this.inputManager = null;
+        this.assetManager = null;
+        this.guiManager = null;
+        this.resourceManager = new ResourceManager();
+        this.assetManager = new AssetManager(assetDir);
+        this.sceneManager = new SceneManager(this, 1.0/this.fps);
+    };
+    // calling c'tor
+    this.init();
+
+    // State functions
+
+    /**
+     * Setup    initiate the game object.
+     *          Should be called after document body has been loaded.
+     * @return  null
+     **/
+    this.setup = function()
+    {
+        this.graphics = new Graphics(canvasWidth, canvasHeight);
+        this.inputManager = new InputManager(this.graphics.canvas);
+        this.guiManager = new GuiManager(this);
+    };
+
+    /**
+     * Start - start the game engine
+     *
+     * @param {function} update     the update function (called each engine step)
+     * @param {boolean} automated   set whether the engine should automate update &amp; render
+     *
+     * @return  null
+     **/
+    this.start = function(update, automated) {
+        if (this.state != "running") {
+            this.update = update;
+            this.automated = automated;
+            this.state = "running";
+            var self = this;
+            this.interval = setInterval(function() {
+                self.handler();
+            }, 1000.0/fps);
+        }
+    };
+
+    /**
+     * Stop - stops the game engine
+     *
+     * @return  null
+     **/
+    this.stop = function() {
+        if (this.interval != null)
+            clearInterval(this.interval);
+    };
+
+    // Automated handler fucntions
+
+    this.handler = function()
+    {
+        if (this.automated) {
+            this.sceneManager.update();
+            this.graphics.clear();
+            this.sceneManager.render();
+        }
+        if (this.update)
+            this.update();
+    };
+
+    this.getCurrentScene = function()
+    {
+        return this.sceneManager.getCurrentScene();
+    };
+
+    // Graphics functions
+
+    /**
+     * getCanvasWidth   get game canvas width
+     * @return {Number} the canvas width
+     **/
+    this.getCanvasWidth = function() {
+        if (this.graphics != null)
+            return this.graphics.canvas.width;
+        else
+            return canvasWidth;
+    };
+
+    /**
+     * getCanvasHeight   get game canvas height
+     * @return {Number} the canvas height
+     **/
+    this.getCanvasHeight = function() {
+        if (this.graphics != null)
+            return this.graphics.canvas.height;
+        else
+            return canvasHeight;
+    };
+
+    this.FPS2AnimSpeed = function(fps) {
+        return fps * this.fps;
+    };
+
+    /**
+     * renderText   renders text to canvas
+     *
+     * @param {Number} x        position to render text to
+     * @param {Number} y        position to render text to
+     * @param {String} txt      the text to render
+     * @param {String} style 2d context style, can be also color description (e.g: "#fff")
+     * @param {String} font 2d  context font string
+     *
+     * @return  null
+     **/
+    this.renderText = function(x, y, txt, style, font) {
+        var ctx = this.graphics.context;
+        if (font)
+            ctx.font = font;
+        if (style)
+            ctx.fillStyle = style;
+        ctx.fillText(txt, x, y);
+    };
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

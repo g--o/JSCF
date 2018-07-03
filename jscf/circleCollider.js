@@ -1,4 +1,11 @@
 
+/**
+ * Circle collider class
+ * @param       {Number} _x x coordinate of the circle (center)
+ * @param       {Number} _y y coordinate of the circle (center)
+ * @param       {Number} _R the circle radius
+ * @constructor
+ */
 function CircleCollider(_x, _y, _R)
 {
 

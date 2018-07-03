@@ -5,6 +5,16 @@
 
 const __COLLIDER_NAME = "[builtin_collider]";
 
+/**
+ * @class
+ * @classdesc Collider component class
+ *
+ * @param  {Entity} owner the entity the component's being applied to.
+ * @param  {object} collisionResolver  collider object (e.g: AABB, CircleCollider)
+ * @param  {Container} potential_entities container of potential entities to check against
+ * 										  (usually dictionary)
+ * @constructor
+ */
 var Collider = function(owner, collisionResolver, potential_entities)
 {
 

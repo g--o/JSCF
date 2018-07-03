@@ -50,6 +50,10 @@ function _clone(item) {
     return result;
 }
 
+/**
+ * The resource manager. Handles URL resources as well as objects.
+ * @constructor
+ */
 function ResourceManager()
 {
     this.resources = {};

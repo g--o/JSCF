@@ -1,6 +1,9 @@
 
 // SceneUtils is a static-like class
 
+/**
+ * Scene utilities - serves as a static-like class to access scene utils.
+ */
 var SceneUtils = {
 
     makeFloor : function(game,x,y,floor_width,tile_side,type) {

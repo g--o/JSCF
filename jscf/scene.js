@@ -1,4 +1,11 @@
 
+/**
+ * Scene class. (World class in other engines)
+ * @param       {Game} game          the game object
+ * @param       {Number} tick_duration the time (in seconds) for a step (update)
+ *                       in the scene (usually 1/fps)
+ * @constructor
+ */
 function Scene(game, tick_duration)
 {
     this.max_euid = 0;

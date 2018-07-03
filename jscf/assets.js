@@ -1,7 +1,11 @@
 
+/**
+ * Asset management class
+ * @param       {String} assetsDir path to the asset directory
+ * @constructor
+ */
 function AssetManager(assetsDir)
 {
-
     this.rules = {};
 
     this.getExtention = function(name)

@@ -1,4 +1,14 @@
 
+/**
+ * @class
+ * @classdesc sprite graphic class
+ *
+ * @param       {Game} game       the game object
+ * @param       {Number} width    width of the sprite.
+ * @param       {Number} height   height of the sprite.
+ * @param       {String} url      the URL of the sprite graphic
+ * @constructor
+ */
 function Sprite(game, width, height, url)
 {
     this.width = width;

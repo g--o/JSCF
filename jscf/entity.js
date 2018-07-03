@@ -1,4 +1,14 @@
 
+/**
+ * Entity object of the game engine.
+ * @param       {Game} game         the game object
+ * @param       {String} name       the name of the entity
+ * @param       {Boolean} alive     is the entity enabled or disabled?
+ * @param       {Number} x          the x coordinate
+ * @param       {Number} y          the y coordinate
+ * @param       {Boolean} automated should the entity be automated (in update, render, etc)
+ * @constructor
+ */
 function Entity(game, name, alive, x, y, automated)
 {
     this.start_render = function()

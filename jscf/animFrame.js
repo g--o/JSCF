@@ -1,4 +1,14 @@
 
+/**
+ * @class
+ * @classdesc the animation frame class
+ *
+ * @param       {Number} px the frame x position
+ * @param       {Number} py the frame y position
+ * @param       {Number} w  the frame width
+ * @param       {Number} h  the frame height
+ * @constructor
+ */
 function AnimFrame(px, py, w, h)
 {
     this.px = px;

@@ -1,6 +1,9 @@
 
 const __EPSILON = 1e-8;
 
+/**
+ * An object that is used as a static class for math utilities.
+ */
 var MathUtils = {
 
     toRad : function(deg)

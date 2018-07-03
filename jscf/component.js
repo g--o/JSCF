@@ -9,7 +9,13 @@
 
 const __COMPONENT_NAME = "[builtin_component]";
 
-// blank component
+/**
+ * Component - the empty component object used as a c'tor to extend it.
+ * 			   (this method replaces inheritance to keep wide support)
+ * @param  {Entity} owner parent entity
+ * @return {object}       null
+ * @constructor
+ */
 var Component = function(owner)
 {
 	this.name = __COMPONENT_NAME;

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: physics.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: physics.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+
+/**
+ * @class
+ * @classdesc the physics engine of JSCF.
+ *
+ * @param {Container} entities   container of entities (usually dictionary).
+ * @param {Number} tick_duration the time (in seconds) of a tick (usually 1/fps)
+ *
+ * @return {InputManager} the new input manager
+ */
+function PhysicsEngine(entities, tick_duration)
+{
+	this.pixelMeterRatio = 50; // px/meter
+	this.numIterations = 5;
+	this.tickDuration = tick_duration/this.numIterations;
+	this.gravity = new Vector2d(0, 9.8 * this.pixelMeterRatio); // acceleration (m/s^2)
+
+	// Disable if no rigidbody component was found
+	if (typeof(Rigidbody) == "undefined") {
+		console.warn("[JSCF][PhysicsEngine] Rigidbody component not included! Disabled!");
+		this.numIterations = 0;
+	}
+
+	this.applyNaturalForces = function(rigidbody)
+	{
+		if (rigidbody.auto_gravity &amp;&amp; ! rigidbody.static) {
+			rigidbody.applyAcceleration(this.gravity);
+		}
+	};
+
+	this.applyCollision = function(manifold) // accepts collision manifold
+	{
+		if (manifold.valid) {
+			var normal = manifold.getNormal();
+			manifold.rigidBody1.calcCollision(manifold.rigidBody2, normal);
+		}
+	};
+
+	this.fixPenetration = function(manifold)
+	{
+		if (manifold.valid) {
+			var penVec = manifold.getPenetration();
+			manifold.rigidBody1.fixPenetration(manifold.rigidBody2, penVec);
+		}
+	};
+
+	this.detectCollisions = function()
+	{
+		var collisionCache = {};
+		var manifolds = [];
+
+		// Resolve collisions for each pair of entities
+		for (entityName in entities) {
+			if (entities.hasOwnProperty(entityName)) {
+				var entity = entities[entityName];
+				if (!entity)
+					continue;
+				if (entity.auto_physics) {
+					// get rigidbody
+					var rigidbody = entity.getComponentOfType(Rigidbody);
+					if (!rigidbody)
+						continue;
+
+					rigidbody.tick_update();
+
+					// set collision forces
+					var collider = entity.getComponentOfType(Collider);
+					if (!(collider &amp;&amp; collider.others))
+						continue;
+
+					collider.update();
+
+					// check collisions
+					for (var j = 0; j &lt; collider.others.length; j++) {
+						var otherEntity = collider.others[j];
+						if (otherEntity) {
+							if (collisionCache[entity.name] &amp;&amp; collisionCache[entity.name][otherEntity.name])
+								break;
+
+							if (!collisionCache[otherEntity.name])
+								collisionCache[otherEntity.name] = {};
+							collisionCache[otherEntity.name][entity.name] = true;
+							var man = new Manifold(entity, otherEntity);
+							manifolds.push(man);
+						}
+					}
+				}
+			}
+		}
+
+		return manifolds;
+	};
+
+	this.resolveNaturalForces = function()
+	{
+		// Update natural forces for each entity
+		for (entityName in entities) {
+			if (entities.hasOwnProperty(entityName)) {
+				var entity = entities[entityName];
+				if (!entity)
+					continue;
+				if (entity.auto_physics) {
+					// get rigidbody
+					var rigidbody = entity.getComponentOfType(Rigidbody);
+					if (!rigidbody)
+						continue;
+					// set forces
+					this.applyNaturalForces(rigidbody);
+				}
+			}
+		}
+	};
+
+	this.resolveCollisions = function(manifolds)
+	{
+		// apply collisions
+		for (var i = 0; i &lt; manifolds.length; i++)
+			this.applyCollision(manifolds[i]);
+
+		// fix penetrations
+		for (var i = 0; i &lt; manifolds.length; i++)
+			this.fixPenetration(manifolds[i]);
+	};
+
+	this.update = function()
+	{
+		for (var i = 0; i &lt; this.numIterations; i++) {
+			this.resolveNaturalForces();
+
+			var manifolds = this.detectCollisions();
+
+			this.resolveCollisions(manifolds);
+		}
+	};
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

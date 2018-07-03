@@ -1,4 +1,10 @@
 
+/**
+ * Scene manager.
+ * @param       {Game} game             the game object
+ * @param       {Number} tick_duration  the default tick duration for a new scene.
+ * @constructor
+ */
 function SceneManager(game, tick_duration)
 {
     this.tickDuration = tick_duration;

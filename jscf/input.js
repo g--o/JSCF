@@ -1,4 +1,12 @@
 
+/**
+ * @class
+ * @classdesc the input manager of the engine's game object.
+ *
+ * @param {Canvas} canvas   the canvas object (usually from the Graphics module).
+ *
+ * @constructor
+ */
 function InputManager(canvas)
 {
     var keys = [];

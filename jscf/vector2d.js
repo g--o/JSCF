@@ -1,4 +1,11 @@
 
+/**
+ * @class
+ * @classdesc the vector handling class
+ * @param       {Number} x the x coordinate (defaults to 0)
+ * @param       {Number} y the y coordinate (defaults to 0)
+ * @constructor
+ */
 function Vector2d(x, y)
 {
     this.x = x ? x : 0;
@@ -99,6 +106,9 @@ function Vector2d(x, y)
     };
 };
 
+/**
+ * Vector static-like class to allow access to vector utilities.
+ */
 const Vector = {
 
     addVector : function(vec1, vec2)

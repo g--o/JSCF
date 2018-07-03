@@ -1,6 +1,14 @@
-
-// If canvasWidth or canvasHeight is negative, then they get the
-// window's corresponding size.
+/**
+ * @class
+ * @classdesc graphics related management (mainly canvas)
+ *
+ * @param {Number} canvasWidth  the width of the canvas to be created.
+ * @param {Number} canvasHeight  the height of the canvas to be created.
+ *
+ * @note: If canvasWidth or canvasHeight is negative, then they get the
+ *        window's corresponding size.
+ * @constructor
+ */
 function Graphics(canvasWidth, canvasHeight)
 {
 
@@ -28,6 +36,10 @@ function Graphics(canvasWidth, canvasHeight)
     // call c'tor
     this.init();
 
+    /**
+     * clear - clears the canvas
+     * @return  null
+     */
     this.clear = function()
     {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);

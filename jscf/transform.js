@@ -1,5 +1,14 @@
 
-
+/**
+ * @class
+ * @classdesc the transform class
+ *
+ * @param       {Number} x      the x coordinate
+ * @param       {Number} y      the y coordinate
+ * @param       {Number} xscale the x-axis (horizontal) scaling
+ * @param       {Number} yscale the y-axis (vertical) scaling
+ * @constructor
+ */
 function Transform(x, y, xscale, yscale)
 {
     x = x?x:0, y = y?y:0;

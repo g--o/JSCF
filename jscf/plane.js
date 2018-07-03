@@ -1,4 +1,14 @@
 
+/**
+ * @class
+ * @classdesc A rectangular-shaped graphic
+ *
+ * @param {Game} game       the game object.
+ * @param {Number} width    width of the plane.
+ * @param {Number} height   height of the plane.
+ * @param {String} color    color/style of 2d context.
+ * @constructor
+ */
 function Plane(game, width, height, color)
 {
     this.width = width;

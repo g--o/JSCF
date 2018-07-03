@@ -1,7 +1,14 @@
 
-/***************************
-	physics component.
-***************************/
+
+/**
+ * @class
+ * @classdesc the physics engine of JSCF.
+ *
+ * @param {Container} entities   container of entities (usually dictionary).
+ * @param {Number} tick_duration the time (in seconds) of a tick (usually 1/fps)
+ *
+ * @return {InputManager} the new input manager
+ */
 function PhysicsEngine(entities, tick_duration)
 {
 	this.pixelMeterRatio = 50; // px/meter
@@ -9,6 +16,7 @@ function PhysicsEngine(entities, tick_duration)
 	this.tickDuration = tick_duration/this.numIterations;
 	this.gravity = new Vector2d(0, 9.8 * this.pixelMeterRatio); // acceleration (m/s^2)
 
+	// Disable if no rigidbody component was found
 	if (typeof(Rigidbody) == "undefined") {
 		console.warn("[JSCF][PhysicsEngine] Rigidbody component not included! Disabled!");
 		this.numIterations = 0;

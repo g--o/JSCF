@@ -1,4 +1,15 @@
 
+/**
+ * @class
+ * @classdesc Axis-Aligned Bounding Box
+ *
+ * @param       {Number} _x      x position of the AABB
+ * @param       {Number} _y      y position of the AABB
+ * @param       {Number} _width  width position of the AABB
+ * @param       {Number} _height height position of the AABB
+ *
+ * @constructor
+ */
 function AABB(_x, _y, _width, _height)
 {
 

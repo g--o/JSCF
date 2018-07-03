@@ -1,4 +1,10 @@
 
+/**
+ * Point2d
+ * @param       {Number} _x0 the x coordinate
+ * @param       {Number} _y0 the y coordinate
+ * @constructor
+ */
 function Point2d(_x0, _y0)
 {
     this.vec = new Vector2d(_x0, _y0);

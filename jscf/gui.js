@@ -18,6 +18,14 @@ const __GUIMANAGER_BUTTON_FONT =  __GUIMANAGER_BUTTON_FONT_SIZE + "px arial";
 const __GUIMANAGER_TXTBOX_WIDTH = 100;
 const __GUIMANAGER_TXTBOX_HEIGHT = 23;
 
+/**
+ * @class
+ * @classdesc the graphical interface manager of the engine's game object.
+ *
+ * @param {Game} game   the JSCF game object.
+ *
+ * @constructor
+ */
 function GuiManager(game)
 {
 	this.eleNum = 0;

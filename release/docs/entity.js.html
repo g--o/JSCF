@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: entity.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: entity.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * Entity object of the game engine.
+ * @param       {Game} game         the game object
+ * @param       {String} name       the name of the entity
+ * @param       {Boolean} alive     is the entity enabled or disabled?
+ * @param       {Number} x          the x coordinate
+ * @param       {Number} y          the y coordinate
+ * @param       {Boolean} automated should the entity be automated (in update, render, etc)
+ * @constructor
+ */
+function Entity(game, name, alive, x, y, automated)
+{
+    this.start_render = function()
+    {
+        var ctx = game.graphics.context;
+
+        ctx.save();
+        ctx.translate(this.transform.pos.x, this.transform.pos.y);
+        ctx.rotate(this.transform.angle);
+        ctx.scale(this.transform.scale.x, this.transform.scale.y);
+    };
+
+    this.end_render = function()
+    {
+        game.graphics.context.restore();
+    };
+
+    this.render = function() {
+        this.start_render();
+        // Update all children
+        for (var child in this.children) {
+            if (this.children[child] &amp;&amp; this.children[child].render)
+                this.children[child].render();
+        }
+        this.end_render();
+    };
+
+    this.update = function() {
+        // Update all children
+        for (var child in this.children) {
+            if (this.children[child] &amp;&amp; this.children[child].update)
+                this.children[child].update();
+        }
+    };
+
+    this.hasOwnChild = function(name)
+    {
+        return this.children[name];
+    };
+
+    this.getChild = function(name)
+    {
+        var e = this.hasOwnChild(name);
+        if (e)
+            return e;
+
+        for (var child in this.children) {
+            if (this.children.hasOwnProperty(child) &amp;&amp; this.children[child].getChild) {
+                var res = this.children[child].getChild(name);
+                if (res)
+                    return res;
+            }
+        }
+    }
+
+    this.getChildAt = function(i)
+    {
+        return Object.values(this.children)[i];
+    };
+
+    this.getComponent = function(compName)
+    {
+        return this.getChild("[" + compName + "]");
+    };
+
+    this.getBuiltinComponent = function(compName)
+    {
+        return this.getComponent("builtin_" + compName);
+    };
+
+    this.getComponentOfType = function(type)
+    {
+        var name = Component.typeToName(type);
+        var comp = this.getChild(name);
+        if (!comp)
+            comp = this.getBuiltinComponent(name);
+        return comp;
+    };
+
+    this.hasComponentOfType = function(type)
+    {
+        var name = Component.typeToName(type);
+        return (this.hasOwnChild(name) || this.hasOwnChild("[builtin_" + name+"]"));
+    };
+
+    this.addComponent = function(comp)
+    {
+        var c = new comp(this);
+        this.children[c.name] = c;
+    };
+
+    this.setParent = function(entity)
+    {
+        this.parent = entity;
+    };
+
+    this.clearParent = function()
+    {
+        this.parent = null;
+    };
+
+    this.addChild = function(name, child)
+    {
+        if (child.setParent)
+            child.setParent(this);
+        else if (child.parent)
+            child.parent = this;
+
+        this.children[name] = child;
+    };
+
+    this.insertChild = function(c)
+    {
+        if (c.setParent)
+            c.setParent(this);
+        else if (c.parent)
+            c.parent = this;
+        this.children[this.getChildName()] = c;
+    };
+
+    this.getGlobalTransform = function()
+    {
+        if (this.parent == null)
+            return this.transform;
+        return Transform.add(this.transform, this.parent.getGlobalTransform());
+    };
+
+    this.getShapeByChild = function()
+    {
+        var shape = null;
+
+        for (var childName in this.children) {
+            if (this.children.hasOwnProperty(childName) &amp;&amp; this.children[childName]) {
+                var child = this.children[childName];
+                if (child.width &amp;&amp; child.height) {
+                    shape = new Vector2d(child.width, child.height);
+                    break;
+                }
+
+            }
+        }
+
+        if (shape != null)
+            return shape;
+
+        // wasn't found, return scale transform
+        return new Vector2d(this.transform.scale.x, this.transform.scale.y);
+    };
+
+    this.getChildName = function()
+    {
+        return this.name + "." + this.max_cid++;
+    };
+
+    this.init = function()
+    {
+        this.name = name;
+        this.alive = alive;
+        this.max_cid = 0;
+        this.parent = null;
+        this.children = {};
+        this.transform = new Transform(x, y);
+        this.auto_physics = automated;
+        this.auto_render = automated;
+        this.auto_update = automated;
+        this.game = game;
+    };
+
+    this.init();
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

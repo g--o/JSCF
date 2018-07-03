@@ -7,6 +7,13 @@ const __BUTTON_HANDLER_NAME = "[builtin_button_handler]";
 const __BUTTON_HANDLER_HOVER_SPEED = 1.1;
 const __BUTTON_HANDLER_HOVER_MAX = 1.5;
 
+/**
+ * @class
+ * @classdesc 	the button handler component.
+ * @param       {Entity} owner the entity the component's being applied to.
+ * @param       {Number} speed animation speed (ticks per second).
+ * @constructor
+ */
 function ButtonHandler(owner, speed)
 {
 	this.name = __BUTTON_HANDLER_NAME;

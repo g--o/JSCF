@@ -7,6 +7,15 @@ const __RIGIDBODY_BIAS = 10000;
 const __RIGIDBODY_EPSILON = __RIGIDBODY_BIAS/Number.MAX_VALUE; //1/Infinity;
 const __RIGIDBODY_STAIC_MASS = 1/__RIGIDBODY_EPSILON;
 
+/**
+ * @class
+ * @classdesc rigidbody component class.
+ *
+ * @param       {Entity} owner the entity the component's being applied to.
+ * @param 		{Number} tick_duration (defaults to the physics engine's tick duration)
+ * 										the time (in seconds) of a tick (usually 1/fps).
+ * @constructor
+ */
 var Rigidbody = function(owner, tick_duration)
 {
 

@@ -1,7 +1,12 @@
 
-/*******
-	Collision Manifold
-*******/
+/**
+ * @class
+ * @classdesc the collision manifold.
+ *
+ * @param {Entity} e1   one entity that collided.
+ * @param {Entity} e2   other entity that collided.
+ * @constructor
+ */
 function Manifold(e1, e2)
 {
 	this.rigidBody1 = e1.getChild("[builtin_rigidbody]");
