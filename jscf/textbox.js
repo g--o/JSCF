@@ -25,6 +25,11 @@ function Textbox(parent, w, h, txt)
 		boxShadow: "0px 0px 0px #fff"
 	});
 
+    /**
+     *    updates the textbox transform
+     *
+     *    @method
+     */
 	this.update = function()
 	{
 		if (!this.parent.transform) {
@@ -39,6 +44,12 @@ function Textbox(parent, w, h, txt)
 		this.textBox.y(newPosY);
 	};
 
+    /**
+     *    renders the textbox
+     *
+     *    @method
+     *    @return {Boolean} true if rendered successfully; false otherwise.
+     */
 	this.render = function()
 	{
 		var ctx = this.parent.game.graphics.context;

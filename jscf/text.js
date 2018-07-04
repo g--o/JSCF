@@ -15,6 +15,12 @@ function Text(game, txt, style, font)
 	this.style = style;
 	this.font = font;
 
+    /**
+     *    get the dimentions of text element if to be rendered.
+     *
+     *    @method
+     *    @return {TextMetrics} 2d context object that contains the desired width & height properties.
+     */
 	this.getDimentions = function()
 	{
 		var ctx = game.graphics.context;
@@ -22,6 +28,11 @@ function Text(game, txt, style, font)
 		return ctx.measureText(txt);
 	};
 
+    /**
+     *    renders the text element
+     *
+     *    @method
+     */
     this.render = function()
     {
 		var lineheight = 20;

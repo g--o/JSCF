@@ -35,7 +35,7 @@
  * @param {Container} entities   container of entities (usually dictionary).
  * @param {Number} tick_duration the time (in seconds) of a tick (usually 1/fps)
  *
- * @return {InputManager} the new input manager
+ * @constructor
  */
 function PhysicsEngine(entities, tick_duration)
 {
@@ -50,6 +50,12 @@ function PhysicsEngine(entities, tick_duration)
 		this.numIterations = 0;
 	}
 
+    /**
+     *    applys natural forces to a rigidbody component
+     *
+     *    @method
+     *    @param  {Rigidbody} rigidbody rigidbody component
+     */
 	this.applyNaturalForces = function(rigidbody)
 	{
 		if (rigidbody.auto_gravity &amp;&amp; ! rigidbody.static) {
@@ -57,6 +63,12 @@ function PhysicsEngine(entities, tick_duration)
 		}
 	};
 
+    /**
+     *    resolve a collision described by a manifold
+     *
+     *    @method
+     *    @param  {Manifold} manifold collision manifold of two entities.
+     */
 	this.applyCollision = function(manifold) // accepts collision manifold
 	{
 		if (manifold.valid) {
@@ -65,6 +77,12 @@ function PhysicsEngine(entities, tick_duration)
 		}
 	};
 
+    /**
+     *    fixes penetration/energy loss
+     *
+     *    @method
+     *    @param  {Manifold} manifold collision manifold
+     */
 	this.fixPenetration = function(manifold)
 	{
 		if (manifold.valid) {
@@ -73,6 +91,12 @@ function PhysicsEngine(entities, tick_duration)
 		}
 	};
 
+    /**
+     *    detects collisions
+     *
+     *    @method
+     *    @return {Array} array of collision manifolds
+     */
 	this.detectCollisions = function()
 	{
 		var collisionCache = {};
@@ -120,6 +144,11 @@ function PhysicsEngine(entities, tick_duration)
 		return manifolds;
 	};
 
+    /**
+     *    resolve natural forces on engine's tracked entities.
+     *
+     *    @method
+     */
 	this.resolveNaturalForces = function()
 	{
 		// Update natural forces for each entity
@@ -140,6 +169,12 @@ function PhysicsEngine(entities, tick_duration)
 		}
 	};
 
+    /**
+     *    resolve collision manifolds
+     *
+     *    @method
+     *    @param  {Array} manifolds array of collision manifolds
+     */
 	this.resolveCollisions = function(manifolds)
 	{
 		// apply collisions
@@ -151,6 +186,11 @@ function PhysicsEngine(entities, tick_duration)
 			this.fixPenetration(manifolds[i]);
 	};
 
+    /**
+     *    updates physics engine (tick)
+     *
+     *    @method
+     */
 	this.update = function()
 	{
 		for (var i = 0; i &lt; this.numIterations; i++) {
@@ -172,13 +212,13 @@ function PhysicsEngine(entities, tick_duration)
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__EPSILON">__EPSILON</a></li><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 20:48:14 GMT+0300 (שעון קיץ ירושלים)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -7,7 +7,7 @@
  * @param {Container} entities   container of entities (usually dictionary).
  * @param {Number} tick_duration the time (in seconds) of a tick (usually 1/fps)
  *
- * @return {InputManager} the new input manager
+ * @constructor
  */
 function PhysicsEngine(entities, tick_duration)
 {
@@ -22,6 +22,12 @@ function PhysicsEngine(entities, tick_duration)
 		this.numIterations = 0;
 	}
 
+    /**
+     *    applys natural forces to a rigidbody component
+     *
+     *    @method
+     *    @param  {Rigidbody} rigidbody rigidbody component
+     */
 	this.applyNaturalForces = function(rigidbody)
 	{
 		if (rigidbody.auto_gravity && ! rigidbody.static) {
@@ -29,6 +35,12 @@ function PhysicsEngine(entities, tick_duration)
 		}
 	};
 
+    /**
+     *    resolve a collision described by a manifold
+     *
+     *    @method
+     *    @param  {Manifold} manifold collision manifold of two entities.
+     */
 	this.applyCollision = function(manifold) // accepts collision manifold
 	{
 		if (manifold.valid) {
@@ -37,6 +49,12 @@ function PhysicsEngine(entities, tick_duration)
 		}
 	};
 
+    /**
+     *    fixes penetration/energy loss
+     *
+     *    @method
+     *    @param  {Manifold} manifold collision manifold
+     */
 	this.fixPenetration = function(manifold)
 	{
 		if (manifold.valid) {
@@ -45,6 +63,12 @@ function PhysicsEngine(entities, tick_duration)
 		}
 	};
 
+    /**
+     *    detects collisions
+     *
+     *    @method
+     *    @return {Array} array of collision manifolds
+     */
 	this.detectCollisions = function()
 	{
 		var collisionCache = {};
@@ -92,6 +116,11 @@ function PhysicsEngine(entities, tick_duration)
 		return manifolds;
 	};
 
+    /**
+     *    resolve natural forces on engine's tracked entities.
+     *
+     *    @method
+     */
 	this.resolveNaturalForces = function()
 	{
 		// Update natural forces for each entity
@@ -112,6 +141,12 @@ function PhysicsEngine(entities, tick_duration)
 		}
 	};
 
+    /**
+     *    resolve collision manifolds
+     *
+     *    @method
+     *    @param  {Array} manifolds array of collision manifolds
+     */
 	this.resolveCollisions = function(manifolds)
 	{
 		// apply collisions
@@ -123,6 +158,11 @@ function PhysicsEngine(entities, tick_duration)
 			this.fixPenetration(manifolds[i]);
 	};
 
+    /**
+     *    updates physics engine (tick)
+     *
+     *    @method
+     */
 	this.update = function()
 	{
 		for (var i = 0; i < this.numIterations; i++) {

@@ -10,7 +10,7 @@ For more info you can check out the project wiki: [here](https://github.com/g--o
 ## Getting started
 
 If you want to understand JSCF the best entry point would be [jscf.js](jscf.js.html) and the [Game](Game.html) class.
-Next, you should try to understand the different managers at play: [InputManager](InputManager.html),
+Next, you should try to understand the different managers at play: [SceneManager](SceneManager.html), [InputManager](InputManager.html),
 [ResourceManager](ResourceManager.html) and [GuiManager](GuiManager.html) to name a few.
 
 ## Support

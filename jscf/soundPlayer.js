@@ -15,10 +15,20 @@ function SoundPlayer(src)
     this.sound.setAttribute("controls", "none");
     document.body.appendChild(this.sound);
 
+    /**
+     *    play the loaded sound.
+     *
+     *    @method
+     */
     this.play = function() {
         this.sound.play();
     };
 
+    /**
+     *    stop playing the loaded sound.
+     *
+     *    @method
+     */
     this.stop = function() {
         this.sound.pause();
     };

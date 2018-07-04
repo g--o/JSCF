@@ -41,18 +41,39 @@
 function AABB(_x, _y, _width, _height)
 {
 
+    /**
+     *    set the AABB position from a transform.
+     *
+     *    @method
+     *    @param  {Transform} transform the transform to get position from
+     */
 	this.setTransform = function(transform) // for now ignores scale
 	{
 		this.pos = transform.pos;
 		this.reset();
 	};
 
+    /**
+     *    checks whether AABB contains a point.
+     *
+     *    @method
+     *    @param  {Number} x the x position of the point to test.
+     *    @param  {Number} y the y position of the point to test.
+     *    @return {Boolean}   true if it contains the point, false otherwise.
+     */
     this.containsPoint = function(x, y)
     {
         return ((x > this.xMin) &amp;&amp; (x &lt; this.xMax)) &amp;&amp;
 				((y &lt; this.yMax) &amp;&amp; (y > this.yMin));
     };
 
+    /**
+     *    checks AABB collision with other AABB.
+     *
+     *    @method
+     *    @param  {AABB} other other AABB to check collision against.
+     *    @return {Boolean}    true if they collide, false otherwise.
+     */
     this.isColliding = function(other)
     {
 		// apply SAT
@@ -66,6 +87,13 @@ function AABB(_x, _y, _width, _height)
 		return false;
     };
 
+    /**
+     *    calculates penetration vector with other AABB. Assumes penetration itself.
+     *
+     *    @method
+     *    @param  {AABB} other  other AABB to calculate penetration with.
+     *    @return {Vector2d}    the penetration vector.
+     */
 	this.getPenetration = function(other)
 	{
 		var dp = this.pos.clone();
@@ -80,6 +108,13 @@ function AABB(_x, _y, _width, _height)
 			return new Vector2d(0, (dp.y > 0)?dy:-dy);
 	}
 
+    /**
+     *    calculates normal vector with other AABB. Assumes penetration.
+     *
+     *    @method
+     *    @param  {AABB} other  other AABB to calculate normal with.
+     *    @return {Vector2d}    the normal vector.
+     */
     this.getNormal = function(other)
     {
 		var pen = this.getPenetration(other);
@@ -88,6 +123,11 @@ function AABB(_x, _y, _width, _height)
 		return pen;
     };
 
+    /**
+     *    re-sets the AABB (updates min max axis points)
+     *
+     *    @method
+     */
 	this.reset = function()
 	{
 		// extract points from rect
@@ -119,13 +159,13 @@ function AABB(_x, _y, _width, _height)
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__EPSILON">__EPSILON</a></li><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 20:48:14 GMT+0300 (שעון קיץ ירושלים)
 </footer>
 
 <script> prettyPrint(); </script>

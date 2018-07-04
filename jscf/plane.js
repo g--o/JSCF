@@ -16,6 +16,11 @@ function Plane(game, width, height, color)
     this.color = color;
     this.effect = null;
 
+    /**
+     *    renders the plane
+     *
+     *    @method
+     */
     this.render = function()
     {
         ctx = game.graphics.context;

@@ -17,6 +17,11 @@ function AnimSprite(game, width, height, url, frameWidth, frameHeight, animSpeed
     this.anim = new Animation(game, this.spr, frameWidth, frameHeight, animSpeed);
     this.interval = null;
 
+    /**
+     *    starts playing the animation
+     *
+     *    @method
+     */
     this.startAnimation = function()
     {
         var that = this;
@@ -26,6 +31,11 @@ function AnimSprite(game, width, height, url, frameWidth, frameHeight, animSpeed
             console.warn("JSCF: [startAnimation] animation already started!");
     };
 
+    /**
+     *    stops playing the animation.
+     *
+     *    @method
+     */
     this.stopAnimation = function()
     {
         if (this.interval) {
@@ -34,16 +44,31 @@ function AnimSprite(game, width, height, url, frameWidth, frameHeight, animSpeed
         }
     };
 
+    /**
+     *    updates the animation.
+     *
+     *    @method
+     */
     this.updateAnim = function()
     {
         this.anim.updateFrame();
     };
 
+    /**
+     *    renders the sprite with the animation.
+     *
+     *    @method
+     */
     this.render = function()
     {
         this.anim.render();
     };
 
+    /**
+     *    renders the sprite statically (disregards the animation)
+     *
+     *    @method
+     */
     this.staticRender = function()
     {
         this.spr.render();

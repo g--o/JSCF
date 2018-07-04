@@ -39,21 +39,46 @@ function SceneManager(game, tick_duration)
     this.scenes = { "splash": new Scene(game, this.tickDuration) };
     this.cur_scene = this.scenes["splash"];
 
+    /**
+     *    update scene manager (current scene)
+     *
+     *    @method
+     *    @return {Boolean} scene's update return value
+     */
     this.update = function()
     {
         return this.cur_scene.update();
     };
 
+    /**
+     *    render scene manager (current scene)
+     *
+     *    @method
+     *    @return {Boolean} scene's render return value
+     */
     this.render = function()
     {
         return this.cur_scene.render();
     };
 
+    /**
+     *    gets the current scene
+     *
+     *    @method
+     *    @return {Scene} the current scene
+     */
     this.getCurrentScene = function()
     {
         return this.cur_scene;
     };
 
+    /**
+     *    sets current scene
+     *
+     *    @method
+     *    @param  {Scene} scene a scene to set
+     *    @return {Boolean}     true if was set; false otherwise.
+     */
     this.setCurrentScene = function(scene)
     {
         if (!scene || !this.scenes[scene]) {
@@ -64,6 +89,13 @@ function SceneManager(game, tick_duration)
         return true;
     };
 
+    /**
+     *    creates a scene
+     *
+     *    @method
+     *    @param  {String} sceneName scene name
+     *    @return {Boolean}          true if created; false otherwise
+     */
     this.createScene = function(sceneName)
     {
         if (!sceneName) {
@@ -77,6 +109,13 @@ function SceneManager(game, tick_duration)
         return true;
     };
 
+    /**
+     *    deltes scene by name
+     *
+     *    @method
+     *    @param  {String} sceneName the scene name for deletetion
+     *    @return {Boolean}          true if deleted; false otherwise.
+     */
     this.deleteScene = function(sceneName) {
         if (!sceneName) {
             console.warn("[JSCF] got an invalid scene name in deletion!");
@@ -99,13 +138,13 @@ function SceneManager(game, tick_duration)
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__EPSILON">__EPSILON</a></li><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 20:48:14 GMT+0300 (שעון קיץ ירושלים)
 </footer>
 
 <script> prettyPrint(); </script>

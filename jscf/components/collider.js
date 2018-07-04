@@ -18,11 +18,23 @@ const __COLLIDER_NAME = "[builtin_collider]";
 var Collider = function(owner, collisionResolver, potential_entities)
 {
 
+	/**
+	 *    gets normal with other collider
+	 *
+	 *    @method
+	 *    @param  {Collider} otherCollider 	other collider
+	 *    @return {Vector2d}				the normal of the collision
+	 */
 	this.getNormal = function(otherCollider)
 	{
 		return this.resolver.getNormal(otherCollider.resolver);
 	};
 
+	/**
+	 *    updates the collider (position, detection, etc..)
+	 *
+	 *    @method
+	 */
 	this.update = function()
 	{
 		this.resolver.setTransform(this.parent.getGlobalTransform());
@@ -73,4 +85,9 @@ var Collider = function(owner, collisionResolver, potential_entities)
 	this.init();
 };
 
+/**
+ *    the component name
+ *
+ *    @type {String}
+ */
 Collider.component_name = __COLLIDER_NAME;

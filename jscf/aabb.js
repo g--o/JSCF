@@ -13,18 +13,39 @@
 function AABB(_x, _y, _width, _height)
 {
 
+    /**
+     *    set the AABB position from a transform.
+     *
+     *    @method
+     *    @param  {Transform} transform the transform to get position from
+     */
 	this.setTransform = function(transform) // for now ignores scale
 	{
 		this.pos = transform.pos;
 		this.reset();
 	};
 
+    /**
+     *    checks whether AABB contains a point.
+     *
+     *    @method
+     *    @param  {Number} x the x position of the point to test.
+     *    @param  {Number} y the y position of the point to test.
+     *    @return {Boolean}   true if it contains the point, false otherwise.
+     */
     this.containsPoint = function(x, y)
     {
         return ((x > this.xMin) && (x < this.xMax)) &&
 				((y < this.yMax) && (y > this.yMin));
     };
 
+    /**
+     *    checks AABB collision with other AABB.
+     *
+     *    @method
+     *    @param  {AABB} other other AABB to check collision against.
+     *    @return {Boolean}    true if they collide, false otherwise.
+     */
     this.isColliding = function(other)
     {
 		// apply SAT
@@ -38,6 +59,13 @@ function AABB(_x, _y, _width, _height)
 		return false;
     };
 
+    /**
+     *    calculates penetration vector with other AABB. Assumes penetration itself.
+     *
+     *    @method
+     *    @param  {AABB} other  other AABB to calculate penetration with.
+     *    @return {Vector2d}    the penetration vector.
+     */
 	this.getPenetration = function(other)
 	{
 		var dp = this.pos.clone();
@@ -52,6 +80,13 @@ function AABB(_x, _y, _width, _height)
 			return new Vector2d(0, (dp.y > 0)?dy:-dy);
 	}
 
+    /**
+     *    calculates normal vector with other AABB. Assumes penetration.
+     *
+     *    @method
+     *    @param  {AABB} other  other AABB to calculate normal with.
+     *    @return {Vector2d}    the normal vector.
+     */
     this.getNormal = function(other)
     {
 		var pen = this.getPenetration(other);
@@ -60,6 +95,11 @@ function AABB(_x, _y, _width, _height)
 		return pen;
     };
 
+    /**
+     *    re-sets the AABB (updates min max axis points)
+     *
+     *    @method
+     */
 	this.reset = function()
 	{
 		// extract points from rect

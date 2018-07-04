@@ -39,6 +39,11 @@
  */
 function Entity(game, name, alive, x, y, automated)
 {
+    /**
+     *    starts rendering the entity (applies transform to the graphical context)
+     *
+     *    @method
+     */
     this.start_render = function()
     {
         var ctx = game.graphics.context;
@@ -49,11 +54,21 @@ function Entity(game, name, alive, x, y, automated)
         ctx.scale(this.transform.scale.x, this.transform.scale.y);
     };
 
+    /**
+     *    ends rendering the entity (restores transform to graphical context)
+     *
+     *    @method
+     */
     this.end_render = function()
     {
         game.graphics.context.restore();
     };
 
+    /**
+     *    renders the entity (and it's children)
+     *
+     *    @method
+     */
     this.render = function() {
         this.start_render();
         // Update all children
@@ -64,6 +79,11 @@ function Entity(game, name, alive, x, y, automated)
         this.end_render();
     };
 
+    /**
+     *    updates the entity and it's children
+     *
+     *    @method
+     */
     this.update = function() {
         // Update all children
         for (var child in this.children) {
@@ -72,11 +92,25 @@ function Entity(game, name, alive, x, y, automated)
         }
     };
 
+    /**
+     *    checks whether entity has child with certain name.
+     *
+     *    @method
+     *    @param  {String} name child name to check
+     *    @return {Boolean}     true if has, false otherwise
+     */
     this.hasOwnChild = function(name)
     {
         return this.children[name];
     };
 
+    /**
+     *    gets child by name (recursively)
+     *
+     *    @method
+     *    @param  {String} name child name to check for
+     *    @return {object}      the child if found; null otherwise.
+     */
     this.getChild = function(name)
     {
         var e = this.hasOwnChild(name);
@@ -92,21 +126,49 @@ function Entity(game, name, alive, x, y, automated)
         }
     }
 
+    /**
+     *    gets child by index
+     *
+     *    @method
+     *    @param  {Number} i the child index
+     *    @return {object}   the child if found; null otherwise.
+     */
     this.getChildAt = function(i)
     {
         return Object.values(this.children)[i];
     };
 
+    /**
+     *    gets component from name
+     *
+     *    @method
+     *    @param  {String} compName component name to search for.
+     *    @return {object}          the component if found; null otherwise.
+     */
     this.getComponent = function(compName)
     {
         return this.getChild("[" + compName + "]");
     };
 
+    /**
+     *    gets built-in component by simplified name.
+     *
+     *    @method
+     *    @param  {String} compName built-in component's simplified name (usually type in lowercases)
+     *    @return {object}          built-in component if found; null otherwise.
+     */
     this.getBuiltinComponent = function(compName)
     {
         return this.getComponent("builtin_" + compName);
     };
 
+    /**
+     *    gets component by type
+     *
+     *    @method
+     *    @param  {Type} type the component's type (constructor name)
+     *    @return {object}    the component if found; null otherwise.
+     */
     this.getComponentOfType = function(type)
     {
         var name = Component.typeToName(type);
@@ -116,28 +178,59 @@ function Entity(game, name, alive, x, y, automated)
         return comp;
     };
 
+    /**
+     *    checks whether a component of type is attached
+     *
+     *    @method
+     *    @param  {Type} type component type to search for
+     *    @return {Boolean}   true if component of type is attached; false otherwise.
+     */
     this.hasComponentOfType = function(type)
     {
         var name = Component.typeToName(type);
         return (this.hasOwnChild(name) || this.hasOwnChild("[builtin_" + name+"]"));
     };
 
+    /**
+     *    adds component to entity
+     *
+     *    @method
+     *    @param  {Type} comp type/constructor to add as component.
+     */
     this.addComponent = function(comp)
     {
         var c = new comp(this);
         this.children[c.name] = c;
     };
 
+    /**
+     *    sets parent of current entity (make sure it's actually a child!)
+     *
+     *    @method
+     *    @param  {Entity} entity parent entity
+     */
     this.setParent = function(entity)
     {
         this.parent = entity;
     };
 
+    /**
+     *    clears current parent of entity (set to null)
+     *
+     *    @method
+     */
     this.clearParent = function()
     {
         this.parent = null;
     };
 
+    /**
+     *    adds child to entity
+     *
+     *    @method
+     *    @param  {String} name  child name
+     *    @param  {object} child child, can be of any type; if present setParent() is called.
+     */
     this.addChild = function(name, child)
     {
         if (child.setParent)
@@ -148,6 +241,12 @@ function Entity(game, name, alive, x, y, automated)
         this.children[name] = child;
     };
 
+    /**
+     *    adds child with generated name
+     *
+     *    @method
+     *    @param  {object} c the child object to add.
+     */
     this.insertChild = function(c)
     {
         if (c.setParent)
@@ -157,6 +256,12 @@ function Entity(game, name, alive, x, y, automated)
         this.children[this.getChildName()] = c;
     };
 
+    /**
+     *    gets global (recursive/world) transform.
+     *
+     *    @method
+     *    @return {Vector2d} the global transform.
+     */
     this.getGlobalTransform = function()
     {
         if (this.parent == null)
@@ -164,6 +269,12 @@ function Entity(game, name, alive, x, y, automated)
         return Transform.add(this.transform, this.parent.getGlobalTransform());
     };
 
+    /**
+     *    gets default shape from first shaped child (a child with width+height)
+     *
+     *    @method
+     *    @return {Vector2d} default width height 2d vector from first shaped child.
+     */
     this.getShapeByChild = function()
     {
         var shape = null;
@@ -186,6 +297,12 @@ function Entity(game, name, alive, x, y, automated)
         return new Vector2d(this.transform.scale.x, this.transform.scale.y);
     };
 
+    /**
+     *    generates child name (serial indexing)
+     *
+     *    @method
+     *    @return {String} generated child name
+     */
     this.getChildName = function()
     {
         return this.name + "." + this.max_cid++;
@@ -217,13 +334,13 @@ function Entity(game, name, alive, x, y, automated)
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__EPSILON">__EPSILON</a></li><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 20:48:14 GMT+0300 (שעון קיץ ירושלים)
 </footer>
 
 <script> prettyPrint(); </script>

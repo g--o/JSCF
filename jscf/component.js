@@ -21,13 +21,31 @@ var Component = function(owner)
 	this.name = __COMPONENT_NAME;
 	this.parent = owner;
 	this.init = function() {};
+
+	/**
+	 *    stub update function
+	 *
+	 *    @method
+	 */
 	this.update = function() {};
 };
 
+/**
+ *    the component's name
+ *
+ *    @type String
+ */
 Component.component_name = __COMPONENT_NAME;
 
 // Additional Component utilities
 
+/**
+ *    static-like method that converts type to component name.
+ *
+ *    @method
+ *    @param  {Type} type	the type of the component
+ *    @return {String}      the component's name
+ */
 Component.typeToName = function(type)
 {
 	var name = type.component_name;

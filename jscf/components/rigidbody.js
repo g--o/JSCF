@@ -19,11 +19,22 @@ const __RIGIDBODY_STAIC_MASS = 1/__RIGIDBODY_EPSILON;
 var Rigidbody = function(owner, tick_duration)
 {
 
+	/**
+	 *    sets parent (attches component to entity p)
+	 *
+	 *    @method
+	 *    @param  {Entity} p entity to attach to (should be parent; parent can be object)
+	 */
 	this.setParent = function(p)
 	{
 		this.parent = p;
 	};
 
+	/**
+	 *    sets rigidbody as static (infinite mass, does not move)
+	 *
+	 *    @method
+	 */
 	this.setStaticBody = function()
 	{
 		this.static = true;
@@ -31,12 +42,22 @@ var Rigidbody = function(owner, tick_duration)
 		this.mass = __RIGIDBODY_STAIC_MASS;
 	};
 
+	/**
+	 *    auto-only updates rigidbody (tick)
+	 *
+	 *    @method
+	 */
 	this.update = function()
 	{
 		if (this.auto_update)
 			this.tick_update();
 	};
 
+	/**
+	 *    actual update function (tick)
+	 *
+	 *    @method
+	 */
 	this.tick_update = function()
 	{
 		// displace (integrate)
@@ -44,6 +65,13 @@ var Rigidbody = function(owner, tick_duration)
 		this.parent.transform.pos.y += this.velocity.y * this.tickDuration;
 	};
 
+	/**
+	 *    resolve collision between this and other rigidbody
+	 *
+	 *    @method
+	 *    @param  {Rigidbody} other  other rigidbody (that collides with this one)
+	 *    @param  {Vector2d} normal collision normal
+	 */
 	this.calcCollision = function(other, normal)
 	{
 		// DEFINITIONS:
@@ -80,6 +108,13 @@ var Rigidbody = function(owner, tick_duration)
 			other.velocity = fV2;
 	};
 
+	/**
+	 *    fixes bodies penetration/energy loss
+	 *
+	 *    @method
+	 *    @param  {Rigidbody} other  other rigidbody (that collides with this one)
+	 *    @param  {Vector2d} penVec  penetration vector of the two rigidbodies
+	 */
 	this.fixPenetration = function(other, penVec)
 	{
 		var biasVec = penVec.clone();
@@ -91,6 +126,12 @@ var Rigidbody = function(owner, tick_duration)
 			other.parent.transform.pos.subVector(penVec);
 	};
 
+	/**
+	 *    applys acceleration to the rigidbody over the tick
+	 *
+	 *    @method
+	 *    @param  {Vector2d} acceleration the acceleration vector
+	 */
 	this.applyAcceleration = function(acceleration)
 	{
 		// integrate to velocity & apply
@@ -100,6 +141,12 @@ var Rigidbody = function(owner, tick_duration)
 		this.applyVelocity(vel);
 	};
 
+	/**
+	 *    applys velocity to the rigidbody
+	 *
+	 *    @method
+	 *    @param  {Vector2d} velocity the velocity to add over the tick
+	 */
 	this.applyVelocity = function(velocity)
 	{
 		this.velocity.addVector(velocity);
@@ -132,4 +179,9 @@ var Rigidbody = function(owner, tick_duration)
 	this.init();
 };
 
+/**
+ *    the component name
+ *
+ *    @type {String}
+ */
 Rigidbody.component_name = __RIGIDBODY_NAME;

@@ -14,39 +14,89 @@ function InputManager(canvas)
     var mouseDown = false;
     var mouseEvent = -1;
 
+    /**
+     *    checks if a certain key is down (currently pressed)
+     *
+     *    @method
+     *    @param  {String} c key character
+     *    @return {Boolean}  true if key is pressed; false otherwise.
+     */
     this.isKeyDownChar = function(c) {
         return keys[c.toUpperCase().charCodeAt()];
     };
 
+    /**
+    *    checks if a certain key is down (currently pressed)
+     *
+     *    @method
+     *    @param  {Number} code key code (number)
+     *    @return {Boolean}  true if key is pressed; false otherwise.
+     */
     this.isKeyDown = function(code) {
         return keys[code];
     };
 
+    /**
+     *    get mouse x position
+     *
+     *    @method
+     *    @return {Number} mouse x position
+     */
     this.getMouseX = function()
     {
         return mouseX;
     }
 
+    /**
+     *    get mouse y position
+     *
+     *    @method
+     *    @return {Number} mouse y position
+     */
     this.getMouseY = function()
     {
         return mouseY;
     }
 
+    /**
+     *    checks if mouse is down (mouse button is pressed)
+     *
+     *    @method
+     *    @return {Boolean} true if mouse button is pressed; false otherwise.
+     */
     this.IsMouseDown = function()
     {
         return mouseDown;
     };
 
+    /**
+     *    get last mouse event
+     *
+     *    @method
+     *    @return {MouseEvent} the mouse event
+     */
     this.getMouseEvent = function()
     {
         return mouseEvent;
     };
 
+    /**
+     *    register callback to mouse up
+     *
+     *    @method
+     *    @param  {Function} callback callback function(e) to be called when mouseup is fired.
+     */
     this.setOnMouseUp = function(callback)
     {
         document.addEventListener("mouseup", callback);
     };
 
+    /**
+    *    register callback to mouse down
+     *
+     *    @method
+     *    @param  {Function} callback callback function(e) to be called when mousedown is fired.
+     */
     this.setOnMouseDown = function(callback)
     {
         document.addEventListener("mousedown", callback);

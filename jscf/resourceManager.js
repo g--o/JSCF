@@ -58,6 +58,12 @@ function ResourceManager()
 {
     this.resources = {};
 
+    /**
+     *    get resource name by resource object
+     *
+     *    @method
+     *    @param  {object} resource resource data (URL or object/blob)
+     */
     this.getResourceName = function(resource) {
         for (var i = 0, len = this.resources.length; i < len; i++) {
             if (resource == this.resources.data[i]) {
@@ -66,6 +72,13 @@ function ResourceManager()
         }
     };
 
+    /**
+     *    get resource by key
+     *
+     *    @method
+     *    @param  {object} key key to resource
+     *    @return {object}     the resource desired or null if not found
+     */
     this.get = function(key)
     {
         if (!key || !this.resources[key]) {
@@ -76,6 +89,13 @@ function ResourceManager()
         return this.resources[key];
     };
 
+    /**
+     *    get resource clone by key (CANT BE SELF-REFERENCING!)
+     *
+     *    @method
+     *    @param  {object} key key to resource
+     *    @return {object}     copy of the resource or null if not found
+     */
     this.getClone = function(key) {
         var original = this.get(key);
         var clone = _clone(original);
@@ -91,6 +111,14 @@ function ResourceManager()
         return original;
     };
 
+    /**
+     *    add resource with key
+     *
+     *    @method
+     *    @param  {object} key      key to the resource
+     *    @param  {object} resource the resource object
+     *    @return {Boolean}         true if saved, false otherwise.
+     */
     this.add = function(key, resource) {
         if (!key) {
             console.warn("[JSCF] resource manager set() - got invalid key.");
@@ -105,6 +133,13 @@ function ResourceManager()
         return true;
     };
 
+    /**
+     *    remove resource
+     *
+     *    @method
+     *    @param  {object} key key to resource to remove.
+     *    @return {Boolean}    true if removed; false otherwise.
+     */
     this.remove = function(key) {
         if (!key || !this.resources[key]) {
             console.warn("[JSCF] resrouce manager remove() - got invalid key.");
@@ -114,6 +149,13 @@ function ResourceManager()
         return true;
     };
 
+    /**
+     *    removes resource by resource object.
+     *
+     *    @method
+     *    @param  {object} resource the resource object to remove
+     *    @return {Boolean}         true if removed; false otherwise.
+     */
     this.removeByValue = function(resource) {
         var name = this.getResourceName(resource);
         if (!name)

@@ -16,11 +16,23 @@ function Manifold(e1, e2)
 
 	this.valid = (this.rigidBody1 && this.rigidBody2 && this.collider1 && this.collider2);
 
+    /**
+     *    gets penetration between the entities' colliders
+     *
+     *    @method
+     *    @return {Vector2d}    the penetration vector between colliders.
+     */
 	this.getPenetration = function()
 	{
 		return this.collider1.resolver.getPenetration(this.collider2.resolver);
 	};
 
+    /**
+     *    gets the normal between the entitie's colliders.
+     *
+     *    @method
+     *    @return {Vector2d}    the normal vector between colliders.
+     */
 	this.getNormal = function()
 	{
 		return this.collider1.getNormal(this.collider2);

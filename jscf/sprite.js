@@ -16,12 +16,23 @@ function Sprite(game, width, height, url)
     this.image = new Image();
     this.image.src = url;
 
+    /**
+     *    renders the sprite
+     *
+     *    @method
+     */
     this.render = function()
     {
         game.graphics.context.drawImage(this.image, 0, 0, this.image.width, this.image.height,
                                                     this.width/-2,this.height/-2,this.width, this.height);
     };
 
+    /**
+     *    gets the resource URL from asset manager by itself. (assumes default path)
+     *
+     *    @method
+     *    @param  {String} asset asset file name
+     */
     this.setImageSrcFromAsset = function(asset) {
         this.image.src = game.assetManager.getAssetPath(asset);
     };

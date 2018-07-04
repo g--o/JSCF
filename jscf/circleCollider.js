@@ -9,11 +9,25 @@
 function CircleCollider(_x, _y, _R)
 {
 
+    /**
+     *    set the CircleCollider position from a transform.
+     *
+     *    @method
+     *    @param  {Transform} transform the transform to get position from
+     */
 	this.setTransform = function(transform) // for now ignores scale
 	{
 		this.pos = transform.pos;
 	};
 
+    /**
+     *    checks whether CircleCollider contains a point.
+     *
+     *    @method
+     *    @param  {Number} x the x position of the point to test.
+     *    @param  {Number} y the y position of the point to test.
+     *    @return {Boolean}   true if it contains the point, false otherwise.
+     */
     this.containsPoint = function(x, y)
     {
 		var pos = new Point2d(this.pos.x, this.pos.y);
@@ -21,11 +35,25 @@ function CircleCollider(_x, _y, _R)
         return pos.distanceTo(point) <= this.R;
     };
 
+    /**
+     *    checks CircleCollider collision with other CircleCollider.
+     *
+     *    @method
+     *    @param  {CircleCollider}  other other CircleCollider to check collision against.
+     *    @return {Boolean}         true if they collide, false otherwise.
+     */
     this.isColliding = function(other)
     {
 		return (Vector.subVector(this.pos - other.pos).length() <= (this.R + other.R));
     };
 
+    /**
+     *    calculates penetration vector with other CircleCollider. Assumes penetration itself.
+     *
+     *    @method
+     *    @param  {CircleCollider} other  other AABB to calculate penetration with.
+     *    @return {Vector2d}    the penetration vector.
+     */
 	this.getPenetration = function(other)
 	{
 		var dp = this.pos.clone();
@@ -37,6 +65,14 @@ function CircleCollider(_x, _y, _R)
 		return new Vector2d((dp.x > 0)?dx:-dx, (dp.y > 0)?dy:-dy);
 	}
 
+
+    /**
+     *    calculates normal vector with other CircleCollider. Assumes penetration.
+     *
+     *    @method
+     *    @param  {CircleCollider} other    other CircleCollider to calculate normal with.
+     *    @return {Vector2d}                the normal vector.
+     */
     this.getNormal = function(other)
     {
 		var pen = this.getPenetration(other);

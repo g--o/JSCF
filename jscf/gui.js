@@ -35,6 +35,18 @@ function GuiManager(game)
 	__GUIMANAGER_BUTTON_BGCOLOR.addColorStop(0, "#bebebe");
 	__GUIMANAGER_BUTTON_BGCOLOR.addColorStop(1, "#e7e7e7");
 
+    /**
+     *    creates rectangular container with background
+     *
+     *    @method
+     *    @param  {String} name    container entity name
+     *    @param  {Number} x       x position
+     *    @param  {Number} y       y position
+     *    @param  {Number} w       container width
+     *    @param  {Number} h       container height
+     *    @param  {String} bgcolor background color (2d context descriptor)
+     *    @return {Entity}         gui container entity
+     */
 	this.createContainer = function(name, x, y, w, h, bgcolor)
 	{
 		var e = new Entity(game, name, true, x, y, true);
@@ -45,11 +57,34 @@ function GuiManager(game)
 		return e;
 	};
 
+    /**
+     *    creates default rectangular container
+     *
+     *    @method
+     *    @param  {Number} x       x position
+     *    @param  {Number} y       y position
+     *    @return {Entity}         default gui container entity
+     */
 	this.createDefaultContainer = function(x, y)
 	{
 		return this.createContainer("con"+this.eleNum, x, y, __GUIMANAGER_CONTAINER_WIDTH, __GUIMANAGER_CONTAINER_HEIGHT, __GUIMANAGER_CONTAINER_COLOR);
 	};
 
+    /**
+     *    creates rectangular button
+     *
+     *    @method
+     *    @param  {String} name    button entity name
+     *    @param  {Number} x        x position
+     *    @param  {Number} y        y position
+     *    @param  {Number} w        button width
+     *    @param  {Number} h        button height
+     *    @param  {String} bgcolor  background color (2d context descriptor)
+     *    @param  {String} txt      the text to display on button
+     *    @param  {String} txtstyle text 2d context styling (can be just color)
+     *    @param  {String} font     2d cotext font description
+     *    @return {Entity}          gui button entity
+     */
 	this.createButton = function(name, x, y, w, h, bgcolor, txt, txtstyle, font)
 	{
 		var e = this.createContainer(name, x, y, w, h, bgcolor);
@@ -73,6 +108,15 @@ function GuiManager(game)
 		return e;
 	};
 
+    /**
+     *    creates default gui button
+     *
+     *    @method
+     *    @param  {Number} x        x position
+     *    @param  {Number} y        y position
+     *    @param  {String} txt      the text to display on button
+     *    @return {Entity}          default gui button entity
+     */
 	this.createDefaultButton = function(x, y, txt)
 	{
 		return this.createButton("btn"+this.eleNum++, x, y, __GUIMANAGER_BUTTON_WIDTH,
@@ -80,6 +124,19 @@ function GuiManager(game)
 			__GUIMANAGER_BUTTON_FONT_COLOR,__GUIMANAGER_BUTTON_FONT);
 	};
 
+    /**
+     *    creates gui rectangular textbox
+     *
+     *    @method
+     *    @param  {String} name    textbox entity name
+     *    @param  {Number} x        x position
+     *    @param  {Number} y        y position
+     *    @param  {Number} w        textbox width
+     *    @param  {Number} h        textbox height
+     *    @param  {String} bgcolor  background color (2d context descriptor)
+     *    @param  {String} txt      the text to display on textbox
+     *    @return {Entity}          gui textbox entity
+     */
 	this.createTextBox = function(name, x, y, w, h, txt)
 	{
 		var e = new Entity(game, name, true, x, y, true);
@@ -88,11 +145,28 @@ function GuiManager(game)
 		return e;
 	};
 
+    /**
+     *    creates default gui textbox
+     *
+     *    @method
+     *    @param  {Number} x        x position
+     *    @param  {Number} y        y position
+     *    @return {Entity}          default gui textbox entity
+     */
 	this.createDefaultTextBox = function(x, y)
 	{
 		return this.createTextBox("tb"+this.eleNum, x, y, __GUIMANAGER_TXTBOX_WIDTH, __GUIMANAGER_TXTBOX_HEIGHT);
 	};
 
+    /**
+     *    creates label (text gui entity)
+     *
+     *    @method
+     *    @param  {Number} x        x position
+     *    @param  {Number} y        y position
+     *    @param  {String} txt      the text to display
+     *    @return {Entity}          the gui label entity
+     */
 	this.createLabel = function(x, y, txt)
 	{
 		var text = new Text(game, txt, "white", "15px arial");
@@ -103,6 +177,12 @@ function GuiManager(game)
 		return txtEntity;
 	};
 
+    /**
+     *    creates debug panel
+     *
+     *    @method
+     *    @return {Entity} returns debug panel entity
+     */
 	this.createDebugPanel = function()
 	{
 		var panelHeight = game.getCanvasHeight();
@@ -201,11 +281,23 @@ function GuiManager(game)
 		return panel;
 	};
 
+    /**
+     *    creates and inserts debug panel to current scene
+     *
+     *    @method
+     */
 	this.insertDebugPanel = function()
 	{
 		game.getCurrentScene().addEntity(this.createDebugPanel());
 	};
 
+    /**
+     *    builds string description of an object
+     *
+     *    @method
+     *    @param  {object} e an object (entity, component, other object...)
+     *    @return {String}   a nice string representation
+     */
 	this.buildString = function(e)
 	{
 		const INDENT = "\t\t\t";

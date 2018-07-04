@@ -22,6 +22,14 @@ function Transform(x, y, xscale, yscale)
     this.angle = 0;
 }
 
+/**
+ *    adds two transforms
+ *
+ *    @method
+ *    @param  {Transform} t1 a transform
+ *    @param  {Transform} t2 a transform
+ *    @return {Transform}    the joined transform
+ */
 Transform.add = function(t1, t2)
 {
     t = new Transform();

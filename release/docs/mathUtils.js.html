@@ -27,6 +27,11 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>
+/**
+ *    an epsilon to consider when using float calculations
+ *
+ *    @type {Number}
+ */
 const __EPSILON = 1e-8;
 
 /**
@@ -34,28 +39,67 @@ const __EPSILON = 1e-8;
  */
 var MathUtils = {
 
+    /**
+     *    converts degrees to radians
+     *
+     *    @method
+     *    @param  {Number} deg the angle in degrees
+     *    @return {Number}     the corresponding radians to the angle.
+     */
     toRad : function(deg)
     {
         return deg*Math.PI/180.0;
     },
 
+    /**
+     *    squares a number
+     *
+     *    @method
+     *    @param  {Number} n the number to square
+     *    @return {Number}   the squared number
+     */
     square : function(n)
     {
         return n*n;
     },
 
+    /**
+     *    floating point ">=" checking against _EPSILON (see: _EPSILON)
+     *
+     *    @method
+     *    @param  {Number} a floating point number
+     *    @param  {Number} b floating point number
+     *    @return {Boolean}  true if abs(a-b) >= _EPSILON; false otherwise
+     */
     greaterThan: function(a,b)
     {
-        return a-b >= __EPSILON;
+        return Math.abs(a-b) >= __EPSILON;
     },
 
+    /**
+     *    floating point "&lt;" checking against _EPSILON (see: _EPSILON)
+     *
+     *    @method
+     *    @param  {Number} a floating point number
+     *    @param  {Number} b floating point number
+     *    @return {Boolean}  true if abs(a-b) &lt; _EPSILON; false otherwise
+     */
     lesserThan: function(a,b)
     {
         return MathUtils.greaterThan(b,a);
     },
 
+    /**
+     *    gets number sign
+     *
+     *    @method
+     *    @param  {Number} n the number
+     *    @return {Number}   0 if n is 0; 1 if n > 0; -1 otherwise
+     */
     sign: function(n)
     {
+        if (n == 0)
+            return 0;
         return n/Math.abs(n);
     }
 };
@@ -69,13 +113,13 @@ var MathUtils = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CanvasInput.html">CanvasInput</a></li></ul><h3>Classes</h3><ul><li><a href="AABB.html">AABB</a></li><li><a href="Animation.html">Animation</a></li><li><a href="AnimFrame.html">AnimFrame</a></li><li><a href="AnimSprite.html">AnimSprite</a></li><li><a href="AssetManager.html">AssetManager</a></li><li><a href="CircleCollider.html">CircleCollider</a></li><li><a href="Component.html">Component</a></li><li><a href="Effect.html">Effect</a></li><li><a href="Entity.html">Entity</a></li><li><a href="Game.html">Game</a></li><li><a href="Graphics.html">Graphics</a></li><li><a href="GuiManager.html">GuiManager</a></li><li><a href="InputManager.html">InputManager</a></li><li><a href="Manifold.html">Manifold</a></li><li><a href="PhysicsEngine.html">PhysicsEngine</a></li><li><a href="Plane.html">Plane</a></li><li><a href="Point2d.html">Point2d</a></li><li><a href="ResourceManager.html">ResourceManager</a></li><li><a href="Scene.html">Scene</a></li><li><a href="SceneManager.html">SceneManager</a></li><li><a href="SoundPlayer.html">SoundPlayer</a></li><li><a href="Sprite.html">Sprite</a></li><li><a href="Text.html">Text</a></li><li><a href="Textbox.html">Textbox</a></li><li><a href="Transform.html">Transform</a></li><li><a href="Vector2d.html">Vector2d</a></li></ul><h3>Global</h3><ul><li><a href="global.html#__EPSILON">__EPSILON</a></li><li><a href="global.html#MathUtils">MathUtils</a></li><li><a href="global.html#SceneUtils">SceneUtils</a></li><li><a href="global.html#shadowFx">shadowFx</a></li><li><a href="global.html#Vector">Vector</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jul 03 2018 19:18:02 GMT+0300 (שעון קיץ ירושלים)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jul 04 2018 20:48:14 GMT+0300 (שעון קיץ ירושלים)
 </footer>
 
 <script> prettyPrint(); </script>

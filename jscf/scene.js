@@ -13,16 +13,32 @@ function Scene(game, tick_duration)
     this.paused = false;
     this.physicsEngine = new PhysicsEngine(this.entities, tick_duration);
 
+    /**
+     *    pause game
+     *
+     *    @method
+     */
     this.pause = function()
     {
         this.paused = true;
     };
 
+    /**
+     *    resume scene
+     *
+     *    @method
+     */
     this.resume = function()
     {
         this.paused = false;
     };
 
+    /**
+     *    updates scene (advance tick)
+     *
+     *    @method
+     *    @return {Boolean} updated
+     */
     this.update = function()
     {
         if (this.paused)
@@ -46,6 +62,12 @@ function Scene(game, tick_duration)
         return true;
     };
 
+    /**
+     *    renders scene
+     *
+     *    @method
+     *    @return {Boolean} true if rendered, false otherwise.
+     */
     this.render = function()
     {
         if (this.paused)
@@ -63,6 +85,13 @@ function Scene(game, tick_duration)
         return true;
     };
 
+    /**
+     *    gets entity by name
+     *
+     *    @method
+     *    @param  {String} name entity name
+     *    @return {Entity}      entity if found, null otherwise.
+     */
     this.getEntity = function(name)
     {
         var e = this.entities[name];
@@ -79,6 +108,13 @@ function Scene(game, tick_duration)
         console.warn("[JSCF] scene couldn't find requested object: " + name);
     }
 
+    /**
+     *    adds entity
+     *
+     *    @method
+     *    @param  {Entity} entity the entity to add
+     *    @return {Boolean}       true if added, false otherwise.
+     */
     this.addEntity = function(entity)
     {
         if (!(entity.name in this.entities)) {
@@ -89,12 +125,32 @@ function Scene(game, tick_duration)
         }
     };
 
+    /**
+     *    creates manual entity (does not render, update automatically etc.)
+     *
+     *    @method
+     *    @param  {String} name       entity name
+     *    @param  {Number} x          the x position
+     *    @param  {Number} y          the y position
+     *    @param  {object} firstChild entity's first child
+     *    @return {Entity}            the newly created entity
+     */
     this.createManualEntity = function(name, x, y, firstChild) {
         var e = new Entity(game, name, true, x, y, false);
         e.addChild(this.getChildName(e, firstChild), firstChild);
         return this.addEntity(e);
     };
 
+    /**
+     *    creates entity
+     *
+     *    @method
+     *    @param  {String} name       entity name
+     *    @param  {Number} x          the x position
+     *    @param  {Number} y          the y position
+     *    @param  {object} firstChild entity's first child
+     *    @return {Entity}            the newly created entity
+     */
     this.createEntity = function(name, x, y, firstChild)
     {
         var e = new Entity(game, name, true, x, y, true);
@@ -102,6 +158,13 @@ function Scene(game, tick_duration)
         return this.addEntity(e);
     };
 
+    /**
+     *    creates new entity
+     *
+     *    @method
+     *    @param  {object} firstChild entity's first child
+     *    @return {Entity}            the newly created entity
+     */
     this.createNewEntity = function(firstChild)
     {
         var e = new Entity(game, this.getEntityName(), true, 0, 0, true);
@@ -109,6 +172,14 @@ function Scene(game, tick_duration)
         return this.addEntity(e);
     };
 
+    /**
+     *    generates child name
+     *
+     *    @method
+     *    @param  {Entity} parent parent entity
+     *    @param  {object} child  child object/entity
+     *    @return {String}        the generated name
+     */
     this.getChildName = function(parent, child)
     {
         if (child.name)
@@ -116,6 +187,12 @@ function Scene(game, tick_duration)
         return parent.getChildName();
     };
 
+    /**
+     *    generates entity name
+     *
+     *    @method
+     *    @return {String} the generated name.
+     */
     this.getEntityName = function()
     {
         this.max_euid++;

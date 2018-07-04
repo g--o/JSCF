@@ -16,26 +16,53 @@ function Animation(game, sprite, frameWidth, frameHeight, speed)
     this.frame = new AnimFrame(0, 0, frameWidth, frameHeight);
     this.frameCounter = 0;
 
+    /**
+     *    sets the animation index (usually spritesheet row)
+     *
+     *    @method
+     *    @param  {Number} i animation index
+     */
     this.setAnimationIndex = function(i)
     {
         this.frame.setAnimationIndex(i, this.spr.image.height);
     };
 
+    /**
+     *    sets the animation frame index.
+     *
+     *    @method
+     *    @param  {Number} i animation frame index
+     */
     this.setFrameIndex = function(i)
     {
         this.frame.setFrameIndex(i, this.spr.image.width);
     };
 
+    /**
+     *    sets current to next animation
+     *
+     *    @method
+     */
     this.nextAnimation = function()
     {
         this.frame.nextAnimation(this.spr.image.height);
     };
 
+    /**
+     *    sets current to next frame
+     *
+     *    @method
+     */
     this.nextFrame = function()
     {
         this.frame.nextFrame(this.spr.image.width);
     };
 
+    /**
+     *    updates the current frame
+     *
+     *    @method
+     */
     this.updateFrame = function()
     {
         this.frameCounter = (this.frameCounter + 1) % Math.floor(game.fps / speed);
@@ -43,6 +70,11 @@ function Animation(game, sprite, frameWidth, frameHeight, speed)
             this.nextFrame();
     };
 
+    /**
+     *    rendering the animaion
+     *
+     *    @method
+     */
     this.render = function()
     {
         game.graphics.context.drawImage(this.spr.image,

@@ -21,6 +21,11 @@ function ButtonHandler(owner, speed)
 	this.hover_speed = speed ? speed : __BUTTON_HANDLER_HOVER_SPEED;
 	this.pressed = false;
 
+	/**
+	 *    updates button handler component (position, effects, clicks, hovers, etc..)
+	 *
+	 *    @method
+	 */
 	this.update = function()
 	{
 		var transform = owner.getGlobalTransform();
@@ -46,6 +51,11 @@ function ButtonHandler(owner, speed)
 		}
 	};
 
+	/**
+	 *    stub callback function for click; override if needed.
+	 *
+	 *    @method
+	 */
 	this.onClick = function()
 	{
 		console.log("[JSCF][ButtonHandler] button press");
@@ -63,4 +73,9 @@ function ButtonHandler(owner, speed)
 
 }
 
+/**
+ *    the component name
+ *
+ *    @type {String}
+ */
 ButtonHandler.component_name = __BUTTON_HANDLER_NAME;
