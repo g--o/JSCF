@@ -19,10 +19,15 @@ jscf.js is a *minified* version. To work with non-compact code you need to manua
 
 ## Screenshots
 **Pong Demo:**
+
 ![Pong screenshot](screenshots/pong.png)
 
 **Debug Panel:**
+
 ![Debug panel screenshot](screenshots/debug-panel.png)
+
+## Examples
+For now you can look at the tests directory for examples. Later in development online demos will be available.
 
 ## Features
 - 2D graphical engine

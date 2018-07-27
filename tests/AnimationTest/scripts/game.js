@@ -41,4 +41,7 @@ function gameStart()
     player.startAnimation();
 
     game.start(update, false);
+
+    // center player
+    game.graphics.context.translate(player.spr.width/2, player.spr.height/2);
 }
