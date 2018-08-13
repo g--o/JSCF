@@ -89,14 +89,9 @@ function GuiManager(game)
 	{
 		var e = this.createContainer(name, x, y, w, h, bgcolor);
 
-		// Build txt
+		// Add text
 		var t = new Text(game, txt, txtstyle, font);
-		var trect = t.getDimentions();
-		var txtEntity = new Entity(game, name+"."+__GUIMANAGER_TXT_NAME, true, -trect.width/2, 0, true);
-		txtEntity.addChild(__GUIMANAGER_TXT_NAME, t);
-
-		// Add text entity
-		e.addChild(__GUIMANAGER_TXT_NAME, txtEntity);
+		e.addChild(__GUIMANAGER_TXT_NAME, t);
 
 		// Add button handler component
 		if (typeof(ButtonHandler) == "undefined") {
@@ -187,35 +182,23 @@ function GuiManager(game)
 	{
 		var panelHeight = game.getCanvasHeight();
 		var panelWidth = game.getCanvasWidth()/4;
-		var HORIZONTAL_OFFSET = panelWidth/4;
-		var VERTICAL_OFFSET = -panelHeight/8;
 
-		var panel = game.guiManager.createContainer("left-panel", panelWidth/2, panelHeight/2, panelWidth, panelHeight, __GUIMANAGER_CONTAINER_COLOR);
-		game.getCurrentScene().addEntity(panel);
-
-		// List label
- 		var listLabel = this.createLabel(-HORIZONTAL_OFFSET, 0, "");
-		panel.insertChild(listLabel);
-
-		// build button
-		var btn = game.guiManager.createDefaultButton(-HORIZONTAL_OFFSET, VERTICAL_OFFSET, "Toggle");
-		btn.getComponentOfType(ButtonHandler).onClick = function() {
+		// Toggle button
+		var toggleBtn = game.guiManager.createDefaultButton(0, 0, "Toggle");
+		toggleBtn.getComponentOfType(ButtonHandler).onClick = function() {
 			var txt = listLabel.getChildAt(0);
 			txt.enabled = !txt.enabled;
-		}
-		panel.insertChild(btn);
+		};
 
-		// Entity creation
-		var createBtn = game.guiManager.createDefaultButton(HORIZONTAL_OFFSET, VERTICAL_OFFSET, "Create Entity");
+		// Entity creation button
+		var createBtn = game.guiManager.createDefaultButton(0, 0, "Create Entity");
 		createBtn.getComponentOfType(ButtonHandler).onClick = function() {
 			game.getCurrentScene().createNewEntity(game.getCurrentScene().getEntityName(), 0, 0, null);
-		}
-		panel.insertChild(createBtn);
+		};
 
-		// Search entity
-		var textBox = game.guiManager.createDefaultTextBox(-HORIZONTAL_OFFSET/2, VERTICAL_OFFSET*2);
-		var tb = textBox.getChildAt(0).textBox;
-		tb.width(__GUIMANAGER_TXTBOX_WIDTH*2);
+		// Search entity textbox
+		var searchTB = game.guiManager.createDefaultTextBox(0, 0);
+		var tb = searchTB.getChildAt(0).textBox;
 		tb.placeHolder("Search entity...");
 		tb.onsubmit(function() {
 			var ent = game.getCurrentScene().getEntity(tb.value());
@@ -227,13 +210,11 @@ function GuiManager(game)
 			transformTBx.getChildAt(0).textBox.value(pos.x);
 			transformTBy.getChildAt(0).textBox.value(pos.y);
 		});
-		panel.insertChild(textBox);
 
-		// Transform edit
-		var transformTBx = game.guiManager.createDefaultTextBox(-HORIZONTAL_OFFSET, VERTICAL_OFFSET*2.5);
+		// Transform textboxs
+		var transformTBx = game.guiManager.createDefaultTextBox(0, 0);
 		transformTBx.getChildAt(0).textBox.placeHolder("pos.x");
-		transformTBx.getChildAt(0).textBox.onsubmit(function()
-		{
+		transformTBx.getChildAt(0).textBox.onsubmit(function() {
 			var ent = game.getCurrentScene().getEntity(tb.value());
 			if (!ent) {
 				tb.value("");
@@ -241,12 +222,10 @@ function GuiManager(game)
 			}
 			ent.transform.pos.x = parseInt(transformTBx.getChildAt(0).textBox.value());
 		});
-		panel.insertChild(transformTBx);
 
-		var transformTBy = game.guiManager.createDefaultTextBox(HORIZONTAL_OFFSET, VERTICAL_OFFSET*2.5);
+		var transformTBy = game.guiManager.createDefaultTextBox(0, 0);
 		transformTBy.getChildAt(0).textBox.placeHolder("pos.y");
-		transformTBy.getChildAt(0).textBox.onsubmit(function()
-		{
+		transformTBy.getChildAt(0).textBox.onsubmit(function() {
 			var ent = game.getCurrentScene().getEntity(tb.value());
 			if (!ent) {
 				tb.value("");
@@ -254,14 +233,16 @@ function GuiManager(game)
 			}
 			ent.transform.pos.y = parseInt(transformTBy.getChildAt(0).textBox.value());
 		});
-		panel.insertChild(transformTBy);
 
 		// Transform label
-		panel.insertChild(this.createLabel(0, VERTICAL_OFFSET*3, "Transform"));
+        var transformLabel = this.createLabel(0, 0, "Transform");
 
-		// Panel itself update
+        // List label
+ 		var listLabel = this.createLabel(0, 0, "");
+
+		// Panel script
 		var self = this;
-		panel.insertChild({
+        var panelScript = {
 			update: function()
 			{
 				var txt = listLabel.getChildAt(0);
@@ -271,12 +252,26 @@ function GuiManager(game)
 					for (var i = 0; i < entities.length; i++) {
 						finalText += self.buildString(game.getCurrentScene().getEntity(entities[i])) + "\n";
 					}
-					txt.txt = finalText;
+					txt.setText(finalText);
 				} else {
-					txt.txt = "";
+					txt.setText("");
 				}
 			}
-		});
+		};
+
+        // Create the panel
+		var panel = game.guiManager.createContainer("left-panel", panelWidth/2, panelHeight/2, panelWidth, panelHeight, __GUIMANAGER_CONTAINER_COLOR);
+        panel.addComponent(LayoutComponent);
+        panel.getComponentOfType(LayoutComponent).layoutType = LinedLayout;
+
+        panel.insertChild(searchTB);
+        panel.insertChild(transformLabel);
+        panel.insertChild(transformTBx);
+        panel.insertChild(transformTBy);
+        panel.insertChild(createBtn);
+        panel.insertChild(toggleBtn);
+        panel.insertChild(listLabel);
+        panel.insertChild(panelScript);
 
 		return panel;
 	};

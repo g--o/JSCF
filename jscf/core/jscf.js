@@ -141,4 +141,16 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         ctx.fillText(txt, x, y);
     };
 
+    /**
+     *    Logs and stops the game.
+     *
+     *    @method
+     *    @param: {string} msg  the message to log.
+     */
+    this.logAndStop = function(msg)
+    {
+        console.log(msg);
+        this.stop();
+    };
+
 }

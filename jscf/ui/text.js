@@ -11,9 +11,27 @@
  */
 function Text(game, txt, style, font)
 {
-	this.txt = txt;
+	this.txt = "";
 	this.style = style;
 	this.font = font;
+    this.lines = [];
+    this.maxWidth = 0;
+    this.maxHeight = 20;
+
+    this.setText= function(txt)
+    {
+        this.txt = txt;
+        this.lines = String(this.txt).split('\n');
+
+        var ctx = game.graphics.context;
+        ctx.font = this.font;
+
+        for (var i = 0; i < this.lines.length; i++) {
+            var width = ctx.measureText(this.lines[i]).width;
+            if (width > this.maxWidth)
+                this.maxWidth = width;
+        }
+    };
 
     /**
      *    get the dimentions of text element if to be rendered.
@@ -23,9 +41,7 @@ function Text(game, txt, style, font)
      */
 	this.getDimentions = function()
 	{
-		var ctx = game.graphics.context;
-		ctx.font = this.font;
-		return ctx.measureText(txt);
+		return {width: this.maxWidth, height: 20};
 	};
 
     /**
@@ -35,10 +51,16 @@ function Text(game, txt, style, font)
      */
     this.render = function()
     {
-		var lineheight = 20;
-		var lines = String(this.txt).split('\n');
+        var dims = this.getDimentions();
 
-		for (var i = 0; i < lines.length; i++)
-		    game.renderText(0, i * lineheight, lines[i], this.style, this.font);
+		for (var i = 0; i < this.lines.length; i++)
+		    game.renderText(-dims.width/2, i * dims.height, this.lines[i], this.style, this.font);
     };
+
+    this.init = function()
+    {
+        this.setText(txt);
+    };
+
+    this.init();
 }

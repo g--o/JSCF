@@ -258,7 +258,6 @@ function Entity(game, name, alive, x, y, automated)
                     shape = new Vector2d(child.width, child.height);
                     break;
                 }
-
             }
         }
 
@@ -279,6 +278,18 @@ function Entity(game, name, alive, x, y, automated)
     {
         return this.name + "." + this.max_cid++;
     };
+
+    this.getEntityChildren = function()
+    {
+        var kids = Object.values(this.children);
+        var out = [];
+        for (var i = 0; i < kids.length; i++) {
+            if (kids[i] instanceof Entity)
+                out.push(kids[i]);
+        }
+
+        return out;
+    }
 
     this.init = function()
     {
