@@ -21,6 +21,15 @@ function ButtonHandler(owner, speed)
 	this.hover_speed = speed ? speed : __BUTTON_HANDLER_HOVER_SPEED;
 	this.pressed = false;
 
+	this.setDimentions = function(w, h)
+	{
+		if (w > 0)
+			this.bb.dims.x = w;
+		if (h > 0)
+			this.bb.dims.y = h;
+		this.bb.reset();
+	};
+
 	/**
 	 *    updates button handler component (position, effects, clicks, hovers, etc..)
 	 *
@@ -64,7 +73,7 @@ function ButtonHandler(owner, speed)
 	this.init = function()
 	{
 		// set bounding box
-		var shape = owner.getShapeByChild();
+		var shape = owner.getDimentions();
 		var transform = owner.getGlobalTransform();
 		this.bb = new AABB(transform, transform, shape.x, shape.y);
 	};

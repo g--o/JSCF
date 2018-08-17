@@ -78,7 +78,7 @@ var Collider = function(owner, collisionResolver, potential_entities)
 			this.resolver = collisionResolver;
 		} else {
 			var pos = this.parent.getGlobalTransform().pos;
-			var dims = this.parent.getShapeByChild();
+			var dims = this.parent.getDimentions();
 			this.resolver = new AABB(pos.x, pos.y, dims.x, dims.y);
 		}
 	};

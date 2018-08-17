@@ -17,8 +17,15 @@ function Text(game, txt, style, font)
     this.lines = [];
     this.maxWidth = 0;
     this.maxHeight = 20;
+    this.lineMargin = 5;
 
-    this.setText= function(txt)
+    /**
+     *    sets the text to display
+     *
+     *    @method
+     *    @param  {String} txt the text to display
+     */
+    this.setText = function(txt)
     {
         this.txt = txt;
         this.lines = String(this.txt).split('\n');
@@ -28,9 +35,10 @@ function Text(game, txt, style, font)
 
         for (var i = 0; i < this.lines.length; i++) {
             var width = ctx.measureText(this.lines[i]).width;
-            if (width > this.maxWidth)
-                this.maxWidth = width;
+            this.maxWidth = Math.max(this.maxWidth, width);
         }
+
+        this.maxHeight = parseInt(ctx.font.match(/\d+/), 10) + this.lineMargin;
     };
 
     /**
@@ -41,8 +49,13 @@ function Text(game, txt, style, font)
      */
 	this.getDimentions = function()
 	{
-		return {width: this.maxWidth, height: 20};
+		return new Vector2d(this.maxWidth, this.maxHeight);
 	};
+
+    this.setDimentions = function (w, h)
+    {
+
+    };
 
     /**
      *    renders the text element
@@ -54,7 +67,7 @@ function Text(game, txt, style, font)
         var dims = this.getDimentions();
 
 		for (var i = 0; i < this.lines.length; i++)
-		    game.renderText(-dims.width/2, i * dims.height, this.lines[i], this.style, this.font);
+		    game.renderText(-dims.x/2, i * dims.y, this.lines[i], this.style, this.font);
     };
 
     this.init = function()

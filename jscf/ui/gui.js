@@ -54,6 +54,7 @@ function GuiManager(game)
 		var bg = new Plane(game, w, h, bgcolor);
 		bg.effect = shadowFx;
 		e.addChild(__GUIMANAGER_BG_NAME, bg);
+
 		return e;
 	};
 
@@ -88,6 +89,7 @@ function GuiManager(game)
 	this.createButton = function(name, x, y, w, h, bgcolor, txt, txtstyle, font)
 	{
 		var e = this.createContainer(name, x, y, w, h, bgcolor);
+        var bg = e.getChildAt(0);
 
 		// Add text
 		var t = new Text(game, txt, txtstyle, font);
@@ -245,12 +247,13 @@ function GuiManager(game)
         var panelScript = {
 			update: function()
 			{
+                const NEW_LINE =  "\n";
 				var txt = listLabel.getChildAt(0);
 				if (txt.enabled) {
 					var entities = Object.keys(game.getCurrentScene().entities);
 					var finalText = "";
 					for (var i = 0; i < entities.length; i++) {
-						finalText += self.buildString(game.getCurrentScene().getEntity(entities[i])) + "\n";
+						finalText += self.buildString(game.getCurrentScene().getEntity(entities[i])) + NEW_LINE;
 					}
 					txt.setText(finalText);
 				} else {
