@@ -12,6 +12,9 @@
 function Textbox(parent, w, h, txt)
 {
 	const TEXT_HEIGHT_RATIO = 0.8;
+    const WIDTH_ERR_RATE = .97;
+    const HEIGHT_ERR_RATE = .5;
+
 	this.parent = parent;
 	this.textBox = new CanvasInput({
 		canvas: parent.game.graphics.canvas,
@@ -25,6 +28,18 @@ function Textbox(parent, w, h, txt)
 		boxShadow: "0px 0px 0px #fff"
 	});
 
+    this.setDimentions = function(w, h) {
+        if (w > 0)
+            this.textBox.width(w * WIDTH_ERR_RATE);
+        if (h > 0)
+            this.textBox.height(h * HEIGHT_ERR_RATE);
+    };
+
+    this.getDimentions = function()
+    {
+        return new Vector2d(this.textBox.width()/WIDTH_ERR_RATE, this.textBox.height()/HEIGHT_ERR_RATE);
+    };
+
     /**
      *    updates the textbox transform
      *
@@ -37,8 +52,9 @@ function Textbox(parent, w, h, txt)
 		}
 
 		var transform = this.parent.getGlobalTransform();
-		var newPosX = Math.round(transform.pos.x - this.textBox.width()/2);
-		var newPosY = Math.round(transform.pos.y + this.textBox.height()/2);
+        var dims = this.getDimentions();
+		var newPosX = Math.round(transform.pos.x - dims.x/2);
+		var newPosY = Math.round(transform.pos.y - dims.y/2);
 
 		this.textBox.x(newPosX);
 		this.textBox.y(newPosY);

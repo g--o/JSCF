@@ -242,30 +242,53 @@ function Entity(game, name, alive, x, y, automated)
     };
 
     /**
-     *    gets default shape from first shaped child (a child with width+height)
+     *    gets default dimentions (encapsulating children)
      *
      *    @method
-     *    @return {Vector2d} default width height 2d vector from first shaped child.
+     *    @return {Vector2d} default width height 2d vector.
      */
-    this.getShapeByChild = function()
+    this.getDimentions = function()
     {
-        var shape = null;
+        var shape = new Vector2d(0, 0);
 
         for (var childName in this.children) {
             if (this.children.hasOwnProperty(childName) && this.children[childName]) {
                 var child = this.children[childName];
-                if (child.width && child.height) {
-                    shape = new Vector2d(child.width, child.height);
-                    break;
+                if (child.getDimentions) {
+                    var dims = child.getDimentions();
+                    dims.x = Math.max(dims.x, 0);
+                    dims.y = Math.max(dims.y, 0);
+
+                    if (child.transform) {
+                        var posDiff = child.transform.pos.clone();
+                        dims.x += Math.abs(posDiff.x);
+                        dims.y += Math.abs(posDiff.y);
+                    }
+                    shape.x = Math.max(shape.x, dims.x);
+                    shape.y = Math.max(shape.y, dims.y);
                 }
             }
         }
 
-        if (shape != null)
-            return shape;
+        return shape;
+    };
 
-        // wasn't found, return scale transform
-        return new Vector2d(this.transform.scale.x, this.transform.scale.y);
+    /**
+     *    force dimentions
+     *
+     *    @method
+     *    @param  {Number} w width
+     *    @param  {Number} h height
+     */
+    this.setDimentions = function(w, h)
+    {
+        for (var childName in this.children) {
+            if (this.children.hasOwnProperty(childName) && this.children[childName]) {
+                var child = this.children[childName];
+                if (child.setDimentions)
+                    child.setDimentions(w, h);
+            }
+        }
     };
 
     /**

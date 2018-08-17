@@ -17,6 +17,32 @@ function Plane(game, width, height, color)
     this.effect = null;
 
     /**
+     *    sets width & height
+     *
+     *    @method
+     *    @param  {Number} w width to set
+     *    @param  {Number} h height to set
+     */
+    this.setDimentions = function(w, h)
+    {
+        if (w > 0)
+            this.width = w;
+        if (h > 0)
+            this.height = h;
+    };
+
+    /**
+     *    get width & height
+     *
+     *    @method
+     *    @return {Vector2d} vector2d of (width, height)
+     */
+    this.getDimentions = function()
+    {
+        return new Vector2d(this.width, this.height);
+    };
+
+    /**
      *    renders the plane
      *
      *    @method

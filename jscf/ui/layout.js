@@ -48,27 +48,28 @@ var LinedLayout = {
 	 *    @param  {Entity} target the container to apply changes to.
 	 */
 	doLayout : function(target) {
-        const MARGIN = 30;
-        const SCALING = .6;
-        var shape = target.getShapeByChild();
+        const MARGIN = 10;
+
+        var shape = target.getDimentions();
         var children = target.getEntityChildren();
 
         var lineWidth = shape.x - MARGIN;
-        var lineHeight = shape.y/children.length * SCALING;
-        var curLine = 0;
+        var curLine = MARGIN;
 
         for (var i = 0; i < children.length; i++) {
             var child = children[i];
+            var childHeight = child.getDimentions().y + MARGIN;
+
+            // set top at y=0
+            curLine += childHeight/2;
+
             if (child.transform) {
-                child.transform.pos = new Vector2d(0, (-shape.y/2) + (lineHeight * curLine));
-                if (child.getChildAt(0).textBox)
-                    child.getChildAt(0).textBox.width(lineWidth);
-                else {
-                    ; // scale
-                }
+                child.transform.pos = new Vector2d(0, (-shape.y/2) + curLine);
+                child.setDimentions(lineWidth, -1); // update but keep y.
             }
 
-            curLine++;
+            // set bottom at y=childHeight
+            curLine += childHeight/2;
         }
 	}
 };
