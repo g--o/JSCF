@@ -52,6 +52,8 @@ function _clone(item) {
 
 /**
  * The resource manager. Handles URL resources as well as objects.
+ *
+ * @memberof Resources
  * @constructor
  */
 function ResourceManager()

@@ -2,16 +2,18 @@
 ## JSCF Documentation
 
 JSCF is built out of core classes and components.
-These documents contain only the API of these classes and are generated via jsdoc.
+These documents contain the API of these classes and are generated via jsdoc.
+
+**Note that the namespaces represent the file tree only. When coding with JSCF do NOT use namespaces, and you do NOT need to require modules! (everything's in global scope and minified)**
 
 
 For more info you can check out the project wiki: [here](https://github.com/g--o/JSCF/wiki)
 
 ## Getting started
 
-If you want to understand JSCF the best entry point would be [jscf.js](jscf.js.html) and the [Game](Game.html) class.
-Next, you should try to understand the different managers at play: [SceneManager](SceneManager.html), [InputManager](InputManager.html),
-[ResourceManager](ResourceManager.html) and [GuiManager](GuiManager.html) to name a few.
+If you want to understand JSCF the best entry point would be [jscf.js](core_jscf.js.html) and the [Game](Core.Game.html) class.
+Next, you should try to understand the different managers at play: [SceneManager](Scene.SceneManager.html), [InputManager](Input.InputManager.html),
+[ResourceManager](Resources.ResourceManager.html) and [GuiManager](UI.GuiManager.html) to name a few.
 
 ## Support
 

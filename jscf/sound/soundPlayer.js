@@ -1,13 +1,18 @@
-
 /**
  * @class
  * @classdesc sound player class.
+ * @memberof Sound
  *
  * @param       {String} src URL to sound to play
  * @constructor
  */
 function SoundPlayer(src)
 {
+    /**
+     *    the sound element
+     *
+     *    @type {DOMElement}
+     */
     this.sound = document.createElement("audio");
     this.sound.style.display = "none";
     this.sound.src = src;

@@ -1,7 +1,8 @@
-
 /**
  * Asset management class
  * @param       {String} assetsDir path to the asset directory
+ *
+ * @memberof Resources
  * @constructor
  */
 function AssetManager(assetsDir)

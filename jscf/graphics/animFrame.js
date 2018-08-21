@@ -1,7 +1,7 @@
-
 /**
  * @class
  * @classdesc the animation frame class
+ * @memberof Graphics
  *
  * @param       {Number} px the frame x position
  * @param       {Number} py the frame y position

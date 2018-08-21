@@ -1,7 +1,7 @@
-
 /**
  * @class
  * @classdesc the input manager of the engine's game object.
+ * @memberof Input
  *
  * @param {Canvas} canvas   the canvas object (usually from the Graphics module).
  *

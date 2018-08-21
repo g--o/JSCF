@@ -1,16 +1,28 @@
-
 /**
  * Scene class. (World class in other engines)
- * @param       {Game} game          the game object
+ * @param       {Core.Game} game          the game object
  * @param       {Number} tick_duration the time (in seconds) for a step (update)
  *                       in the scene (usually 1/fps)
+ *
+ * @memberof Scene
  * @constructor
  */
 function Scene(game, tick_duration)
 {
     this.max_euid = 0;
     this.entities = {};
+
+    /**
+     *    is scene paused
+     *
+     *    @type {Boolean}
+     */
     this.paused = false;
+    /**
+     *    scene's physics engine
+     *
+     *    @type {Physics.PhysicsEngine}
+     */
     this.physicsEngine = new PhysicsEngine(this.entities, tick_duration);
 
     /**
@@ -90,7 +102,7 @@ function Scene(game, tick_duration)
      *
      *    @method
      *    @param  {String} name entity name
-     *    @return {Entity}      entity if found, null otherwise.
+     *    @return {Core.Entity}      entity if found, null otherwise.
      */
     this.getEntity = function(name)
     {
@@ -112,7 +124,7 @@ function Scene(game, tick_duration)
      *    adds entity
      *
      *    @method
-     *    @param  {Entity} entity the entity to add
+     *    @param  {Core.Entity} entity the entity to add
      *    @return {Boolean}       true if added, false otherwise.
      */
     this.addEntity = function(entity)
@@ -133,7 +145,7 @@ function Scene(game, tick_duration)
      *    @param  {Number} x          the x position
      *    @param  {Number} y          the y position
      *    @param  {object} firstChild entity's first child
-     *    @return {Entity}            the newly created entity
+     *    @return {Core.Entity}            the newly created entity
      */
     this.createManualEntity = function(name, x, y, firstChild) {
         var e = new Entity(game, name, true, x, y, false);
@@ -149,7 +161,7 @@ function Scene(game, tick_duration)
      *    @param  {Number} x          the x position
      *    @param  {Number} y          the y position
      *    @param  {object} firstChild entity's first child
-     *    @return {Entity}            the newly created entity
+     *    @return {Core.Entity}            the newly created entity
      */
     this.createEntity = function(name, x, y, firstChild)
     {
@@ -163,7 +175,7 @@ function Scene(game, tick_duration)
      *
      *    @method
      *    @param  {object} firstChild entity's first child
-     *    @return {Entity}            the newly created entity
+     *    @return {Core.Entity}            the newly created entity
      */
     this.createNewEntity = function(firstChild)
     {
@@ -176,7 +188,7 @@ function Scene(game, tick_duration)
      *    generates child name
      *
      *    @method
-     *    @param  {Entity} parent parent entity
+     *    @param  {Core.Entity} parent parent entity
      *    @param  {object} child  child object/entity
      *    @return {String}        the generated name
      */

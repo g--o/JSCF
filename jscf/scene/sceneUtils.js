@@ -3,6 +3,8 @@
 
 /**
  * Scene utilities - serves as a static-like class to access scene utils.
+ *
+ * @memberof Scene
  */
 var SceneUtils = {
 
@@ -10,7 +12,7 @@ var SceneUtils = {
      *    makes a sprite floor inefficently
      *
      *    @method
-     *    @param  {Game} game        the game object
+     *    @param  {Core.Game} game        the game object
      *    @param  {Number} x           the initial x position
      *    @param  {Number} y           the initial y position
      *    @param  {Number} floor_width the floor's width

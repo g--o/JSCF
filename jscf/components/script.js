@@ -1,4 +1,3 @@
-
 /****************************************************
 	script.js - an entity script component class
 *****************************************************/
@@ -7,7 +6,11 @@ const __SCRIPT_COMPONENT_NAME = "[builtin_script]";
 
 /**
  * script component - the script component object used as a c'tor to extend it.
- * @param  {Entity} owner parent entity
+
+ *
+ * @memberof    Components
+ *
+ * @param  {Core.Entity} owner parent entity
  * @return {object}       null
  * @constructor
  */

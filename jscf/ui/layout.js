@@ -1,24 +1,26 @@
 
 /**
  *    Raw layout static class
+ *    @namespace
+ *    @memberof UI
  */
 var Layout = {
 
 	/**
-	 * 	@method
 	 *	The method calculates a target children container preferred size based on its content.
 	 *
-	 * 	@param  {Entity} target the entity to contain
+     * 	@method
+	 * 	@param  {Core.Entity} target the entity to contain
 	 */
 	calcPreferredSize : function(target) {
 
 	},
 
 	/**
-	 *    @method
 	 *    The method orders the target children container based on specific rules the manager implements.
 	 *
-	 *    @param  {Entity} target the container to apply changes to.
+     *    @method
+	 *    @param  {Core.Entity} target the container to apply changes to.
 	 */
 	doLayout : function(target) {
 
@@ -27,25 +29,26 @@ var Layout = {
 
 /**
  *    Lined layout static class
+ *    @namespace
+ *    @memberof UI
  */
 var LinedLayout = {
 
     /**
-	 * 	@method
-	 *
 	 *	The method calculates a target children container preferred size based on its content.
 	 *
-	 * 	@param  {Entity} target the entity to contain
+     * 	@method
+	 * 	@param  {Core.Entity} target the entity to contain
 	 */
 	calcPreferredSize : function(target) {
 
 	},
 
 	/**
-	 *    @method
 	 *    The method orders the target children container based on specific rules the manager implements.
 	 *
-	 *    @param  {Entity} target the container to apply changes to.
+     *    @method
+	 *    @param  {Core.Entity} target the container to apply changes to.
 	 */
 	doLayout : function(target) {
         const MARGIN = 10;

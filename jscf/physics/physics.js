@@ -1,8 +1,7 @@
-
-
 /**
  * @class
  * @classdesc the physics engine of JSCF.
+ * @memberof Physics
  *
  * @param {Container} entities   container of entities (usually dictionary).
  * @param {Number} tick_duration the time (in seconds) of a tick (usually 1/fps)
@@ -11,10 +10,30 @@
  */
 function PhysicsEngine(entities, tick_duration)
 {
-	this.pixelMeterRatio = 50; // px/meter
+    /**
+     *    pixels/meter ratio (default: 50)
+     *
+     *    @type {Number}
+     */
+	this.pixelMeterRatio = 50;
+    /**
+     *    number of iterations/ticks per update (default: 5)
+     *
+     *    @type {Number}
+     */
 	this.numIterations = 5;
+    /**
+     *    tick duration in seconds. Should be linear to 1/numIterations! (default: Scene.tick_duration/numIterations)
+     *
+     *    @type {Number}
+     */
 	this.tickDuration = tick_duration/this.numIterations;
-	this.gravity = new Vector2d(0, 9.8 * this.pixelMeterRatio); // acceleration (m/s^2)
+    /**
+     *    gravity acceleration in px/s^2 (default: (0, 9.8 * pixelMeterRatio) )
+     *
+     *    @type {Utils.Vector2d}
+     */
+	this.gravity = new Vector2d(0, 9.8 * this.pixelMeterRatio); // acceleration
 
 	// Disable if no rigidbody component was found
 	if (typeof(Rigidbody) == "undefined") {
@@ -22,11 +41,13 @@ function PhysicsEngine(entities, tick_duration)
 		this.numIterations = 0;
 	}
 
+    /////////// Methods ///////////
+
     /**
      *    applys natural forces to a rigidbody component
      *
      *    @method
-     *    @param  {Rigidbody} rigidbody rigidbody component
+     *    @param  {Components.Rigidbody} rigidbody rigidbody component
      */
 	this.applyNaturalForces = function(rigidbody)
 	{
@@ -39,7 +60,7 @@ function PhysicsEngine(entities, tick_duration)
      *    resolve a collision described by a manifold
      *
      *    @method
-     *    @param  {Manifold} manifold collision manifold of two entities.
+     *    @param  {Physics.Manifold} manifold collision manifold of two entities.
      */
 	this.applyCollision = function(manifold) // accepts collision manifold
 	{
@@ -53,7 +74,7 @@ function PhysicsEngine(entities, tick_duration)
      *    fixes penetration/energy loss
      *
      *    @method
-     *    @param  {Manifold} manifold collision manifold
+     *    @param  {Physics.Manifold} manifold collision manifold
      */
 	this.fixPenetration = function(manifold)
 	{

@@ -1,6 +1,7 @@
 /**
  * @class
  * @classdesc graphics related management (mainly canvas)
+ * @memberof Graphics
  *
  * @param {Number} canvasWidth  the width of the canvas to be created.
  * @param {Number} canvasHeight  the height of the canvas to be created.

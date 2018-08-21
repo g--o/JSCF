@@ -1,4 +1,3 @@
-
 /***************************
 	collider component.
 ***************************/
@@ -7,9 +6,10 @@ const __COLLIDER_NAME = "[builtin_collider]";
 
 /**
  * @class
- * @classdesc Collider component class
+ * @classdesc 	Collider component class
+ * @memberof    Components
  *
- * @param  {Entity} owner the entity the component's being applied to.
+ * @param  {Core.Entity} owner the entity the component's being applied to.
  * @param  {object} collisionResolver  collider object (e.g: AABB, CircleCollider)
  * @param  {Container} potential_entities container of potential entities to check against
  * 										  (usually dictionary)
@@ -22,8 +22,8 @@ var Collider = function(owner, collisionResolver, potential_entities)
 	 *    gets normal with other collider
 	 *
 	 *    @method
-	 *    @param  {Collider} otherCollider 	other collider
-	 *    @return {Vector2d}				the normal of the collision
+	 *    @param  {Components.Collider} otherCollider 	other collider
+	 *    @return {Utils.Vector2d}				the normal of the collision
 	 */
 	this.getNormal = function(otherCollider)
 	{
