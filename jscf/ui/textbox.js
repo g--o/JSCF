@@ -40,6 +40,18 @@ function Textbox(parent, w, h, txt)
 		boxShadow: "0px 0px 0px #fff"
 	});
 
+    this.setDimentions = function(w, h) {
+        if (w > 0)
+            this.textBox.width(w * WIDTH_ERR_RATE);
+        if (h > 0)
+            this.textBox.height(h * HEIGHT_ERR_RATE);
+    };
+
+    this.getDimentions = function()
+    {
+        return new Vector2d(this.textBox.width()/WIDTH_ERR_RATE, this.textBox.height()/HEIGHT_ERR_RATE);
+    };
+
     /**
      *    Set dimentions
      *

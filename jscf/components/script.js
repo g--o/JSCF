@@ -6,6 +6,7 @@ const __SCRIPT_COMPONENT_NAME = "[builtin_script]";
 
 /**
  * script component - the script component object used as a c'tor to extend it.
+
  *
  * @memberof    Components
  *
