@@ -1,4 +1,3 @@
-
 /***************************
 	rigid body component.
 ***************************/
@@ -9,9 +8,10 @@ const __RIGIDBODY_STAIC_MASS = 1/__RIGIDBODY_EPSILON;
 
 /**
  * @class
- * @classdesc rigidbody component class.
+ * @classdesc	rigidbody component class.
+ * @memberof    Components
  *
- * @param       {Entity} owner the entity the component's being applied to.
+ * @param       {Core.Entity} owner the entity the component's being applied to.
  * @param 		{Number} tick_duration (defaults to the physics engine's tick duration)
  * 										the time (in seconds) of a tick (usually 1/fps).
  * @constructor
@@ -23,7 +23,7 @@ var Rigidbody = function(owner, tick_duration)
 	 *    sets parent (attches component to entity p)
 	 *
 	 *    @method
-	 *    @param  {Entity} p entity to attach to (should be parent; parent can be object)
+	 *    @param  {Core.Entity} p entity to attach to (should be parent; parent can be object)
 	 */
 	this.setParent = function(p)
 	{
@@ -69,8 +69,8 @@ var Rigidbody = function(owner, tick_duration)
 	 *    resolve collision between this and other rigidbody
 	 *
 	 *    @method
-	 *    @param  {Rigidbody} other  other rigidbody (that collides with this one)
-	 *    @param  {Vector2d} normal collision normal
+	 *    @param  {Components.Rigidbody} other  other rigidbody (that collides with this one)
+	 *    @param  {Utils.Vector2d} normal collision normal
 	 */
 	this.calcCollision = function(other, normal)
 	{
@@ -112,8 +112,8 @@ var Rigidbody = function(owner, tick_duration)
 	 *    fixes bodies penetration/energy loss
 	 *
 	 *    @method
-	 *    @param  {Rigidbody} other  other rigidbody (that collides with this one)
-	 *    @param  {Vector2d} penVec  penetration vector of the two rigidbodies
+	 *    @param  {Components.Rigidbody} other  other rigidbody (that collides with this one)
+	 *    @param  {Utils.Vector2d} penVec  penetration vector of the two rigidbodies
 	 */
 	this.fixPenetration = function(other, penVec)
 	{
@@ -130,7 +130,7 @@ var Rigidbody = function(owner, tick_duration)
 	 *    applys acceleration to the rigidbody over the tick
 	 *
 	 *    @method
-	 *    @param  {Vector2d} acceleration the acceleration vector
+	 *    @param  {Utils.Vector2d} acceleration the acceleration vector
 	 */
 	this.applyAcceleration = function(acceleration)
 	{
@@ -145,7 +145,7 @@ var Rigidbody = function(owner, tick_duration)
 	 *    applys velocity to the rigidbody
 	 *
 	 *    @method
-	 *    @param  {Vector2d} velocity the velocity to add over the tick
+	 *    @param  {Utils.Vector2d} velocity the velocity to add over the tick
 	 */
 	this.applyVelocity = function(velocity)
 	{

@@ -1,6 +1,8 @@
-
 /**
- * Circle collider class
+ * @class
+ * @classdesc   Circle collider class
+ * @memberof    Colliders
+ *
  * @param       {Number} _x x coordinate of the circle (center)
  * @param       {Number} _y y coordinate of the circle (center)
  * @param       {Number} _R the circle radius
@@ -13,7 +15,7 @@ function CircleCollider(_x, _y, _R)
      *    set the CircleCollider position from a transform.
      *
      *    @method
-     *    @param  {Transform} transform the transform to get position from
+     *    @param  {Core.Transform} transform the transform to get position from
      */
 	this.setTransform = function(transform) // for now ignores scale
 	{
@@ -39,7 +41,7 @@ function CircleCollider(_x, _y, _R)
      *    checks CircleCollider collision with other CircleCollider.
      *
      *    @method
-     *    @param  {CircleCollider}  other other CircleCollider to check collision against.
+     *    @param  {Colliders.CircleCollider}  other other CircleCollider to check collision against.
      *    @return {Boolean}         true if they collide, false otherwise.
      */
     this.isColliding = function(other)
@@ -51,8 +53,8 @@ function CircleCollider(_x, _y, _R)
      *    calculates penetration vector with other CircleCollider. Assumes penetration itself.
      *
      *    @method
-     *    @param  {CircleCollider} other  other AABB to calculate penetration with.
-     *    @return {Vector2d}    the penetration vector.
+     *    @param  {Colliders.CircleCollider} other  other AABB to calculate penetration with.
+     *    @return {Utils.Vector2d}    the penetration vector.
      */
 	this.getPenetration = function(other)
 	{
@@ -70,8 +72,8 @@ function CircleCollider(_x, _y, _R)
      *    calculates normal vector with other CircleCollider. Assumes penetration.
      *
      *    @method
-     *    @param  {CircleCollider} other    other CircleCollider to calculate normal with.
-     *    @return {Vector2d}                the normal vector.
+     *    @param  {Colliders.CircleCollider} other    other CircleCollider to calculate normal with.
+     *    @return {Utils.Vector2d}                the normal vector.
      */
     this.getNormal = function(other)
     {

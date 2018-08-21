@@ -1,4 +1,3 @@
-
 /***************************
 	Button Handler component.
 ***************************/
@@ -10,7 +9,9 @@ const __BUTTON_HANDLER_HOVER_MAX = 1.5;
 /**
  * @class
  * @classdesc 	the button handler component.
- * @param       {Entity} owner the entity the component's being applied to.
+ * @memberof    Components
+ *
+ * @param       {Core.Entity} owner the entity the component's being applied to.
  * @param       {Number} speed animation speed (ticks per second).
  * @constructor
  */

@@ -1,7 +1,7 @@
-
 /**
  * @class
- * @classdesc Axis-Aligned Bounding Box
+ * @classdesc   Axis-Aligned Bounding Box
+ * @memberof    Colliders
  *
  * @param       {Number} _x      x position of the AABB
  * @param       {Number} _y      y position of the AABB
@@ -17,7 +17,7 @@ function AABB(_x, _y, _width, _height)
      *    set the AABB position from a transform.
      *
      *    @method
-     *    @param  {Transform} transform the transform to get position from
+     *    @param  {Core.Transform} transform the transform to get position from
      */
 	this.setTransform = function(transform) // for now ignores scale
 	{
@@ -43,7 +43,7 @@ function AABB(_x, _y, _width, _height)
      *    checks AABB collision with other AABB.
      *
      *    @method
-     *    @param  {AABB} other other AABB to check collision against.
+     *    @param  {Colliders.AABB} other other AABB to check collision against.
      *    @return {Boolean}    true if they collide, false otherwise.
      */
     this.isColliding = function(other)
@@ -63,8 +63,8 @@ function AABB(_x, _y, _width, _height)
      *    calculates penetration vector with other AABB. Assumes penetration itself.
      *
      *    @method
-     *    @param  {AABB} other  other AABB to calculate penetration with.
-     *    @return {Vector2d}    the penetration vector.
+     *    @param  {Colliders.AABB} other  other AABB to calculate penetration with.
+     *    @return {Utils.Vector2d}    the penetration vector.
      */
 	this.getPenetration = function(other)
 	{
@@ -84,8 +84,8 @@ function AABB(_x, _y, _width, _height)
      *    calculates normal vector with other AABB. Assumes penetration.
      *
      *    @method
-     *    @param  {AABB} other  other AABB to calculate normal with.
-     *    @return {Vector2d}    the normal vector.
+     *    @param  {Colliders.AABB} other  other AABB to calculate normal with.
+     *    @return {Utils.Vector2d}    the normal vector.
      */
     this.getNormal = function(other)
     {

@@ -2,6 +2,8 @@
 /**
  * @class
  * @classdesc the vector handling class
+ * @memberof Utils
+ *
  * @param       {Number} x the x coordinate (defaults to 0)
  * @param       {Number} y the y coordinate (defaults to 0)
  * @constructor
@@ -19,7 +21,7 @@ function Vector2d(x, y)
      *    @method
      *    @param  {Number} ax scalar to add to x component
      *    @param  {Number} ay scalar to add to y component
-     *    @return {Vector2d}  the updated vector
+     *    @return {Utils.Vector2d}  the updated vector
      */
     this.add = function(ax, ay)
     {
@@ -36,7 +38,7 @@ function Vector2d(x, y)
      *    @method
      *    @param  {Number} ax scalar to sub to x component
      *    @param  {Number} ay scalar to sub to y component
-     *    @return {Vector2d}  the updated vector
+     *    @return {Utils.Vector2d}  the updated vector
      */
     this.sub = function(ax, ay)
     {
@@ -51,7 +53,7 @@ function Vector2d(x, y)
      *
      *    @method
      *    @param  {Number} d    scalar to add
-     *    @return {Vector2d}    the updated vector
+     *    @return {Utils.Vector2d}    the updated vector
      */
     this.scalarAdd = function(d)
     {
@@ -63,7 +65,7 @@ function Vector2d(x, y)
      *
      *    @method
      *    @param  {Number} d    scalar to subtract
-     *    @return {Vector2d}    the updated vector
+     *    @return {Utils.Vector2d}    the updated vector
      */
     this.scalarSub = function(d)
     {
@@ -75,7 +77,7 @@ function Vector2d(x, y)
      *
      *    @method
      *    @param  {Number} scalar   scalar to multiply by
-     *    @return {Vector2d}        the updated vector
+     *    @return {Utils.Vector2d}        the updated vector
      */
     this.scalarMul = function(scalar)
     {
@@ -88,7 +90,7 @@ function Vector2d(x, y)
      *
      *    @method
      *    @param  {Number} scalar   scalar to divide by
-     *    @return {Vector2d}        the updated vector
+     *    @return {Utils.Vector2d}        the updated vector
      */
     this.scalarDiv = function(scalar)
     {
@@ -104,8 +106,8 @@ function Vector2d(x, y)
      *    adds another vector
      *
      *    @method
-     *    @param  {Vector2d} vec vector to add to this vector
-     *    @return {Vector2d}        the updated vector
+     *    @param  {Utils.Vector2d} vec vector to add to this vector
+     *    @return {Utils.Vector2d}        the updated vector
      */
     this.addVector = function(vec)
     {
@@ -116,8 +118,8 @@ function Vector2d(x, y)
      *    subtracts another vector
      *
      *    @method
-     *    @param  {Vector2d} vec    vector to sub from this vector
-     *    @return {Vector2d}        the updated vector
+     *    @param  {Utils.Vector2d} vec    vector to sub from this vector
+     *    @return {Utils.Vector2d}        the updated vector
      */
     this.subVector = function(vec)
     {
@@ -128,7 +130,7 @@ function Vector2d(x, y)
      *    dot product by another vector
      *
      *    @method
-     *    @param  {Vecto2d} vec     another vector to dot product by
+     *    @param  {Vector2d} vec    another vector to dot product by
      *    @return {Number}          the dot product
      */
     this.dotProduct = function(vec)
@@ -153,7 +155,7 @@ function Vector2d(x, y)
      *    gets the normalized vector as new vector
      *
      *    @method
-     *    @return {Vector2d} the normalized vector
+     *    @return {Utils.Vector2d} the normalized vector
      */
     this.getNormal = function()
     {
@@ -195,7 +197,7 @@ function Vector2d(x, y)
      *    clones the vector
      *
      *    @method
-     *    @return {Vector2d} copy of the vector
+     *    @return {Utils.Vector2d} copy of the vector
      */
     this.clone = function() {
         return new Vector2d(this.x, this.y);
@@ -211,9 +213,9 @@ const Vector = {
      *    adds two vectors and returns the sum in new vector
      *
      *    @method
-     *    @param  {Vector2d} vec1 a vector to add
-     *    @param  {Vector2d} vec2 a vector to add
-     *    @return {Vector2d}      new summed vector
+     *    @param  {Utils.Vector2d} vec1 a vector to add
+     *    @param  {Utils.Vector2d} vec2 a vector to add
+     *    @return {Utils.Vector2d}      new summed vector
      */
     addVector : function(vec1, vec2)
     {
@@ -224,9 +226,9 @@ const Vector = {
      *    subtracts first vector from second and returns the subtracted in new vector
      *
      *    @method
-     *    @param  {Vector2d} vec1 vector to sub from
-     *    @param  {Vector2d} vec2 vector to sub
-     *    @return {Vector2d}      new subtracted vector
+     *    @param  {Utils.Vector2d} vec1 vector to sub from
+     *    @param  {Utils.Vector2d} vec2 vector to sub
+     *    @return {Utils.Vector2d}      new subtracted vector
      */
     subVector : function(vec1, vec2)
     {

@@ -1,9 +1,9 @@
-
 /**
  * @class
  * @classdesc sprite graphic class
+ * @memberof Graphics
  *
- * @param       {Game} game       the game object
+ * @param       {Core.Game} game       the game object
  * @param       {Number} width    width of the sprite.
  * @param       {Number} height   height of the sprite.
  * @param       {String} url      the URL of the sprite graphic
@@ -11,8 +11,19 @@
  */
 function Sprite(game, width, height, url)
 {
+    /**
+     *    width
+     *
+     *    @type {Number}
+     */
     this.width = width;
+    /**
+     *    height
+     *
+     *    @type {Number}
+     */
     this.height = height;
+    
     this.image = new Image();
     this.image.src = url;
 

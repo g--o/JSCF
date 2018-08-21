@@ -9,9 +9,13 @@
  */
 
 /**
- * @module
- * @moduledesc External (and customized) library for canvas input (textboxes etc..)
+ * @module CanvasInput
+ * @memberof UI
  */
+
+/***********************************************************
+    Customized library for canvas input (textboxes etc..)
+***********************************************************/
 
 (function() {
   // create a buffer that stores all inputs so that tabbing
@@ -774,7 +778,7 @@
      * Place focus on the CanvasInput box, placing the cursor
      * either at the end of the text or where the user clicked.
      * @param  {Number} pos (optional) The position to place the cursor.
-     * @return {CanvasInput}
+     * @return {UI.CanvasInput}
      */
     focus: function(pos) {
       var self = this;
@@ -838,7 +842,7 @@
     /**
      * Removes focus from the CanvasInput box.
      * @param  {Object} _this Reference to this.
-     * @return {CanvasInput}
+     * @return {UI.CanvasInput}
      */
     blur: function(_this) {
       var self = _this || this;
@@ -864,8 +868,8 @@
     /**
      * Fired with the keydown event to draw the typed characters.
      * @param  {Event}       e    The keydown event.
-     * @param  {CanvasInput} self
-     * @return {CanvasInput}
+     * @param  {UI.CanvasInput} self
+     * @return {UI.CanvasInput}
      */
     keydown: function(e, self) {
       var keyCode = e.which,
@@ -919,8 +923,8 @@
      * Fired with the click event on the canvas, and puts focus on/off
      * based on where the user clicks.
      * @param  {Event}       e    The click event.
-     * @param  {CanvasInput} self
-     * @return {CanvasInput}
+     * @param  {UI.CanvasInput} self
+     * @return {UI.CanvasInput}
      */
     click: function(e, self) {
       var mouse = self._mousePos(e),
@@ -947,8 +951,8 @@
     /**
      * Fired with the mousemove event to update the default cursor.
      * @param  {Event}       e    The mousemove event.
-     * @param  {CanvasInput} self
-     * @return {CanvasInput}
+     * @param  {UI.CanvasInput} self
+     * @return {UI.CanvasInput}
      */
     mousemove: function(e, self) {
       var mouse = self._mousePos(e),
@@ -987,7 +991,7 @@
     /**
      * Fired with the mousedown event to start a selection drag.
      * @param  {Event} e    The mousedown event.
-     * @param  {CanvasInput} self
+     * @param  {UI.CanvasInput} self
      */
     mousedown: function(e, self) {
       var mouse = self._mousePos(e),
@@ -1007,7 +1011,7 @@
     /**
      * Fired with the mouseup event to end a selection drag.
      * @param  {Event} e    The mouseup event.
-     * @param  {CanvasInput} self
+     * @param  {UI.CanvasInput} self
      */
     mouseup: function(e, self) {
       var mouse = self._mousePos(e),
@@ -1030,7 +1034,7 @@
     /**
      * Select a range of text in the input.
      * @param  {Array} range (optional) Leave blank to select all. Format: [start, end]
-     * @return {CanvasInput}
+     * @return {UI.CanvasInput}
      */
     selectText: function(range) {
       var self = this,
@@ -1058,7 +1062,7 @@
     /**
      * Clears and redraws the CanvasInput on an off-DOM canvas,
      * and if a main canvas is provided, draws it all onto that.
-     * @return {CanvasInput}
+     * @return {UI.CanvasInput}
      */
     render: function(force) {
 

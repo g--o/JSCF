@@ -2,8 +2,9 @@
 /**
  * @class
  * @classdsc textbox graphic class
+ * @memberof UI
  *
- * @param       {Entity} parent entity to attach to
+ * @param       {Core.Entity} parent entity to attach to
  * @param       {Number} w      the width
  * @param       {Number} h      the height
  * @param       {String} txt    the default text to display (defaults to "")
@@ -15,7 +16,18 @@ function Textbox(parent, w, h, txt)
     const WIDTH_ERR_RATE = .97;
     const HEIGHT_ERR_RATE = .5;
 
+    /**
+     *    parent
+     *
+     *    @type {Core.Entity}
+     */
 	this.parent = parent;
+
+    /**
+     *    textbox of CanvasInput object
+     *
+     *    @type {CanvasInput}
+     */
 	this.textBox = new CanvasInput({
 		canvas: parent.game.graphics.canvas,
 		width: w,
@@ -28,6 +40,13 @@ function Textbox(parent, w, h, txt)
 		boxShadow: "0px 0px 0px #fff"
 	});
 
+    /**
+     *    Set dimentions
+     *
+     *    @method
+     *    @param  {Number} w width
+     *    @param  {Number} h height
+     */
     this.setDimentions = function(w, h) {
         if (w > 0)
             this.textBox.width(w * WIDTH_ERR_RATE);
@@ -35,6 +54,12 @@ function Textbox(parent, w, h, txt)
             this.textBox.height(h * HEIGHT_ERR_RATE);
     };
 
+    /**
+     *    Get dimentions
+     *
+     *    @method
+     *    @return {Utils.Vector2d} vector containing width and height
+     */
     this.getDimentions = function()
     {
         return new Vector2d(this.textBox.width()/WIDTH_ERR_RATE, this.textBox.height()/HEIGHT_ERR_RATE);

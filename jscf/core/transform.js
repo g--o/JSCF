@@ -1,7 +1,7 @@
-
 /**
  * @class
  * @classdesc the transform class
+ * @memberof Core
  *
  * @param       {Number} x      the x coordinate
  * @param       {Number} y      the y coordinate
@@ -26,9 +26,9 @@ function Transform(x, y, xscale, yscale)
  *    adds two transforms
  *
  *    @method
- *    @param  {Transform} t1 a transform
- *    @param  {Transform} t2 a transform
- *    @return {Transform}    the joined transform
+ *    @param  {Core.Transform} t1 a transform
+ *    @param  {Core.Transform} t2 a transform
+ *    @return {Core.Transform}    the joined transform
  */
 Transform.add = function(t1, t2)
 {

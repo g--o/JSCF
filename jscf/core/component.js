@@ -1,4 +1,3 @@
-
 /****************************************************
 	component.js - an entity blank component class
 	Components in jscf are optional as you can use
@@ -12,14 +11,21 @@ const __COMPONENT_NAME = "[builtin_component]";
 /**
  * Component - the empty component object used as a c'tor to extend it.
  * 			   (this method replaces inheritance to keep wide support)
- * @param  {Entity} owner parent entity
+ *
+ * @memberof    Core
+ * @param  {Core.Entity} owner parent entity
  * @return {object}       null
  * @constructor
  */
 var Component = function(owner)
 {
-	this.name = __COMPONENT_NAME;
+	/**
+	*    component's owner ( and parent )
+	*
+	*    @type {Core.Entity}
+	*/
 	this.parent = owner;
+	this.name = __COMPONENT_NAME;
 	this.init = function() {};
 
 	/**

@@ -1,8 +1,9 @@
-
 /**
  * Scene manager.
- * @param       {Game} game             the game object
+ * @param       {Core.Game} game             the game object
  * @param       {Number} tick_duration  the default tick duration for a new scene.
+ *
+ * @memberof Scene
  * @constructor
  */
 function SceneManager(game, tick_duration)
@@ -37,7 +38,7 @@ function SceneManager(game, tick_duration)
      *    gets the current scene
      *
      *    @method
-     *    @return {Scene} the current scene
+     *    @return {Scene.Scene} the current scene
      */
     this.getCurrentScene = function()
     {
@@ -48,7 +49,7 @@ function SceneManager(game, tick_duration)
      *    sets current scene
      *
      *    @method
-     *    @param  {Scene} scene a scene to set
+     *    @param  {Scene.Scene} scene a scene to set
      *    @return {Boolean}     true if was set; false otherwise.
      */
     this.setCurrentScene = function(scene)

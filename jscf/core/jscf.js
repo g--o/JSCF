@@ -1,7 +1,7 @@
-
  /**
   * @class
   * @classdesc Game is the engine's game object to interface with.
+  * @memberof Core
   *
   * @param  {Number} canvasWidth  The width of the game canvas
   * @param  {Number} canvasHeight The height of the game canvas
@@ -14,18 +14,50 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
     // c'tor
     this.init = function()
     {
-        this.state = "loading";
         this.fps = fps;
         this.interval = null;
         this.graphics = null;
         this.update = null;
         this.automated = true;
+
+        /**
+         *    current state
+         *
+         *    @type {String}
+         */
+        this.state = "loading";
+
+
         // Managers
+        /**
+         *    input manager
+         *
+         *    @type {Input.InputManager}
+         */
         this.inputManager = null;
-        this.assetManager = null;
+        /**
+         *    gui manager
+         *
+         *    @type {UI.GuiManager}
+         */
         this.guiManager = null;
+        /**
+         *    resource manager
+         *
+         *    @type {Resources.ResourceManager}
+         */
         this.resourceManager = new ResourceManager();
+        /**
+         *    assetManager
+         *
+         *    @type {Resources.AssetManager}
+         */
         this.assetManager = new AssetManager(assetDir);
+        /**
+         *    sceneManager
+         *
+         *    @type {Scene.SceneManager}
+         */
         this.sceneManager = new SceneManager(this, 1.0/this.fps);
     };
     // calling c'tor

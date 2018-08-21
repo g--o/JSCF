@@ -1,6 +1,7 @@
 
 /**
  *    an epsilon to consider when using float calculations
+ *    @memberof Utils
  *
  *    @type {Number}
  */
@@ -8,6 +9,8 @@ const __EPSILON = 1e-8;
 
 /**
  * An object that is used as a static class for math utilities.
+ * @namespace
+ * @memberof Utils
  */
 var MathUtils = {
 

@@ -1,12 +1,13 @@
-
 /**
  * Entity object of the game engine.
- * @param       {Game} game         the game object
+ * @param       {Core.Game} game         the game object
  * @param       {String} name       the name of the entity
  * @param       {Boolean} alive     is the entity enabled or disabled?
  * @param       {Number} x          the x coordinate
  * @param       {Number} y          the y coordinate
  * @param       {Boolean} automated should the entity be automated (in update, render, etc)
+ *
+ * @memberof    Core
  * @constructor
  */
 function Entity(game, name, alive, x, y, automated)
@@ -179,7 +180,7 @@ function Entity(game, name, alive, x, y, automated)
      *    sets parent of current entity (make sure it's actually a child!)
      *
      *    @method
-     *    @param  {Entity} entity parent entity
+     *    @param  {Core.Entity} entity parent entity
      */
     this.setParent = function(entity)
     {
@@ -232,7 +233,7 @@ function Entity(game, name, alive, x, y, automated)
      *    gets global (recursive/world) transform.
      *
      *    @method
-     *    @return {Vector2d} the global transform.
+     *    @return {Utils.Vector2d} the global transform.
      */
     this.getGlobalTransform = function()
     {
@@ -245,7 +246,7 @@ function Entity(game, name, alive, x, y, automated)
      *    gets default dimentions (encapsulating children)
      *
      *    @method
-     *    @return {Vector2d} default width height 2d vector.
+     *    @return {Utils.Vector2d} default width height 2d vector.
      */
     this.getDimentions = function()
     {
@@ -316,17 +317,54 @@ function Entity(game, name, alive, x, y, automated)
 
     this.init = function()
     {
+        /**
+         *    name
+         *
+         *    @type {String}
+         */
         this.name = name;
+        /**
+         *    children dictionary
+         *
+         *    @type {Object}
+         */
+        this.children = {};
+        /**
+         *    transform
+         *
+         *    @type {Core.Transform}
+         */
+        this.transform = new Transform(x, y);
+        /**
+         *    the engine instance that created it
+         *
+         *    @type {Core.Game}
+         */
+        this.game = game;
+        /**
+         *    should automate physics
+         *
+         *    @type {Boolean}
+         */
+        this.auto_physics = automated;
+        /**
+         *    should automate rendering
+         *
+         *    @type {Boolean}
+         */
+        this.auto_render = automated;
+        /**
+         *    should automate update
+         *
+         *    @type {Boolean}
+         */
+        this.auto_update = automated;
+
         this.alive = alive;
         this.max_cid = 0;
         this.parent = null;
-        this.children = {};
-        this.transform = new Transform(x, y);
-        this.auto_physics = automated;
-        this.auto_render = automated;
-        this.auto_update = automated;
-        this.game = game;
     };
 
     this.init();
+
 }

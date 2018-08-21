@@ -1,10 +1,10 @@
-
 /**
  * @class
  * @classdesc Animation class
+ * @memberof Graphics
  *
- * @param       {Game} game          the game object
- * @param       {Sprite} sprite      the sprite object to apply animation to
+ * @param       {Core.Game} game          the game object
+ * @param       {Graphics.Sprite} sprite      the sprite object to apply animation to
  * @param       {Number} frameWidth  the sprite tile frame width
  * @param       {Number} frameHeight the sprite tile frame height
  * @param       {Number} speed       the animation speed (relative to fps)
@@ -14,6 +14,12 @@ function Animation(game, sprite, frameWidth, frameHeight, speed)
 {
     this.spr = sprite;
     this.frame = new AnimFrame(0, 0, frameWidth, frameHeight);
+
+    /**
+     *    current frame
+     *
+     *    @type {Number}
+     */
     this.frameCounter = 0;
 
     /**

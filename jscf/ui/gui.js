@@ -21,8 +21,9 @@ const __GUIMANAGER_TXTBOX_HEIGHT = 23;
 /**
  * @class
  * @classdesc the graphical interface manager of the engine's game object.
+ * @memberof UI
  *
- * @param {Game} game   the JSCF game object.
+ * @param {Core.Game} game   the JSCF game object.
  *
  * @constructor
  */
@@ -45,7 +46,7 @@ function GuiManager(game)
      *    @param  {Number} w       container width
      *    @param  {Number} h       container height
      *    @param  {String} bgcolor background color (2d context descriptor)
-     *    @return {Entity}         gui container entity
+     *    @return {Core.Entity}         gui container entity
      */
 	this.createContainer = function(name, x, y, w, h, bgcolor)
 	{
@@ -64,7 +65,7 @@ function GuiManager(game)
      *    @method
      *    @param  {Number} x       x position
      *    @param  {Number} y       y position
-     *    @return {Entity}         default gui container entity
+     *    @return {Core.Entity}         default gui container entity
      */
 	this.createDefaultContainer = function(x, y)
 	{
@@ -84,7 +85,7 @@ function GuiManager(game)
      *    @param  {String} txt      the text to display on button
      *    @param  {String} txtstyle text 2d context styling (can be just color)
      *    @param  {String} font     2d cotext font description
-     *    @return {Entity}          gui button entity
+     *    @return {Core.Entity}          gui button entity
      */
 	this.createButton = function(name, x, y, w, h, bgcolor, txt, txtstyle, font)
 	{
@@ -112,7 +113,7 @@ function GuiManager(game)
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
      *    @param  {String} txt      the text to display on button
-     *    @return {Entity}          default gui button entity
+     *    @return {Core.Entity}          default gui button entity
      */
 	this.createDefaultButton = function(x, y, txt)
 	{
@@ -132,7 +133,7 @@ function GuiManager(game)
      *    @param  {Number} h        textbox height
      *    @param  {String} bgcolor  background color (2d context descriptor)
      *    @param  {String} txt      the text to display on textbox
-     *    @return {Entity}          gui textbox entity
+     *    @return {Core.Entity}          gui textbox entity
      */
 	this.createTextBox = function(name, x, y, w, h, txt)
 	{
@@ -148,7 +149,7 @@ function GuiManager(game)
      *    @method
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
-     *    @return {Entity}          default gui textbox entity
+     *    @return {Core.Entity}          default gui textbox entity
      */
 	this.createDefaultTextBox = function(x, y)
 	{
@@ -162,7 +163,7 @@ function GuiManager(game)
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
      *    @param  {String} txt      the text to display
-     *    @return {Entity}          the gui label entity
+     *    @return {Core.Entity}          the gui label entity
      */
 	this.createLabel = function(x, y, txt)
 	{
@@ -178,7 +179,7 @@ function GuiManager(game)
      *    creates debug panel
      *
      *    @method
-     *    @return {Entity} returns debug panel entity
+     *    @return {Core.Entity} returns debug panel entity
      */
 	this.createDebugPanel = function()
 	{
@@ -264,8 +265,8 @@ function GuiManager(game)
 
         // Create the panel
 		var panel = game.guiManager.createContainer("left-panel", panelWidth/2, panelHeight/2, panelWidth, panelHeight, __GUIMANAGER_CONTAINER_COLOR);
-        panel.addComponent(LayoutComponent);
-        panel.getComponentOfType(LayoutComponent).layoutType = LinedLayout;
+        panel.addComponent(LayoutHandler);
+        panel.getComponentOfType(LayoutHandler).layoutType = LinedLayout;
 
         panel.insertChild(searchTB);
         panel.insertChild(transformLabel);

@@ -1,6 +1,8 @@
 
 /**
  * Point2d
+ * @memberof Utils
+ *
  * @param       {Number} _x0 the x coordinate
  * @param       {Number} _y0 the y coordinate
  * @constructor
@@ -13,7 +15,7 @@ function Point2d(_x0, _y0)
      *    distance to another point
      *
      *    @method
-     *    @param  {Point2d} other   point to measure distance to
+     *    @param  {Utils.Point2d} other   point to measure distance to
      *    @return {Number}          the distance between the points
      */
     this.distanceTo = function(other) {

@@ -1,9 +1,9 @@
-
 /**
  * @class
  * @classdesc A rectangular-shaped graphic
+ * @memberof Graphics
  *
- * @param {Game} game       the game object.
+ * @param {Core.Game} game       the game object.
  * @param {Number} width    width of the plane.
  * @param {Number} height   height of the plane.
  * @param {String} color    color/style of 2d context.
@@ -35,7 +35,7 @@ function Plane(game, width, height, color)
      *    get width & height
      *
      *    @method
-     *    @return {Vector2d} vector2d of (width, height)
+     *    @return {Utils.Vector2d} vector2d of (width, height)
      */
     this.getDimentions = function()
     {
