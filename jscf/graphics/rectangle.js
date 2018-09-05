@@ -1,20 +1,19 @@
 /**
  * @class
- * @classdesc A rectangular-shaped graphic
+ * @classdesc A rectangular wire graphic
  * @memberof Graphics
  *
  * @param {Core.Game} game  the game object.
- * @param {Number} width    width of the plane.
- * @param {Number} height   height of the plane.
+ * @param {Number} width    width of the rectangle.
+ * @param {Number} height   height of the rectangle.
  * @param {String} color    color/style of 2d context.
  * @constructor
  */
-function Plane(game, width, height, color)
+function Rectangle(game, width, height, color)
 {
     this.width = width;
     this.height = height;
     this.color = color;
-    this.effect = null;
 
     /**
      *    sets width & height
@@ -43,7 +42,7 @@ function Plane(game, width, height, color)
     };
 
     /**
-     *    renders the plane
+     *    renders the rectangle
      *
      *    @method
      */
@@ -51,13 +50,7 @@ function Plane(game, width, height, color)
     {
         ctx = game.graphics.context;
 
-        if (this.effect)
-            this.effect.pre_render(ctx);
-
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.width / -2, this.height / -2, this.width, this.height);
-
-        if (this.effect)
-            this.effect.post_render(ctx);
+		ctx.strokeStyle = color;
+        ctx.strokeRect(this.width / -2, this.height / -2, this.width, this.height);
     };
 }

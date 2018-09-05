@@ -5,9 +5,9 @@
  * @memberof UI
  *
  * @param       {Core.Game} game    the game object
- * @param       {String} txt   the text itself (destined to be rendered)
- * @param       {String} style 2d context styling (can be just color)
- * @param       {String} font  2d cotext font description
+ * @param       {String} txt        the text itself (destined to be rendered)
+ * @param       {String} style      2d context styling (can be just color)
+ * @param       {String} font       2d cotext font description
  * @constructor
  */
 function Text(game, txt, style, font)

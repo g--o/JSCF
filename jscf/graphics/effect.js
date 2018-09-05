@@ -26,3 +26,29 @@ var shadowFx = new Effect(function(ctx) {
 							ctx.shadowBlur = 0;
 							ctx.shadowColor = "transparent";
 						});
+
+/**
+ *    shader starter
+ *
+ *    @param       {Core.Game}          the JSCF game object
+ *    @param       {Graphics.Effect}    effect effect to apply
+ *    @constructor
+ */
+function ShaderStart(game, effect) {
+    this.render = function() {
+        effect.pre_render(game.graphics.context);
+    };
+}
+
+/**
+ *    shader ender
+ *
+ *    @param       {Core.Game}          the JSCF game object
+ *    @param       {Graphics.Effect}    effect effect to apply
+ *    @constructor
+ */
+function ShaderEnd(game, effect) {
+    this.render = function() {
+        effect.post_render(game.graphics.context);
+    };
+}

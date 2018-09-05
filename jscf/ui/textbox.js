@@ -4,7 +4,7 @@
  * @classdsc textbox graphic class
  * @memberof UI
  *
- * @param       {Core.Entity} parent entity to attach to
+ * @param       {Core.Entity}   parent entity to attach to
  * @param       {Number} w      the width
  * @param       {Number} h      the height
  * @param       {String} txt    the default text to display (defaults to "")

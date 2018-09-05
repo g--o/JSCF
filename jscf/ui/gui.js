@@ -175,6 +175,14 @@ function GuiManager(game)
 		return txtEntity;
 	};
 
+    this.createRectEditor = function(x, y, style)
+    {
+        var e = new Entity(game, "rect-editor", true, x, y, true);
+        e.insertChild(new RectangleEditor(e, style));
+
+        return e;
+    }
+
     /**
      *    creates debug panel
      *
@@ -287,7 +295,13 @@ function GuiManager(game)
      */
 	this.insertDebugPanel = function()
 	{
-		game.getCurrentScene().addEntity(this.createDebugPanel());
+        var dp = this.createDebugPanel();
+		game.getCurrentScene().addEntity(dp);
+
+        var testBtn = game.guiManager.createDefaultContainer(500, 500);
+        testBtn.addComponent(RectangleEditor);
+
+        game.getCurrentScene().addEntity(testBtn);
 	};
 
     /**

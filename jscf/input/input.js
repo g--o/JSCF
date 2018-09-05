@@ -70,6 +70,28 @@ function InputManager(canvas)
     };
 
     /**
+     *    checks if left mouse button is down
+     *
+     *    @method
+     *    @return {Boolean} true if pressed; false otherwise
+     */
+    this.IsLMBDown = function()
+    {
+        return mouseDown && (mouseEvent.button == 0);
+    };
+
+    /**
+     *    checks if right mouse button is down
+     *
+     *    @method
+     *    @return {Boolean} true if pressed; false otherwise
+     */
+    this.IsRMBDown = function()
+    {
+        return mouseDown && (mouseEvent.button == 2);
+    };
+
+    /**
      *    get last mouse event
      *
      *    @method
