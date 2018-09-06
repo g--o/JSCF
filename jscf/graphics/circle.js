@@ -48,7 +48,7 @@ function Circle(game, radius, color)
     {
         ctx = game.graphics.context;
 
-		ctx.fillStyle = color;
+		ctx.fillStyle = this.color;
 		ctx.beginPath();
 		ctx.arc(0, 0, this.radius, 0, 2*Math.PI);
 		ctx.fill();

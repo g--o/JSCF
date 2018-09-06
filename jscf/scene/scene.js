@@ -138,6 +138,22 @@ function Scene(game, tick_duration)
     };
 
     /**
+     *    deletes an entity from scene
+     *
+     *    @method
+     *    @param  {String}  entityName The entity's name
+     *    @return {Boolean}            True if deleted, false otherwise.
+     */
+    this.delEntity = function(entityName)
+    {
+        if (!(entityName in this.entities))
+            return false;
+
+        delete this.entities[entityName];
+        return true;
+    };
+
+    /**
      *    creates manual entity (does not render, update automatically etc.)
      *
      *    @method

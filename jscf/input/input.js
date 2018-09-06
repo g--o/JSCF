@@ -64,7 +64,7 @@ function InputManager(canvas)
      *    @method
      *    @return {Boolean} true if mouse button is pressed; false otherwise.
      */
-    this.IsMouseDown = function()
+    this.isMouseDown = function()
     {
         return mouseDown;
     };
@@ -75,7 +75,7 @@ function InputManager(canvas)
      *    @method
      *    @return {Boolean} true if pressed; false otherwise
      */
-    this.IsLMBDown = function()
+    this.isLMBDown = function()
     {
         return mouseDown && (mouseEvent.button == 0);
     };
@@ -86,7 +86,7 @@ function InputManager(canvas)
      *    @method
      *    @return {Boolean} true if pressed; false otherwise
      */
-    this.IsRMBDown = function()
+    this.isRMBDown = function()
     {
         return mouseDown && (mouseEvent.button == 2);
     };
@@ -114,7 +114,7 @@ function InputManager(canvas)
     };
 
     /**
-    *    register callback to mouse down
+     *    register callback to mouse down
      *
      *    @method
      *    @param  {Function} callback callback function(e) to be called when mousedown is fired.
@@ -122,6 +122,32 @@ function InputManager(canvas)
     this.setOnMouseDown = function(callback)
     {
         document.addEventListener("mousedown", callback);
+    };
+
+    /**
+     *    register callback to key up
+     *
+     *    @method
+     *    @param  {Function} callback callback function(event) to be called when keyup is fired
+     */
+    this.setOnKeyUp = function(callback)
+    {
+        document.addEventListener("keyup", callback);
+    };
+
+    /**
+     *    register callback to key up for specific key
+     *
+     *    @method
+     *    @param  {Number}   key      the key code of the key that fires the event
+     *    @param  {Function} callback callback function(event) to be called when keyup is fired with key
+     */
+    this.setOnKeyUpSpec = function(key, callback)
+    {
+        this.setOnKeyUp(function(e) {
+            if (e.keyCode == key)
+                callback();
+        });
     };
 
     function updateMouseDown(e)

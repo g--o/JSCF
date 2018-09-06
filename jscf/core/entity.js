@@ -303,6 +303,12 @@ function Entity(game, name, alive, x, y, automated)
         return this.name + "." + this.max_cid++;
     };
 
+    /**
+     *    gets array of entity children
+     *
+     *    @method
+     *    @return {Array} the entity children of this entity
+     */
     this.getEntityChildren = function()
     {
         var kids = Object.values(this.children);

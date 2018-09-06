@@ -46,7 +46,7 @@ function loadScene()
 
 function update()
 {
-	if (game.inputManager.IsMouseDown()) {
+	if (game.inputManager.isMouseDown()) {
 		var mousePos = new Vector2d(game.inputManager.getMouseX(), game.inputManager.getMouseY());
 		if (game.inputManager.getMouseEvent().which == 3) { // right click
 			var entity = game.getCurrentScene().getEntity(getBoxName());

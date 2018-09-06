@@ -1,10 +1,12 @@
 
+
+const __GUIMANAGER_DEBUG_PANEL_NAME = "debug-panel";
 const __GUIMANAGER_BG_NAME = "bg";
 const __GUIMANAGER_TXT_NAME = "txt";
 
 // Container consts
 const __GUIMANAGER_CONTAINER_COLOR = "#a6a6a6cc";
-const __GUIMANAGER_CONTAINER_WIDTH = 150;
+const __GUIMANAGER_CONTAINER_WIDTH = 250;
 const __GUIMANAGER_CONTAINER_HEIGHT = __GUIMANAGER_CONTAINER_WIDTH;
 
 // Button consts
@@ -65,7 +67,7 @@ function GuiManager(game)
      *    @method
      *    @param  {Number} x       x position
      *    @param  {Number} y       y position
-     *    @return {Core.Entity}         default gui container entity
+     *    @return {Core.Entity}    default gui container entity
      */
 	this.createDefaultContainer = function(x, y)
 	{
@@ -76,7 +78,7 @@ function GuiManager(game)
      *    creates rectangular button
      *
      *    @method
-     *    @param  {String} name    button entity name
+     *    @param  {String} name     button entity name
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
      *    @param  {Number} w        button width
@@ -85,7 +87,7 @@ function GuiManager(game)
      *    @param  {String} txt      the text to display on button
      *    @param  {String} txtstyle text 2d context styling (can be just color)
      *    @param  {String} font     2d cotext font description
-     *    @return {Core.Entity}          gui button entity
+     *    @return {Core.Entity}     gui button entity
      */
 	this.createButton = function(name, x, y, w, h, bgcolor, txt, txtstyle, font)
 	{
@@ -113,7 +115,7 @@ function GuiManager(game)
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
      *    @param  {String} txt      the text to display on button
-     *    @return {Core.Entity}          default gui button entity
+     *    @return {Core.Entity}     default gui button entity
      */
 	this.createDefaultButton = function(x, y, txt)
 	{
@@ -126,14 +128,14 @@ function GuiManager(game)
      *    creates gui rectangular textbox
      *
      *    @method
-     *    @param  {String} name    textbox entity name
+     *    @param  {String} name     textbox entity name
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
      *    @param  {Number} w        textbox width
      *    @param  {Number} h        textbox height
      *    @param  {String} bgcolor  background color (2d context descriptor)
      *    @param  {String} txt      the text to display on textbox
-     *    @return {Core.Entity}          gui textbox entity
+     *    @return {Core.Entity}     gui textbox entity
      */
 	this.createTextBox = function(name, x, y, w, h, txt)
 	{
@@ -149,7 +151,7 @@ function GuiManager(game)
      *    @method
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
-     *    @return {Core.Entity}          default gui textbox entity
+     *    @return {Core.Entity}     default gui textbox entity
      */
 	this.createDefaultTextBox = function(x, y)
 	{
@@ -163,7 +165,7 @@ function GuiManager(game)
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
      *    @param  {String} txt      the text to display
-     *    @return {Core.Entity}          the gui label entity
+     *    @return {Core.Entity}     the gui label entity
      */
 	this.createLabel = function(x, y, txt)
 	{
@@ -272,7 +274,9 @@ function GuiManager(game)
 		};
 
         // Create the panel
-		var panel = game.guiManager.createContainer("left-panel", panelWidth/2, panelHeight/2, panelWidth, panelHeight, __GUIMANAGER_CONTAINER_COLOR);
+		var panel = game.guiManager.createContainer(__GUIMANAGER_DEBUG_PANEL_NAME,
+                                                    panelWidth/2, panelHeight/2, panelWidth,
+                                                    panelHeight, __GUIMANAGER_CONTAINER_COLOR);
         panel.addComponent(LayoutHandler);
         panel.getComponentOfType(LayoutHandler).layoutType = LinedLayout;
 
@@ -295,14 +299,55 @@ function GuiManager(game)
      */
 	this.insertDebugPanel = function()
 	{
-        var dp = this.createDebugPanel();
-		game.getCurrentScene().addEntity(dp);
+        // Create debug panel
+        var debugPanel = this.createDebugPanel();
 
-        var testBtn = game.guiManager.createDefaultContainer(500, 500);
-        testBtn.addComponent(RectangleEditor);
+        // Create debug help panel
+        const HELP_TEXT = "Welcome to the JSCF editor!\n- Use left-click to drag entities\n- Use right-click to resize\n- Use ~ button to toggle";
+        const DP_WIDTH = game.getCanvasWidth()/4 + 50; // + margin
+        var helpPanel = this.createDefaultContainer(DP_WIDTH, game.getCanvasWidth()/4);
+        helpPanel.insertChild(this.createLabel(0, 0, HELP_TEXT));
 
-        game.getCurrentScene().addEntity(testBtn);
+        // Insert panels
+        game.getCurrentScene().addEntity(debugPanel);
+        game.getCurrentScene().addEntity(helpPanel);
+
+        // Insert rectangle RectangleEditor
+        this.insertRectangleEditor();
 	};
+
+    /**
+     *    inserts rectangle editor to all editable entities
+     *
+     *    @method
+     */
+    this.insertRectangleEditor = function()
+    {
+        // Add rectangle editor to all entities!
+        var ents = game.getCurrentScene().entities;
+        for (var e in ents) {
+            if (!ents.hasOwnProperty(e))
+                continue;
+
+            if (ents[e].name != __GUIMANAGER_DEBUG_PANEL_NAME)
+                ents[e].addComponent(RectangleEditor);
+        }
+    };
+
+    /**
+     *    toggles the debug panel
+     *
+     *    @method
+     */
+    this.toggleDebugPanel = function()
+    {
+        var curScene = game.getCurrentScene();
+
+        // @TODO: proper deletion (missing: rectangle editors, help panel)
+
+        if (!curScene.delEntity(__GUIMANAGER_DEBUG_PANEL_NAME))
+            this.insertDebugPanel();
+    };
 
     /**
      *    builds string description of an object
@@ -334,5 +379,19 @@ function GuiManager(game)
 		}
 		return finalText;
 	};
+
+    this.init = function()
+    {
+        if (game.debugMode) {
+            var self = this;
+
+            // "`" to trigger debug panel
+            game.inputManager.setOnKeyUpSpec(192, function() {
+                self.toggleDebugPanel();
+            });
+        }
+    };
+
+    this.init();
 
 }

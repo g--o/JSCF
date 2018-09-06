@@ -43,7 +43,7 @@ function ButtonHandler(owner, speed)
 
 		var mx = owner.game.inputManager.getMouseX();
 		var my = owner.game.inputManager.getMouseY();
-		var mDown = owner.game.inputManager.IsMouseDown();
+		var mDown = owner.game.inputManager.isMouseDown();
 
 		if (this.bb.containsPoint(mx, my)) {
 			if (transform.scale.length() < __BUTTON_HANDLER_HOVER_MAX)

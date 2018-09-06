@@ -3,6 +3,8 @@
 ***************************/
 
 const __RECTANGLE_EDITOR_NAME = "[rectangle_editor]";
+const __RECTANGLE_DEFAULT_ACTIVE_STYLE = "red";
+const __RECTANGLE_DEFAULT_PASSIVE_STYLE = "black";
 
 /**
  * @class
@@ -15,25 +17,25 @@ const __RECTANGLE_EDITOR_NAME = "[rectangle_editor]";
  */
 function RectangleEditor(owner, style)
 {
-	this.name = __BUTTON_HANDLER_NAME;
+	this.name = __RECTANGLE_EDITOR_NAME;
 	this.parent = owner;
 	this.style = style ? style : "red";
 
 	/**
-	 *    updates button handler component (position, effects, clicks, hovers, etc..)
+	 *    updates rect editor component
 	 *
 	 *    @method
 	 */
 	this.update = function()
 	{
-		var transform = owner.getGlobalTransform();
+		var transform = this.parent.getGlobalTransform();
 		this.bb.setTransform(transform);
 
-		var mx = owner.game.inputManager.getMouseX();
-		var my = owner.game.inputManager.getMouseY();
+		var mx = this.parent.game.inputManager.getMouseX();
+		var my = this.parent.game.inputManager.getMouseY();
 		var mousePos = new Vector2d(mx, my);
 
-		if (owner.game.inputManager.IsRMBDown()) {
+		if (this.parent.game.inputManager.isRMBDown() && this.isSelected()) {
 			var dims = Vector.subVector(mousePos, this.parent.transform.pos);
 			dims.scalarMul(2);
 			this.parent.setDimentions(dims.x, dims.y);
@@ -46,13 +48,62 @@ function RectangleEditor(owner, style)
 			this.rectangle.height = dims.y;
 		}
 
-		if (this.bb.containsPoint(mx, my) && owner.game.inputManager.IsMouseDown()) {
-			if (owner.game.inputManager.IsLMBDown()) {
+		if (this.bb.containsPoint(mx, my) && this.parent.game.inputManager.isMouseDown()) {
+			if (this.parent.game.inputManager.isLMBDown()) {
+				this.selectOwner();
 				this.parent.transform.pos = mousePos;
 			}
 		}
 	};
 
+	/**
+	 *    gets whether or not the owner is selected
+	 *
+	 *    @method
+	 *    @return {Boolean} True if selected; false otherwise
+	 */
+	this.isSelected = function()
+	{
+		return RectangleEditor.currently_selected == this.parent;
+	};
+
+	/**
+	 *    selects the owner
+	 *
+	 *    @method
+	 */
+	this.selectOwner = function()
+	{
+		if (RectangleEditor.currently_selected) {
+			var re = RectangleEditor.currently_selected.getComponentOfType(RectangleEditor);
+			if (re)
+				re.deselectOwner();
+		}
+
+		RectangleEditor.currently_selected = this.parent;
+		this.style = __RECTANGLE_DEFAULT_ACTIVE_STYLE;
+		this.rectangle.color = this.style;
+		this.circle.color = this.style;
+	};
+
+	/**
+	 *    deselects the owner
+	 *
+	 *    @method
+	 */
+	this.deselectOwner = function()
+	{
+		RectangleEditor.currently_selected = null;
+		this.style = __RECTANGLE_DEFAULT_PASSIVE_STYLE;
+		this.rectangle.color = this.style;
+		this.circle.color = this.style;
+	};
+
+	/**
+	 *    renders the rectangle editor
+	 *
+	 *    @method
+	 */
 	this.render = function()
 	{
 		this.rectangle.render();
@@ -62,8 +113,8 @@ function RectangleEditor(owner, style)
 	this.init = function()
 	{
 		// set bounding box
-		var shape = owner.getDimentions();
-		var transform = owner.getGlobalTransform();
+		var shape = this.parent.getDimentions();
+		var transform = this.parent.getGlobalTransform();
 
 		this.rectangle = new Rectangle(game, shape.x, shape.y, this.style);
 		this.circle = new Circle(game, 5, this.style);
@@ -73,6 +124,14 @@ function RectangleEditor(owner, style)
 	this.init();
 
 }
+
+
+/**
+ *    the currently selected object
+ *
+ *    @type {Core.Entity}
+ */
+RectangleEditor.currently_selected = null;
 
 /**
  *    the component name
