@@ -1,6 +1,7 @@
 
 
 const __GUIMANAGER_DEBUG_PANEL_NAME = "debug-panel";
+const __GUIMANAGER_HELP_PANEL_NAME = "help-panel";
 const __GUIMANAGER_BG_NAME = "bg";
 const __GUIMANAGER_TXT_NAME = "txt";
 
@@ -32,6 +33,7 @@ const __GUIMANAGER_TXTBOX_HEIGHT = 23;
 function GuiManager(game)
 {
 	this.eleNum = 0;
+    this.isDebug = false;
 
 	// Set default bgcolor gradient
 	var __GUIMANAGER_BUTTON_BGCOLOR = game.graphics.context.createLinearGradient(0, __GUIMANAGER_BUTTON_HEIGHT*0.4, 0, 0);
@@ -193,6 +195,7 @@ function GuiManager(game)
      */
 	this.createDebugPanel = function()
 	{
+        var self = this;
 		var panelHeight = game.getCanvasHeight();
 		var panelWidth = game.getCanvasWidth()/4;
 
@@ -204,9 +207,11 @@ function GuiManager(game)
 		};
 
 		// Entity creation button
-		var createBtn = game.guiManager.createDefaultButton(0, 0, "Create Entity");
+		var createBtn = game.guiManager.createDefaultButton(0, 0, "Help Panel");
 		createBtn.getComponentOfType(ButtonHandler).onClick = function() {
-			game.getCurrentScene().createNewEntity(game.getCurrentScene().getEntityName(), 0, 0, null);
+            var hp = self.createHelpPanel();
+            hp.addComponent(RectangleEditor);
+			game.getCurrentScene().addEntity(hp);
 		};
 
 		// Search entity textbox
@@ -254,7 +259,6 @@ function GuiManager(game)
  		var listLabel = this.createLabel(0, 0, "");
 
 		// Panel script
-		var self = this;
         var panelScript = {
 			update: function()
 			{
@@ -293,6 +297,23 @@ function GuiManager(game)
 	};
 
     /**
+     *    create help panel
+     *
+     *    @method
+     *    @return {Core.Entity} a help popup entity
+     */
+    this.createHelpPanel = function()
+    {
+        const HELP_TEXT = "Welcome to the JSCF editor!\n- Use left-click to drag entities\n- Use right-click to resize\n- Use ~ button to toggle";
+        const DP_WIDTH = game.getCanvasWidth()/4 + 50; // + margin
+        var helpPanel = this.createDefaultContainer(DP_WIDTH, game.getCanvasWidth()/4);
+        helpPanel.name = __GUIMANAGER_HELP_PANEL_NAME + this.eleNum++;
+        helpPanel.insertChild(this.createLabel(0, 0, HELP_TEXT));
+
+        return helpPanel;
+    };
+
+    /**
      *    creates and inserts debug panel to current scene
      *
      *    @method
@@ -301,19 +322,12 @@ function GuiManager(game)
 	{
         // Create debug panel
         var debugPanel = this.createDebugPanel();
-
         // Create debug help panel
-        const HELP_TEXT = "Welcome to the JSCF editor!\n- Use left-click to drag entities\n- Use right-click to resize\n- Use ~ button to toggle";
-        const DP_WIDTH = game.getCanvasWidth()/4 + 50; // + margin
-        var helpPanel = this.createDefaultContainer(DP_WIDTH, game.getCanvasWidth()/4);
-        helpPanel.insertChild(this.createLabel(0, 0, HELP_TEXT));
+        var helpPanel = this.createHelpPanel();
 
         // Insert panels
         game.getCurrentScene().addEntity(debugPanel);
         game.getCurrentScene().addEntity(helpPanel);
-
-        // Insert rectangle RectangleEditor
-        this.insertRectangleEditor();
 	};
 
     /**
@@ -334,6 +348,19 @@ function GuiManager(game)
         }
     };
 
+    this.delRectangleEditor = function()
+    {
+        // Remove rectangle editor to all entities!
+        var ents = game.getCurrentScene().entities;
+        for (var e in ents) {
+            if (!ents.hasOwnProperty(e))
+                continue;
+
+            if (ents[e].name != __GUIMANAGER_DEBUG_PANEL_NAME)
+                ents[e].delComponentOfType(RectangleEditor);
+        }
+    };
+
     /**
      *    toggles the debug panel
      *
@@ -343,10 +370,15 @@ function GuiManager(game)
     {
         var curScene = game.getCurrentScene();
 
-        // @TODO: proper deletion (missing: rectangle editors, help panel)
+        this.isDebug = !this.isDebug;
 
-        if (!curScene.delEntity(__GUIMANAGER_DEBUG_PANEL_NAME))
+        if (this.isDebug) {
             this.insertDebugPanel();
+            this.insertRectangleEditor();
+        } else {
+            this.delRectangleEditor();
+            curScene.delEntity(__GUIMANAGER_DEBUG_PANEL_NAME);
+        }
     };
 
     /**

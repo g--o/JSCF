@@ -9,7 +9,7 @@ function loadResources()
 
 function loadScene()
 {
-    game.guiManager.insertDebugPanel();
+    game.guiManager.toggleDebugPanel();
 }
 
 function update()

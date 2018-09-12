@@ -19,7 +19,7 @@ function RectangleEditor(owner, style)
 {
 	this.name = __RECTANGLE_EDITOR_NAME;
 	this.parent = owner;
-	this.style = style ? style : "red";
+	this.style = style ? style : __RECTANGLE_DEFAULT_PASSIVE_STYLE;
 
 	/**
 	 *    updates rect editor component

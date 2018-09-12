@@ -230,6 +230,47 @@ function Entity(game, name, alive, x, y, automated)
     };
 
     /**
+     *    delete a child by name
+     *
+     *    @method
+     *    @param  {String} childName the child name
+     *    @return {Boolean}          true if succeeded; false otherwise
+     */
+    this.delChild = function(childName)
+    {
+        if (!(childName in this.children))
+            return false;
+
+        delete this.children[childName];
+        return true;
+    };
+
+    /**
+     *    delete component
+     *
+     *    @method
+     *    @param  {String} componentName the component name
+     *    @return {Boolean}              true if succeeded; false otherwise
+     */
+    this.delComponent = function(componentName)
+    {
+        return this.delChild("[" + componentName + "]");
+    };
+
+    /**
+     *    deletes component of type
+     *
+     *    @method
+     *    @param  {Type} componentType the component type
+     *    @return {Boolean}            true if succeeded; false otherwise
+     */
+    this.delComponentOfType = function(componentType)
+    {
+        var name = this.getComponentOfType(componentType).name;
+        return this.delChild(name);
+    };
+
+    /**
      *    gets global (recursive/world) transform.
      *
      *    @method
