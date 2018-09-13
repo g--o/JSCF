@@ -2,6 +2,8 @@
 
 const __GUIMANAGER_DEBUG_PANEL_NAME = "debug-panel";
 const __GUIMANAGER_HELP_PANEL_NAME = "help-panel";
+const __GUIMANAGER_WINDOW_NAME = "window";
+
 const __GUIMANAGER_BG_NAME = "bg";
 const __GUIMANAGER_TXT_NAME = "txt";
 
@@ -11,7 +13,7 @@ const __GUIMANAGER_CONTAINER_WIDTH = 250;
 const __GUIMANAGER_CONTAINER_HEIGHT = __GUIMANAGER_CONTAINER_WIDTH;
 
 // Button consts
-const __GUIMANAGER_BUTTON_WIDTH = 100;
+const __GUIMANAGER_BUTTON_WIDTH = 50;
 const __GUIMANAGER_BUTTON_HEIGHT = 50;
 const __GUIMANAGER_BUTTON_FONT_COLOR = "#000";
 const __GUIMANAGER_BUTTON_FONT_SIZE = __GUIMANAGER_BUTTON_HEIGHT * 0.3;
@@ -179,6 +181,49 @@ function GuiManager(game)
 		return txtEntity;
 	};
 
+    /**
+     *    creates default window
+     *
+     *    @method
+     *    @param  {Number} x      x coordinate
+     *    @param  {Number} y      y coordinate
+     *    @return {Core.Entity}   the window entity
+     */
+    this.createDefaultWindow = function(x, y)
+    {
+        var window = this.createDefaultContainer(x, y);
+        window.name = __GUIMANAGER_WINDOW_NAME + this.eleNum++;
+
+        var btn = this.createDefaultButton((__GUIMANAGER_BUTTON_WIDTH-window.getChild("bg").width)/2,
+                                    (__GUIMANAGER_BUTTON_HEIGHT-window.getChild("bg").height)/2, "X");
+
+        btn.name = window.name + "-x-btn";
+        btn.setDimentions = function() {
+            btn.transform.pos.x = (__GUIMANAGER_BUTTON_WIDTH-window.getChild("bg").width)/2;
+            btn.transform.pos.y = (__GUIMANAGER_BUTTON_HEIGHT-window.getChild("bg").height)/2;
+        };
+
+        btn.getComponentOfType(ButtonHandler).onClick = function() {
+            console.log(window.parent);
+            if (window.parent == null)
+                game.getCurrentScene().delEntity(window.name);
+            else
+                btn.parent.delChild(window.name);
+        };
+
+        window.insertChild(btn);
+
+        return window;
+    };
+
+    /**
+     *    create rect editor
+     *
+     *    @method
+     *    @param  {Number} x     x coordinate
+     *    @param  {Number} y     y coordinate
+     *    @param  {String} style context styling
+     */
     this.createRectEditor = function(x, y, style)
     {
         var e = new Entity(game, "rect-editor", true, x, y, true);
@@ -306,7 +351,7 @@ function GuiManager(game)
     {
         const HELP_TEXT = "Welcome to the JSCF editor!\n- Use left-click to drag entities\n- Use right-click to resize\n- Use ~ button to toggle";
         const DP_WIDTH = game.getCanvasWidth()/4 + 50; // + margin
-        var helpPanel = this.createDefaultContainer(DP_WIDTH, game.getCanvasWidth()/4);
+        var helpPanel = this.createDefaultWindow(DP_WIDTH, game.getCanvasWidth()/4);
         helpPanel.name = __GUIMANAGER_HELP_PANEL_NAME + this.eleNum++;
         helpPanel.insertChild(this.createLabel(0, 0, HELP_TEXT));
 
