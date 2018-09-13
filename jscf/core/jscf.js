@@ -77,6 +77,14 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
         this.graphics = new Graphics(canvasWidth, canvasHeight);
         this.inputManager = new InputManager(this.graphics.canvas);
         this.guiManager = new GuiManager(this);
+
+        var self = this;
+        window.onerror = function (msg, url, lineNo, columnNo, error) {
+            if (self.debug)
+                self.warn(msg + ": " + error);
+            return false;
+        };
+
     };
 
     /**
@@ -185,6 +193,17 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
     {
         console.log(msg);
         this.stop();
+    };
+
+    /**
+     *    warns if in debug mode
+     *
+     *    @method
+     *    @param  {String} msg warning message
+     */
+    this.warn = function(msg)
+    {
+        this.guiManager.errorPopup(msg);
     };
 
 }

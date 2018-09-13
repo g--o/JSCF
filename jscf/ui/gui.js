@@ -342,6 +342,19 @@ function GuiManager(game)
 	};
 
     /**
+     *    inserts an error popup to scene
+     *
+     *    @method
+     *    @param  {String} errMsg message to show
+     */
+    this.errorPopup = function(errMsg)
+    {
+        var win = this.createDefaultWindow(game.getCanvasWidth()/2, game.getCanvasHeight()/2)
+        win.insertChild(this.createLabel(0,0, errMsg));
+        game.getCurrentScene().addEntity(win);
+    };
+
+    /**
      *    create help panel
      *
      *    @method

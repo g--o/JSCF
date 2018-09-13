@@ -56,24 +56,18 @@ function Scene(game, tick_duration)
         if (this.paused)
             return false;
 
-        try {
-            // Normal update
-            for (entityName in this.entities) {
-                if (this.entities.hasOwnProperty(entityName)) {
-                    var entity = this.entities[entityName];
-                    if (!entity)
+        // Normal update
+        for (entityName in this.entities) {
+            if (this.entities.hasOwnProperty(entityName)) {
+                var entity = this.entities[entityName];
+                if (!entity)
                     continue;
-                    if (entity.update && entity.auto_update) {
-                        entity.update();
-                    }
-                }
+                if (entity.update && entity.auto_update)
+                    entity.update();
             }
-
-            // Physics update
-            this.physicsEngine.update();
-        } catch (err) {
-            console.log("shit!");
         }
+        // Physics update
+        this.physicsEngine.update();
 
         return true;
     };
