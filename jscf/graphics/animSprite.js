@@ -6,7 +6,7 @@
  * @param       {String} url            URL to the resource
  * @param       {Number} frameWidth     sprite frame tile width
  * @param       {Number} frameHeight    sprite frame tile height
- * @param       {Number} animSpeed      animation speed - relative to fps. (keeps time constant)
+ * @param       {Number} animSpeed      animation speed - fps.
  * @memberof Graphics
  * @constructor
  */
@@ -25,7 +25,7 @@ function AnimSprite(game, width, height, url, frameWidth, frameHeight, animSpeed
     {
         var that = this;
         if (this.interval == null)
-            this.interval = setInterval(function() { that.anim.nextFrame() } , (1 / animSpeed) * 1000);
+            this.interval = setInterval(that.anim.nextFrame.bind(that.anim) , (1 / animSpeed) * 1000);
         else
             console.warn("JSCF: [startAnimation] animation already started!");
     };

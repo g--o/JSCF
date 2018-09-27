@@ -1,13 +1,11 @@
 /**
  * Scene class. (World class in other engines)
  * @param       {Core.Game} game          the game object
- * @param       {Number} tick_duration the time (in seconds) for a step (update)
- *                       in the scene (usually 1/fps)
  *
  * @memberof Scene
  * @constructor
  */
-function Scene(game, tick_duration)
+function Scene(game)
 {
     this.max_euid = 0;
     this.entities = {};
@@ -23,7 +21,7 @@ function Scene(game, tick_duration)
      *
      *    @type {Physics.PhysicsEngine}
      */
-    this.physicsEngine = new PhysicsEngine(this.entities, tick_duration);
+    this.physicsEngine = new PhysicsEngine(this.entities);
 
     /**
      *    pause game
@@ -67,7 +65,7 @@ function Scene(game, tick_duration)
             }
         }
         // Physics update
-        this.physicsEngine.update();
+        this.physicsEngine.update(game.time.getDeltaTime());
 
         return true;
     };

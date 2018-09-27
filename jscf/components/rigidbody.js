@@ -12,11 +12,9 @@ const __RIGIDBODY_STAIC_MASS = 1/__RIGIDBODY_EPSILON;
  * @memberof    Components
  *
  * @param       {Core.Entity} owner the entity the component's being applied to.
- * @param 		{Number} tick_duration (defaults to the physics engine's tick duration)
- * 										the time (in seconds) of a tick (usually 1/fps).
  * @constructor
  */
-var Rigidbody = function(owner, tick_duration)
+var Rigidbody = function(owner)
 {
 
 	/**
@@ -47,10 +45,10 @@ var Rigidbody = function(owner, tick_duration)
 	 *
 	 *    @method
 	 */
-	this.update = function()
+	this.update = function(tick_duration)
 	{
 		if (this.auto_update)
-			this.tick_update();
+			this.tick_update(tick_duration);
 	};
 
 	/**
@@ -58,8 +56,10 @@ var Rigidbody = function(owner, tick_duration)
 	 *
 	 *    @method
 	 */
-	this.tick_update = function()
+	this.tick_update = function(tick_duration)
 	{
+		this.tickDuration = tick_duration;
+
 		// displace (integrate)
 		this.parent.transform.pos.x += this.velocity.x * this.tickDuration;
 		this.parent.transform.pos.y += this.velocity.y * this.tickDuration;
@@ -157,10 +157,7 @@ var Rigidbody = function(owner, tick_duration)
 		this.name = __RIGIDBODY_NAME;
 		this.parent = owner;
 
-		if (tick_duration)
-			this.tickDuration = tick_duration;
-		else
-			this.tickDuration = this.parent.game.getCurrentScene().physicsEngine.tickDuration;
+		this.tickDuration = 0;
 
 		this.displacement = new Vector2d(0, 0);
 		this.velocity = new Vector2d(0, 0);

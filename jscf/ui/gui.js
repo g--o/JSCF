@@ -297,6 +297,9 @@ function GuiManager(game)
 			ent.transform.pos.y = parseInt(transformTBy.getChildAt(0).textBox.value());
 		});
 
+        // FPS label
+        var fpsLabel = this.createLabel(0, 0, "");
+
 		// Transform label
         var transformLabel = this.createLabel(0, 0, "Transform");
 
@@ -305,20 +308,31 @@ function GuiManager(game)
 
 		// Panel script
         var panelScript = {
+            lastTime: performance.now(),
 			update: function()
 			{
-                const NEW_LINE =  "\n";
-				var txt = listLabel.getChildAt(0);
-				if (txt.enabled) {
-					var entities = Object.keys(game.getCurrentScene().entities);
-					var finalText = "";
-					for (var i = 0; i < entities.length; i++) {
-						finalText += self.buildString(game.getCurrentScene().getEntity(entities[i])) + NEW_LINE;
-					}
-					txt.setText(finalText);
-				} else {
-					txt.setText("");
-				}
+                var newTime = performance.now();
+                if (newTime - panelScript.lastTime > 1000) {
+                    panelScript.lastTime = newTime;
+
+                    const NEW_LINE =  "\n";
+    				var txt = listLabel.getChildAt(0);
+
+    				if (txt.enabled) {
+    					var entities = Object.keys(game.getCurrentScene().entities);
+    					var finalText = "";
+    					for (var i = 0; i < entities.length; i++) {
+    						finalText += self.buildString(game.getCurrentScene().getEntity(entities[i])) + NEW_LINE;
+    					}
+    					txt.setText(finalText);
+    				} else {
+    					txt.setText("");
+    				}
+
+                    var fpsTxt = fpsLabel.getChildAt(0);
+                    var maxDeltaTime = Math.max(game.time.getDeltaTime(), game.renderTime.getDeltaTime());
+                    fpsTxt.setText(parseInt(1.0/maxDeltaTime).toString() + " fps");
+                }
 			}
 		};
 
@@ -329,6 +343,7 @@ function GuiManager(game)
         panel.addComponent(LayoutHandler);
         panel.getComponentOfType(LayoutHandler).layoutType = LinedLayout;
 
+        panel.insertChild(fpsLabel);
         panel.insertChild(searchTB);
         panel.insertChild(transformLabel);
         panel.insertChild(transformTBx);
@@ -476,9 +491,7 @@ function GuiManager(game)
             var self = this;
 
             // "`" to trigger debug panel
-            game.inputManager.setOnKeyUpSpec(192, function() {
-                self.toggleDebugPanel();
-            });
+            game.inputManager.setOnKeyUpSpec(192, self.toggleDebugPanel.bind(self));
         }
     };
 

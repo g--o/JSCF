@@ -15,8 +15,13 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
     // c'tor
     this.init = function()
     {
-        this.fps = fps;
+        // time related
+        this.lastDelay = 0;
+        this.time = new Time(fps);
+        this.renderTime = new Time(fps);
         this.interval = null;
+        this.renderInterval = null;
+
         this.graphics = null;
         this.update = null;
         this.automated = true;
@@ -60,7 +65,7 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
          *
          *    @type {Scene.SceneManager}
          */
-        this.sceneManager = new SceneManager(this, 1.0/this.fps);
+        this.sceneManager = new SceneManager(this);
     };
     // calling c'tor
     this.init();
@@ -90,20 +95,23 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
     /**
      * Start - start the game engine
      *
-     * @param {function} update     the update function (called each engine step)
-     * @param {boolean} automated   set whether the engine should automate update & render
+     * @param {Function} update     the update function (called each engine step)
+     * @param {Boolean} automated   set whether the engine should automate update & render
      *
-     * @return  null
+     * @method
      **/
     this.start = function(update, automated) {
         if (this.state != "running") {
             this.update = update;
             this.automated = automated;
             this.state = "running";
-            var self = this;
-            this.interval = setInterval(function() {
-                self.handler();
-            }, 1000.0/fps);
+
+            if (this.time.isFixedTime()) {
+                this.interval = setInterval(this.handler.bind(this), 1000.0 * this.time.getDeltaTime());
+            } else {
+                this.updateLoop();
+                this.renderLoop();
+            }
         }
     };
 
@@ -115,12 +123,16 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
     this.stop = function() {
         if (this.interval != null)
             clearInterval(this.interval);
+        if (this.renderInterval)
+            cancelAnimationFrame(this.renderInterval);
     };
 
     // Automated handler fucntions
 
     this.handler = function()
     {
+        this.time.update();
+
         if (this.automated) {
             this.sceneManager.update();
             this.graphics.clear();
@@ -130,6 +142,45 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
             this.update();
     };
 
+    /**
+     *    (internal) fast as possible update loop
+     *
+     *    @method
+     *    @return {[type]} [description]
+     */
+    this.updateLoop = function()
+    {
+        this.time.update();
+        if (this.automated)
+            this.sceneManager.update();
+        if (this.update)
+            this.update();
+
+        this.lastDelay = (this.lastDelay + this.time.getDeltaTime())/2.0;
+        setTimeout(this.updateLoop.bind(this), this.lastDelay);
+    };
+
+    /**
+     *    (internal) Synchronized render loop
+     *
+     *    @method
+     */
+    this.renderLoop = function()
+    {
+        this.renderTime.update();
+        this.graphics.clear();
+        this.sceneManager.render();
+
+        if (this.automated)
+            this.renderInterval = requestAnimationFrame(this.renderLoop.bind(this), this.graphics.canvas);
+    };
+
+    /**
+     *    gets the current scene
+     *
+     *    @method
+     *    @return {Scene.Scene} the current scene
+     */
     this.getCurrentScene = function()
     {
         return this.sceneManager.getCurrentScene();
@@ -159,8 +210,8 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
             return canvasHeight;
     };
 
-    this.FPS2AnimSpeed = function(fps) {
-        return fps * this.fps;
+    this.GetAnimSpeed = function(fps_) {
+        return fps_ * this.time.getDeltaTime();
     };
 
     /**
@@ -182,6 +233,8 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
             ctx.fillStyle = style;
         ctx.fillText(txt, x, y);
     };
+
+    // Miscellaneous
 
     /**
      *    Logs and stops the game.

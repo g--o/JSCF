@@ -1083,7 +1083,8 @@
       }
 
       // clear the canvas
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      if (force)
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
       // setup the box shadow
       ctx.shadowOffsetX = self._boxShadow.x;

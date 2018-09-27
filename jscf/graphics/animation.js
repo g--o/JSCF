@@ -7,7 +7,7 @@
  * @param       {Graphics.Sprite} sprite      the sprite object to apply animation to
  * @param       {Number} frameWidth  the sprite tile frame width
  * @param       {Number} frameHeight the sprite tile frame height
- * @param       {Number} speed       the animation speed (relative to fps)
+ * @param       {Number} speed       the animation speed (fps)
  * @constructor
  */
 function Animation(game, sprite, frameWidth, frameHeight, speed)
@@ -71,7 +71,7 @@ function Animation(game, sprite, frameWidth, frameHeight, speed)
      */
     this.updateFrame = function()
     {
-        this.frameCounter = (this.frameCounter + 1) % Math.floor(game.fps / speed);
+        this.frameCounter = (this.frameCounter + 1) % Math.floor(game.time.getDeltaTime() / speed);
         if (this.frameCounter == 0)
             this.nextFrame();
     };

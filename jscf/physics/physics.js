@@ -3,12 +3,11 @@
  * @classdesc the physics engine of JSCF.
  * @memberof Physics
  *
- * @param {Container} entities   container of entities (usually dictionary).
- * @param {Number} tick_duration the time (in seconds) of a tick (usually 1/fps)
+ * @param {Container} entities   container of entities (usually dictionary)
  *
  * @constructor
  */
-function PhysicsEngine(entities, tick_duration)
+function PhysicsEngine(entities)
 {
     /**
      *    pixels/meter ratio (default: 50)
@@ -27,7 +26,7 @@ function PhysicsEngine(entities, tick_duration)
      *
      *    @type {Number}
      */
-	this.tickDuration = tick_duration/this.numIterations;
+	this.tickDuration = 1/this.numIterations;
     /**
      *    gravity acceleration in px/s^2 (default: (0, 9.8 * pixelMeterRatio) )
      *
@@ -107,7 +106,7 @@ function PhysicsEngine(entities, tick_duration)
 					if (!rigidbody)
 						continue;
 
-					rigidbody.tick_update();
+					rigidbody.tick_update(this.tickDuration);
 
 					// set collision forces
 					var collider = entity.getComponentOfType(Collider);
@@ -182,10 +181,13 @@ function PhysicsEngine(entities, tick_duration)
     /**
      *    updates physics engine (tick)
      *
+     *    @param {Number} tick_duration the time (in seconds) of a tick (usually dt)
      *    @method
      */
-	this.update = function()
+	this.update = function(tick_duration)
 	{
+        this.tickDuration = tick_duration/this.numIterations;
+
 		for (var i = 0; i < this.numIterations; i++) {
 			this.resolveNaturalForces();
 

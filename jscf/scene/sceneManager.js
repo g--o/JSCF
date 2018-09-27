@@ -1,15 +1,13 @@
 /**
  * Scene manager.
  * @param       {Core.Game} game             the game object
- * @param       {Number} tick_duration  the default tick duration for a new scene.
  *
  * @memberof Scene
  * @constructor
  */
-function SceneManager(game, tick_duration)
+function SceneManager(game)
 {
-    this.tickDuration = tick_duration;
-    this.scenes = { "splash": new Scene(game, this.tickDuration) };
+    this.scenes = { "splash": new Scene(game) };
     this.cur_scene = this.scenes["splash"];
 
     /**
@@ -78,7 +76,7 @@ function SceneManager(game, tick_duration)
             console.warn("[JSCF] scene " + sceneName + " already exists (scene creation)!");
             return false;
         }
-        this.scenes[sceneName] = new Scene(game, this.tickDuration);
+        this.scenes[sceneName] = new Scene(game);
         return true;
     };
 

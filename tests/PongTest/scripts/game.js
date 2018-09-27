@@ -99,7 +99,7 @@ function gameOver(state)
 function update()
 {
 	// get dt from const update mode
-	var dt = (1/game.fps);
+	var dt = (game.time.getDeltaTime());
 
 	// player's movement
 	if (game.inputManager.isKeyDown(RIGHT_ARROW)) {

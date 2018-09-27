@@ -36,6 +36,7 @@ var LayoutHandler = function(owner)
 	 */
 	this.update = function() {
 		this.layoutType.doLayout(this.parent);
+		this.update = null;
 	};
 };
 
