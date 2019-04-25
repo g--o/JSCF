@@ -1,4 +1,20 @@
 canvas {
-    border:1px solid #fff;
+    border: 3px solid #000;
     background-color: #111;
+}
+
+#jscf-editor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 4%;
+    left: 50%;
+}
+
+#jscf-editor-save-button {
+    position: absolute;
+    top: 96%;
+    right: 0;
+    bottom: 0%;
+    left: 50%;
 }

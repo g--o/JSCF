@@ -243,12 +243,33 @@ function GuiManager(game)
         var self = this;
 		var panelHeight = game.getCanvasHeight();
 		var panelWidth = game.getCanvasWidth()/4;
+		var jscfEditor = null;
 
 		// Toggle button
-		var toggleBtn = game.guiManager.createDefaultButton(0, 0, "Toggle");
+		var toggleBtn = game.guiManager.createDefaultButton(0, 0, "Edit");
 		toggleBtn.getComponentOfType(ButtonHandler).onClick = function() {
-			var txt = listLabel.getChildAt(0);
-			txt.enabled = !txt.enabled;
+			// create editor div
+			var editor = document.createElement("div");
+			editor.id = "jscf-editor";
+			document.body.appendChild(editor);
+			// create save button
+			var saveBtn = document.createElement("button");
+			var script = game.getCurrentScene().getEntity(tb.value());
+			if (script) {
+				saveBtn.onclick = function () {
+					var code = jscfEditor.getValue();
+					var fn = eval('[' + code + ']')[0];
+					script.update = fn;
+					editor.parentNode.removeChild(editor);
+					saveBtn.parentNode.removeChild(saveBtn);
+				};
+				saveBtn.id = "jscf-editor-save-button";
+				saveBtn.innerHTML = "Save";
+				document.body.appendChild(saveBtn);
+
+				// create the editor
+				jscfEditor = createEditor("jscf-editor", script, false);
+			}
 		};
 
 		// Entity creation button
@@ -307,33 +328,34 @@ function GuiManager(game)
  		var listLabel = this.createLabel(0, 0, "");
 
 		// Panel script
-        var panelScript = {
-            lastTime: performance.now(),
-			update: function()
-			{
-                var newTime = performance.now();
-                if (newTime - panelScript.lastTime > 1000) {
-                    panelScript.lastTime = newTime;
+        var panelScript = new Script(null);
+		panelScript.lastTime = game.time.getTimeFromStart();
+		panelScript.update = function()
+		{
+            var newTime = game.time.getTimeFromStart();
+            if (newTime - panelScript.lastTime > 1000) {
+                panelScript.lastTime = newTime;
 
-                    const NEW_LINE =  "\n";
-    				var txt = listLabel.getChildAt(0);
+                const NEW_LINE =  "\n";
+				var txt = listLabel.getChildAt(0);
 
-    				if (txt.enabled) {
-    					var entities = Object.keys(game.getCurrentScene().entities);
-    					var finalText = "";
-    					for (var i = 0; i < entities.length; i++) {
-    						finalText += self.buildString(game.getCurrentScene().getEntity(entities[i])) + NEW_LINE;
-    					}
-    					txt.setText(finalText);
-    				} else {
-    					txt.setText("");
-    				}
+				if (txt.enabled) {
+					var entities = Object.keys(game.getCurrentScene().entities);
+					var finalText = "";
+					var curText = "";
+					for (var i = 0; i < entities.length; i++) {
+						curText = self.buildString(game.getCurrentScene().getEntity(entities[i]), tb.value()) + NEW_LINE;
+						finalText += curText;
+					}
+					txt.setText(finalText);
+				} else {
+					txt.setText("");
+				}
 
-                    var fpsTxt = fpsLabel.getChildAt(0);
-                    var maxDeltaTime = Math.max(game.time.getDeltaTime(), game.renderTime.getDeltaTime());
-                    fpsTxt.setText(parseInt(1.0/maxDeltaTime).toString() + " fps");
-                }
-			}
+                var fpsTxt = fpsLabel.getChildAt(0);
+                var maxDeltaTime = Math.max(game.time.getDeltaTime(), game.renderTime.getDeltaTime());
+                fpsTxt.setText(parseInt(1.0/maxDeltaTime).toString() + " fps");
+            }
 		};
 
         // Create the panel
@@ -351,7 +373,7 @@ function GuiManager(game)
         panel.insertChild(createBtn);
         panel.insertChild(toggleBtn);
         panel.insertChild(listLabel);
-        panel.insertChild(panelScript);
+        panel.addChild("panelScript", panelScript);
 
 		return panel;
 	};
@@ -459,9 +481,10 @@ function GuiManager(game)
      *
      *    @method
      *    @param  {object} e an object (entity, component, other object...)
+     *    @param  {String} f filter string
      *    @return {String}   a nice string representation
      */
-	this.buildString = function(e)
+	this.buildString = function(e, f)
 	{
 		const INDENT = "\t\t\t";
 		var finalText = "";
@@ -470,16 +493,26 @@ function GuiManager(game)
 		for (var name in e.children) {
 			if (!e.children.hasOwnProperty(name))
 				continue;
-
-			finalText += "\n" + INDENT;
 			var c = e.children[name];
 
-			if (c instanceof Entity) {
-				finalText += this.buildString(c);
-			} else if (c.constructor.component_name){
-				finalText += INDENT + "- " + c.constructor.component_name + " (Component)";
-			} else {
-				finalText += INDENT + "- " + name + " (" + c.constructor.name + ")";
+			if (c instanceof Entity) {	// entity resolves recursively
+				finalText += "\n" + INDENT;
+				finalText += this.buildString(c, f);
+			} else {					// not an entity
+				// beautify name
+				var addedText = "\n" + INDENT;
+				if (c.constructor.component_name) {
+					addedText += INDENT + "- ";
+					if (c.constructor.component_name == Script.component_name)
+						addedText += name + " ";
+					addedText += c.constructor.component_name + " (Component)";
+				} else {
+					addedText += INDENT + "- " + name + " (" + c.constructor.name + ")";
+				}
+
+				// filter
+				if (!f || (f && addedText.search(f) != -1))
+					finalText += addedText;
 			}
 		}
 		return finalText;
