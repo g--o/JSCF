@@ -232,6 +232,46 @@ function GuiManager(game)
         return e;
     }
 
+	/**
+	 *    creates a text editor
+	 *
+	 *    @method
+	 *    @param  {String}		id the id of the editor element
+	 *    @param  {Object}		obj the object to edit
+	 *    @return {Object} 		the ace based jscf editor
+	 */
+	this.editObject = function(id, obj)
+	{
+		var jscfEditor = null;
+
+		// create editor div
+		var editor = document.createElement("div");
+		editor.id = id;
+		document.body.appendChild(editor);
+
+		// create save button
+		var saveBtn = document.createElement("button");
+
+		// set save script
+		if (obj) {
+			saveBtn.onclick = function () {
+				var code = jscfEditor.getValue();
+				var fn = eval('[' + code + ']')[0];
+				obj.update = fn;
+				editor.parentNode.removeChild(editor);
+				saveBtn.parentNode.removeChild(saveBtn);
+			};
+			saveBtn.id = "jscf-editor-save-button";
+			saveBtn.innerHTML = "Save";
+			document.body.appendChild(saveBtn);
+
+			// create the editor
+			jscfEditor = createEditor("jscf-editor", obj, false);
+		}
+
+		return jscfEditor;
+	}
+
     /**
      *    creates debug panel
      *
@@ -243,33 +283,11 @@ function GuiManager(game)
         var self = this;
 		var panelHeight = game.getCanvasHeight();
 		var panelWidth = game.getCanvasWidth()/4;
-		var jscfEditor = null;
 
 		// Toggle button
 		var toggleBtn = game.guiManager.createDefaultButton(0, 0, "Edit");
 		toggleBtn.getComponentOfType(ButtonHandler).onClick = function() {
-			// create editor div
-			var editor = document.createElement("div");
-			editor.id = "jscf-editor";
-			document.body.appendChild(editor);
-			// create save button
-			var saveBtn = document.createElement("button");
-			var script = game.getCurrentScene().getEntity(tb.value());
-			if (script) {
-				saveBtn.onclick = function () {
-					var code = jscfEditor.getValue();
-					var fn = eval('[' + code + ']')[0];
-					script.update = fn;
-					editor.parentNode.removeChild(editor);
-					saveBtn.parentNode.removeChild(saveBtn);
-				};
-				saveBtn.id = "jscf-editor-save-button";
-				saveBtn.innerHTML = "Save";
-				document.body.appendChild(saveBtn);
-
-				// create the editor
-				jscfEditor = createEditor("jscf-editor", script, false);
-			}
+			self.editObject("jscf-editor", game.getCurrentScene().getEntity(tb.value()));
 		};
 
 		// Entity creation button

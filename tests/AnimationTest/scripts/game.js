@@ -16,7 +16,7 @@ var game = new Game(JSCF_CANVAS_WIDTH, JSCF_CANVAS_HEIGHT, JSC_FPS, JSC_ASSETDIR
 function logic()
 {
     //player.updateAnim();
-    if (game.inputManager.isKeyDown(13))
+    if (Math.floor(game.time.getTimeFromStart()) % 1000 == 0)
         player.anim.nextAnimation();
 }
 

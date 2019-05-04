@@ -24,11 +24,11 @@ function Graphics(canvasWidth, canvasHeight)
         this.canvas.id = "GameCanvas";
 
         if (canvasWidth < 0)
-            this.canvas.width = window.innerWidth-50;
+            this.canvas.width = window.innerWidth;
         else
             this.canvas.width = canvasWidth;
         if (canvasHeight < 0)
-            this.canvas.height = window.innerHeight-50;
+            this.canvas.height = window.innerHeight;
         else
             this.canvas.height = canvasHeight;
         this.context = this.canvas.getContext("2d");

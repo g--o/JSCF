@@ -16,17 +16,23 @@ function PhysicsEngine(entities)
      */
 	this.pixelMeterRatio = 50;
     /**
-     *    number of iterations/ticks per update (default: 5)
+     *    number of iterations/ticks per update (default: 7)
      *
      *    @type {Number}
      */
-	this.numIterations = 5;
+	this.numIterations = 7;
+	/**
+	 *    simulation speed multiplier
+	 *
+	 *    @type {Number}
+	 */
+	this.simSpeed = 1.0;
     /**
      *    tick duration in seconds. Should be linear to 1/numIterations! (default: Scene.tick_duration/numIterations)
      *
      *    @type {Number}
      */
-	this.tickDuration = 1/this.numIterations;
+	this.tickDuration = this.simSpeed * (1/this.numIterations);
     /**
      *    gravity acceleration in px/s^2 (default: (0, 9.8 * pixelMeterRatio) )
      *
@@ -186,7 +192,7 @@ function PhysicsEngine(entities)
      */
 	this.update = function(tick_duration)
 	{
-        this.tickDuration = tick_duration/this.numIterations;
+        this.tickDuration = this.simSpeed * (tick_duration/this.numIterations);
 
 		for (var i = 0; i < this.numIterations; i++) {
 			this.resolveNaturalForces();

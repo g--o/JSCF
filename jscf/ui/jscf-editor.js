@@ -8,7 +8,7 @@
  */
 function createEditor(editor_id, script_object, useWebWorker)
 {
-
+	// fetch script
 	document.getElementById(editor_id).innerHTML = script_object.update;
 
 	//create editor
