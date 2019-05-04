@@ -250,6 +250,7 @@ function GuiManager(game)
 		document.body.appendChild(editor);
 
 		// create save button
+		var editorPanel = document.createElement("div");
 		var saveBtn = document.createElement("button");
 
 		// set save script
@@ -259,11 +260,14 @@ function GuiManager(game)
 				var fn = eval('[' + code + ']')[0];
 				obj.update = fn;
 				editor.parentNode.removeChild(editor);
-				saveBtn.parentNode.removeChild(saveBtn);
+				editorPanel.parentNode.removeChild(editorPanel);
 			};
-			saveBtn.id = "jscf-editor-save-button";
+
 			saveBtn.innerHTML = "Save";
-			document.body.appendChild(saveBtn);
+			saveBtn.id = "jscf-editor-save-button";
+			editorPanel.id = "jscf-editor-panel";
+			editorPanel.appendChild(saveBtn);
+			document.body.appendChild(editorPanel);
 
 			// create the editor
 			jscfEditor = createEditor("jscf-editor", obj, false);
