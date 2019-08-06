@@ -26,32 +26,45 @@ jscf.js is a *minified* version. To work with non-compact code you need to manua
 
 ![Debug panel screenshot](screenshots/debug-panel.png)
 
+**Debug Panel Light Theme:**
+
+![Debug panel screenshot](screenshots/debug-panel-light.png)
+
 ## Examples
 For now you can look at the tests directory for examples. Later in development online demos will be available.
 
 ## Features
-- 2D graphical engine
+#### User end
+- Editor & Meta-Editor
+- GUI Widgets
+- Themes
+
+#### Graphics
 - Basic rects renderer
 - Sprite renderer
 - Animator
+
+#### Management
+- Components System
+- Input management
 - Entities & simple hirarchy
-- Entity scripts
+- Scripts (vanilla JS)
 - Asset manager
 - Scene manager
-- Simple components System
 - Colliders
-- Input management (including basic UI)
-- Prototype Physics Engine
-- Debug Panel (prototype)
+
+#### Miscellaneous
+- Simple Physics Engine
+- Docs
 - Demos
 
 ## Documentation
 
-Documentation is currently in progress but you can check our [wiki](https://github.com/g--o/JSCF/wiki), it also points to online API docs.
+The latest docs are always in the doc folder, but you can check our [wiki](https://github.com/g--o/JSCF/wiki), it also points to online API docs (they might should refer to latest stable version).
 
 ## Help up!
 
-**JSCF needs your help!** There's a work to be done and a lot of refinement, please consider contributing. You can start by reading CONTRIBUTING.md. There's a great need in *documentation* and *tutorials*.
+**JSCF needs your help!** There's a work to be done and a lot of refinement, please consider contributing. You can start by reading CONTRIBUTING.md. There's a great need for help for *the world editor* and *bug fixing*.
 
 **Share your JSCF projects!** - let us know about your JSCF projects, we'll be happy to support and be supported.
 

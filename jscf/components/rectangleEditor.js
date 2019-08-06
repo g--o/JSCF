@@ -57,6 +57,21 @@ function RectangleEditor(owner, style)
 	};
 
 	/**
+	 *    set dimentions of rectangle editor
+	 *
+	 *    @method
+	 *    @param  {Number} width  desired width
+	 *    @param  {Number} height desire height
+	 */
+	this.setDimentions = function(width, height) {
+		this.bb.dims.x = width;
+		this.bb.dims.y = height;
+		this.bb.reset();
+		this.rectangle.width = width;
+		this.rectangle.height = height;
+	};
+
+	/**
 	 *    gets whether or not the owner is selected
 	 *
 	 *    @method
@@ -83,7 +98,6 @@ function RectangleEditor(owner, style)
 		RectangleEditor.currently_selected = this.parent;
 		this.style = __RECTANGLE_DEFAULT_ACTIVE_STYLE;
 		this.rectangle.color = this.style;
-		this.circle.color = this.style;
 	};
 
 	/**
@@ -96,7 +110,6 @@ function RectangleEditor(owner, style)
 		RectangleEditor.currently_selected = null;
 		this.style = __RECTANGLE_DEFAULT_PASSIVE_STYLE;
 		this.rectangle.color = this.style;
-		this.circle.color = this.style;
 	};
 
 	/**
@@ -107,7 +120,6 @@ function RectangleEditor(owner, style)
 	this.render = function()
 	{
 		this.rectangle.render();
-		this.circle.render();
 	};
 
 	this.init = function()
@@ -117,7 +129,6 @@ function RectangleEditor(owner, style)
 		var transform = this.parent.getGlobalTransform();
 
 		this.rectangle = new Rectangle(game, shape.x, shape.y, this.style);
-		this.circle = new Circle(game, 5, this.style);
 		this.bb = new AABB(transform, transform, shape.x, shape.y);
 	};
 
@@ -139,3 +150,7 @@ RectangleEditor.currently_selected = null;
  *    @type {String}
  */
 RectangleEditor.component_name =  __RECTANGLE_EDITOR_NAME;
+
+RectangleEditor.prototype.toString = function() {
+	return this.isSelected();
+};

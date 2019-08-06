@@ -146,7 +146,6 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
      *    (internal) fast as possible update loop
      *
      *    @method
-     *    @return {[type]} [description]
      */
     this.updateLoop = function()
     {

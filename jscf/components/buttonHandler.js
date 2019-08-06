@@ -38,6 +38,9 @@ function ButtonHandler(owner, speed)
 	 */
 	this.update = function()
 	{
+		if (!ButtonHandler.active)
+			return;
+		
 		var transform = owner.getGlobalTransform();
 		this.bb.setTransform(transform);
 
@@ -89,3 +92,10 @@ function ButtonHandler(owner, speed)
  *    @type {String}
  */
 ButtonHandler.component_name = __BUTTON_HANDLER_NAME;
+
+/**
+ *    quick enabler/disabler of all button handler
+ *
+ *    @type {Boolean}
+ */
+ButtonHandler.active = true;

@@ -145,6 +145,7 @@ function Scene(game)
         if (!(entityName in this.entities))
             return false;
 
+        this.entities[entityName].destroy();
         delete this.entities[entityName];
         return true;
     };

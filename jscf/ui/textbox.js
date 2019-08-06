@@ -121,5 +121,15 @@ function Textbox(parent, w, h, txt)
 		this.effect.post_render(ctx);
 
 		return ret;
-	}
+	};
+
+	/**
+	 *    destroys CanvasInput related objects
+	 *
+	 *    @method
+	 */
+	this.destroy = function() {
+		this.textBox.destroy();
+		game.graphics.canvas.style.cursor = "default";
+	};
 }

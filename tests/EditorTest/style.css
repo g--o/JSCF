@@ -17,7 +17,7 @@ canvas {
     box-shadow: black -2px -1px 20px;
 }
 
-#jscf-editor-save-button {
+#jscf-editor-save-button, #jscf-editor-cancel-button {
     height: 100%;
     width: 10%;
 }

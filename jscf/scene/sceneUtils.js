@@ -27,5 +27,21 @@ var SceneUtils = {
         //     platforms[i].AddShapedChild("spr", new Sprite(game, tile_side, tile_side, type));
         // }
         return platforms
-    }
+    },
+
+    /**
+     *    deletes a parent (along with object)
+     *
+     *    @method
+     *    @param  {Core.Game}   game   the jscf game object
+     *    @param  {Core.Entity} entity the entity whose parent will be deleted.
+     */
+    deleteParent : function(game, entity) {
+        var container = entity.parent;
+
+        if (container.parent == null)
+            game.getCurrentScene().delEntity(entity.parent.name);
+        else
+            container.parent.delChild(container.name);
+    },
 };

@@ -235,3 +235,7 @@ const Vector = {
         return vec1.clone().subVector(vec2);
     }
 };
+
+Vector2d.prototype.toString = function() {
+    return [this.x, this.y].toString();
+};

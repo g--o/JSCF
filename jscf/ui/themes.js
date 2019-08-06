@@ -131,9 +131,10 @@ function __UI_FONT(theme) {
 ///////////// THEME CLASS /////////////
 
 /**
- *    theme wrapper
+ *    @class       Theme
+ *    @classdesc   Theme wrapper
+ *    @memberof    UI
  *
- *    @method      Theme
  *    @param       {Object} settings     theme settings JSON
  *    @param       {Number} canvasWidth  canvas width
  *    @param       {Number} canvasHeight canvas height
@@ -148,10 +149,11 @@ function Theme(settings, canvasWidth, canvasHeight) {
 	/**
 	 *    Standard size getter
 	 *
-	 *    @method
 	 *    @param  {String} name   	the requested object
 	 *    @param  {String} property the property
 	 *    @return {Number}      	the requested size
+	 *
+	 *    @method
 	 */
 	this.getSize = function(name, property)
 	{
@@ -172,9 +174,10 @@ function Theme(settings, canvasWidth, canvasHeight) {
 	/**
 	 *    UI font descriptor getter
 	 *
-	 *    @method
 	 *    @param  {String} name   	the requested object
 	 *    @return {String}      	the built font string.
+	 *
+	 *    @method
 	 */
 	this.getFontDesc = function(name)
 	{
@@ -196,10 +199,11 @@ function Theme(settings, canvasWidth, canvasHeight) {
 	/**
 	 *    Standard property getter
 	 *
-	 *    @method
 	 *    @param  {String} name   	the requested object
 	 *    @param  {String} property the property
 	 *    @return {Object}      	the requested property
+	 *    
+	 *    @method
 	 */
 	this.getProperty = function(name, property)
 	{

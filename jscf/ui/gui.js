@@ -1,6 +1,7 @@
 // JSCFEditor consts
 const __GUIMANAGER_JSCFEDITOR_ID 		= "jscf-editor";
 const __GUIMANAGER_JSCFEDITOR_SAVE_ID 	= "jscf-editor-save-button";
+const __GUIMANAGER_JSCFEDITOR_CANCEL_ID	= "jscf-editor-cancel-button";
 const __GUIMANAGER_JSCFEDITOR_PANEL_ID 	= "jscf-editor-panel";
 
 // Panel consts
@@ -181,15 +182,18 @@ function GuiManager(game, utheme)
      *    @method
      *    @param  {Number} x        x position
      *    @param  {Number} y        y position
+     *    @param  {String} txt 		text to set in textbox
      *    @return {Core.Entity}     default gui textbox entity
      */
-	this.createDefaultTextBox = function(x, y)
+	this.createDefaultTextBox = function(x, y, txt)
 	{
+		if (!txt)
+			txt = "";
 		return this.createTextBox(__GUIMANAGER_TXTBOX_NAME+this.eleNum,
 										x, y,
 								  		this.theme.getSize("textbox", "width"),
 								  		this.theme.getSize("textbox", "height"),
-										"",
+										txt,
 										this.theme.getProperty("textbox", "effect"));
 	};
 
@@ -209,7 +213,7 @@ function GuiManager(game, utheme)
 							this.theme.getFontDesc("label"));
 		text.enabled = true;
 
-		var txtEntity = new Entity(game, "txt", true, x, y, true);
+		var txtEntity = new Entity(game, __GUIMANAGER_TXT_NAME, true, x, y, true);
 		txtEntity.insertChild(text);
 
 		return txtEntity;
@@ -230,7 +234,7 @@ function GuiManager(game, utheme)
         var window = this.createDefaultContainer(x, y);
         window.name = __GUIMANAGER_WINDOW_NAME + this.eleNum++;
 
-		var factor = self.theme.getSize("window","ctl_size");
+		var factor = this.theme.getSize("window","ctl_size");
 		var btnWidth = this.theme.getSize("container", "width") * factor;
 		var btnHeight = this.theme.getSize("container", "height") * factor;
 
@@ -250,13 +254,11 @@ function GuiManager(game, utheme)
         };
 
         btn.getComponentOfType(ButtonHandler).onClick = function() {
-            if (window.parent == null)
-                game.getCurrentScene().delEntity(window.name);
-            else
-                btn.parent.delChild(window.name);
+            SceneUtils.deleteParent(game, btn);
         };
 
         window.insertChild(btn);
+		window.addComponent(RectangleEditor);
 
         return window;
     };
@@ -317,6 +319,7 @@ function GuiManager(game, utheme)
 		// create save button
 		var editorPanel = document.createElement("div");
 		var saveBtn = document.createElement("button");
+		var cancelBtn = document.createElement("button");
 
 		// set save script
 		if (obj) {
@@ -326,16 +329,29 @@ function GuiManager(game, utheme)
 				obj.update = fn;
 				editor.parentNode.removeChild(editor);
 				editorPanel.parentNode.removeChild(editorPanel);
+				ButtonHandler.active = true;
 			};
+
+			cancelBtn.onclick = function() {
+				editor.parentNode.removeChild(editor);
+				editorPanel.parentNode.removeChild(editorPanel);
+				ButtonHandler.active = true;
+			}
 
 			saveBtn.innerHTML = "Save";
 			saveBtn.id = __GUIMANAGER_JSCFEDITOR_SAVE_ID;
+			cancelBtn.innerHTML = "Cancel";
+			cancelBtn.id = __GUIMANAGER_JSCFEDITOR_CANCEL_ID;
 			editorPanel.id = __GUIMANAGER_JSCFEDITOR_PANEL_ID;
+
 			editorPanel.appendChild(saveBtn);
+			editorPanel.appendChild(cancelBtn);
 			document.body.appendChild(editorPanel);
 
 			editorObject = createEditor(__GUIMANAGER_JSCFEDITOR_ID, obj, false);
 		}
+
+		ButtonHandler.active = false;
 
 		return editorObject;
 	};
@@ -351,13 +367,6 @@ function GuiManager(game, utheme)
         var self = this;
 		var panelHeight = this.theme.getSize("panel", "height");
 		var panelWidth =  this.theme.getSize("panel", "width");
-
-		/*
-		// Edit button
-		editBtn.getComponentOfType(ButtonHandler).onClick = function() {
-			self.editObject(__GUIMANAGER_JSCFEDITOR_ID, game.getCurrentScene().getEntity(tb.value()));
-		};
-		*/
 
 		// Toggle button
 		var toggleBtn = game.guiManager.createDefaultButton(0, 0, "Dark / Light");
@@ -382,13 +391,13 @@ function GuiManager(game, utheme)
 				tb.value("");
 				return;
 			}
+
+			// inspect object
+			game.guiManager.createInspectionPanel(ent);
 		});
 
         // FPS label
         var fpsLabel = this.createLabel(0, 0, "");
-
-		// Transform label
-        var transformLabel = this.createLabel(0, 0, "Transform");
 
         // List label
  		var listLabel = this.createLabel(0, 0, "");
@@ -440,6 +449,85 @@ function GuiManager(game, utheme)
 		return panel;
 	};
 
+	/**
+	 *    creates an inspection window for an object
+	 *
+	 *    @method
+	 *    @param  {Object} 		obj the object to inspect
+	 *    @return {Core.Entity}     the window created
+	 */
+	this.createInspectionPanel = function(obj)
+	{
+		var self = this;
+		var canvasWidth = game.getCanvasWidth();
+		var panelWidth = this.theme.getSize("panel", "width");
+		var panelHeight = this.theme.getSize("panel", "height");
+
+		// create label
+		var label = this.createLabel(0,0);
+		var text = label.getChildAt(0);
+		label.update = function() {
+			text.setText("------ " + obj.name + " ------");
+		};
+
+		var panel = this.createDefaultContainer(canvasWidth - panelWidth/2,
+			 							   		panelHeight/2);
+		panel.insertChild(label);
+		panel.setDimentions(panelWidth, panelHeight);
+
+		if (obj.transform) {
+			panel.insertChild(this.createLabel(0,0,"transform"));
+			var transTB = game.guiManager.createDefaultTextBox(0, 0, obj.transform);
+			var tb = transTB.getChildAt(0).textBox;
+			tb.onsubmit(function() {
+				var array = tb.value().split(",");
+				obj.transform.pos.x = parseInt(array[0]);
+				obj.transform.pos.y = parseInt(array[1]);
+			});
+			panel.insertChild(transTB);
+		}
+
+		for (var name in obj.children) {
+			if (!obj.children.hasOwnProperty(name))
+				continue;
+			var c = obj.children[name];
+
+			if (c instanceof Entity) {	// entity resolves recursively
+				; // TODO: allow nested edits
+			} else {					// not an entity
+				panel.insertChild(this.createLabel(0, 0, name));
+				if (c.toString() == "[object Object]") {
+					// Edit button
+					var editBtn = this.createDefaultButton(0,0,"Edit");
+					editBtn.obj = c;
+					editBtn.getComponentOfType(ButtonHandler).onClick = (function() {
+						self.editObject(__GUIMANAGER_JSCFEDITOR_ID, this.obj);
+					}).bind(editBtn);
+					panel.insertChild(editBtn);
+				} else {
+					// Textbox field
+					panel.insertChild(this.createDefaultTextBox(0, 0, c));
+				}
+			}
+		}
+
+		// seperator
+		panel.insertChild(this.createLabel(0,0,"______________________"));
+
+		// close button
+		var closeBtn = this.createDefaultButton(0, 0, "Close");
+		closeBtn.getComponentOfType(ButtonHandler).onClick = function() {
+			SceneUtils.deleteParent(game, closeBtn);
+		};
+		panel.insertChild(closeBtn);
+
+		// add layout handler
+		panel.addComponent(LayoutHandler);
+        panel.getComponentOfType(LayoutHandler).layoutType = LinedLayout;
+
+		game.getCurrentScene().addEntity(panel);
+	};
+
     /**
      *    inserts an error popup to scene
      *
@@ -465,7 +553,7 @@ function GuiManager(game, utheme)
 		const PANEL_WIDTH = this.theme.getSize("panel", "width");
         const DP_WIDTH =  PANEL_WIDTH + this.theme.getSize("panel", "margin");
 
-        var helpPanel = this.createDefaultWindow(DP_WIDTH, PANEL_WIDTH);
+        var helpPanel = this.createDefaultWindow(DP_WIDTH*2, PANEL_WIDTH);
         helpPanel.name = __GUIMANAGER_HELP_PANEL_NAME + this.eleNum++;
         helpPanel.insertChild(this.createLabel(0, 0, HELP_TEXT));
 
@@ -502,14 +590,15 @@ function GuiManager(game, utheme)
             if (!ents.hasOwnProperty(e))
                 continue;
 
-            if (ents[e].name != __GUIMANAGER_DEBUG_PANEL_NAME)
+			var hasComponent = (ents[e].hasComponentOfType(RectangleEditor));
+            if (ents[e].name != __GUIMANAGER_DEBUG_PANEL_NAME && !hasComponent)
                 ents[e].addComponent(RectangleEditor);
         }
     };
 
     this.delRectangleEditor = function()
     {
-        // Remove rectangle editor to all entities!
+        // Remove rectangle editor from all entities!
         var ents = game.getCurrentScene().entities;
         for (var e in ents) {
             if (!ents.hasOwnProperty(e))

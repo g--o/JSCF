@@ -9,7 +9,8 @@
 function createEditor(editor_id, script_object, useWebWorker)
 {
 	// fetch script
-	document.getElementById(editor_id).innerHTML = script_object.update;
+	const COMMENT = "// WARNING! scripting anonymous functions may be fatal here!\r\n";
+	document.getElementById(editor_id).innerHTML = COMMENT + script_object.update;
 
 	//create editor
 	var editor = ace.edit(editor_id);

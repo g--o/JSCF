@@ -39,3 +39,7 @@ Transform.add = function(t1, t2)
 
     return t;
 };
+
+Transform.prototype.toString = function() {
+    return this.pos.toString();
+};

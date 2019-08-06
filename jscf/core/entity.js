@@ -266,8 +266,11 @@ function Entity(game, name, alive, x, y, automated)
      */
     this.delComponentOfType = function(componentType)
     {
-        var name = this.getComponentOfType(componentType).name;
-        return this.delChild(name);
+        var comp = this.getComponentOfType(componentType);
+        if (!comp)
+            return false;
+
+        return this.delChild(comp.name);
     };
 
     /**
@@ -329,6 +332,21 @@ function Entity(game, name, alive, x, y, automated)
                 var child = this.children[childName];
                 if (child.setDimentions)
                     child.setDimentions(w, h);
+            }
+        }
+    };
+
+    /**
+     *    prepares entity components for deletion
+     *
+     *    @method
+     */
+    this.destroy = function() {
+        for (var childName in this.children) {
+            if (this.children.hasOwnProperty(childName) && this.children[childName]) {
+                var child = this.children[childName];
+                if (child.destroy)
+                    child.destroy();
             }
         }
     };
