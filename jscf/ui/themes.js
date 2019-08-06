@@ -131,7 +131,7 @@ function __UI_FONT(theme) {
 ///////////// THEME CLASS /////////////
 
 /**
- *    @class       Theme
+ *    @class
  *    @classdesc   Theme wrapper
  *    @memberof    UI
  *
@@ -140,8 +140,8 @@ function __UI_FONT(theme) {
  *    @param       {Number} canvasHeight canvas height
  *    @constructor
  */
-function Theme(settings, canvasWidth, canvasHeight) {
-
+function Theme(settings, canvasWidth, canvasHeight)
+{
 	this.canvasWidth	= canvasWidth;
 	this.canvasHeight	= canvasHeight;
 	this.settings 		= settings;
@@ -202,7 +202,7 @@ function Theme(settings, canvasWidth, canvasHeight) {
 	 *    @param  {String} name   	the requested object
 	 *    @param  {String} property the property
 	 *    @return {Object}      	the requested property
-	 *    
+	 *
 	 *    @method
 	 */
 	this.getProperty = function(name, property)

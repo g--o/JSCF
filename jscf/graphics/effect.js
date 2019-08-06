@@ -14,7 +14,7 @@ function Effect(pre_render, post_render)
 }
 
 /**
- * shadowFx
+ * an empty effect
  * @param  {Context} 		ctx	 the cnavas context
  * @return {Graphics.Effect}     the effect of adding shadow to renderable object.
  */
