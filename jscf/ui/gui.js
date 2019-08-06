@@ -1,27 +1,21 @@
+// JSCFEditor consts
+const __GUIMANAGER_JSCFEDITOR_ID 		= "jscf-editor";
+const __GUIMANAGER_JSCFEDITOR_SAVE_ID 	= "jscf-editor-save-button";
+const __GUIMANAGER_JSCFEDITOR_PANEL_ID 	= "jscf-editor-panel";
 
+// Panel consts
+const __GUIMANAGER_DEBUG_PANEL_NAME 	= "debug-panel";
+const __GUIMANAGER_HELP_PANEL_NAME 		= "help-panel";
+const __GUIMANAGER_LIST_PANEL_NAME 		= "panel-script";
 
-const __GUIMANAGER_DEBUG_PANEL_NAME = "debug-panel";
-const __GUIMANAGER_HELP_PANEL_NAME = "help-panel";
-const __GUIMANAGER_WINDOW_NAME = "window";
-
-const __GUIMANAGER_BG_NAME = "bg";
-const __GUIMANAGER_TXT_NAME = "txt";
-
-// Container consts
-const __GUIMANAGER_CONTAINER_COLOR = "#a6a6a6cc";
-const __GUIMANAGER_CONTAINER_WIDTH = 250;
-const __GUIMANAGER_CONTAINER_HEIGHT = __GUIMANAGER_CONTAINER_WIDTH;
-
-// Button consts
-const __GUIMANAGER_BUTTON_WIDTH = 50;
-const __GUIMANAGER_BUTTON_HEIGHT = 50;
-const __GUIMANAGER_BUTTON_FONT_COLOR = "#000";
-const __GUIMANAGER_BUTTON_FONT_SIZE = __GUIMANAGER_BUTTON_HEIGHT * 0.3;
-const __GUIMANAGER_BUTTON_FONT =  __GUIMANAGER_BUTTON_FONT_SIZE + "px arial";
-
-// Textbox consts
-const __GUIMANAGER_TXTBOX_WIDTH = 100;
-const __GUIMANAGER_TXTBOX_HEIGHT = 23;
+// Widget consts
+const __GUIMANAGER_WINDOW_NAME 			= "window";
+const __GUIMANAGER_CONTAINER_NAME 		= "con";
+const __GUIMANAGER_X_SUFFIX				= "-x-btn";
+const __GUIMANAGER_BG_NAME 				= "bg";
+const __GUIMANAGER_BTN_NAME 			= "btn";
+const __GUIMANAGER_TXT_NAME 			= "txt";
+const __GUIMANAGER_TXTBOX_NAME			= "tb";
 
 /**
  * @class
@@ -29,18 +23,36 @@ const __GUIMANAGER_TXTBOX_HEIGHT = 23;
  * @memberof UI
  *
  * @param {Core.Game} game   the JSCF game object.
+ * @param {Object}	  utheme a UI theme object.
  *
  * @constructor
  */
-function GuiManager(game)
+function GuiManager(game, utheme)
 {
 	this.eleNum = 0;
     this.isDebug = false;
+	this.jscfEditor = null;
+	this.theme = utheme ? utheme : new Theme(__UI_DEFAULT_THEME,
+											game.getCanvasWidth(),
+											game.getCanvasHeight());
 
-	// Set default bgcolor gradient
-	var __GUIMANAGER_BUTTON_BGCOLOR = game.graphics.context.createLinearGradient(0, __GUIMANAGER_BUTTON_HEIGHT*0.4, 0, 0);
-	__GUIMANAGER_BUTTON_BGCOLOR.addColorStop(0, "#bebebe");
-	__GUIMANAGER_BUTTON_BGCOLOR.addColorStop(1, "#e7e7e7");
+	/**
+	 *    Sets theme via json / object settings (not override).
+	 *
+	 *    @method
+	 *    @param  {Object} themeSettings the theme settings json / object.
+	 */
+	this.setTheme = function(themeSettings)
+	{
+		if (!themeSettings) {
+			game.warn("bad theme settings!");
+			return;
+		}
+
+		this.theme = new Theme(themeSettings,
+							   game.getCanvasWidth(),
+							   game.getCanvasHeight());
+	};
 
     /**
      *    creates rectangular container with background
@@ -59,7 +71,7 @@ function GuiManager(game)
 		var e = new Entity(game, name, true, x, y, true);
 		// Build bg
 		var bg = new Plane(game, w, h, bgcolor);
-		bg.effect = shadowFx;
+		bg.effect = this.theme.getProperty("container", "effect");
 		e.addChild(__GUIMANAGER_BG_NAME, bg);
 
 		return e;
@@ -75,7 +87,11 @@ function GuiManager(game)
      */
 	this.createDefaultContainer = function(x, y)
 	{
-		return this.createContainer("con"+this.eleNum, x, y, __GUIMANAGER_CONTAINER_WIDTH, __GUIMANAGER_CONTAINER_HEIGHT, __GUIMANAGER_CONTAINER_COLOR);
+		var containerHeight = this.theme.getSize("container", "height");
+		return this.createContainer(__GUIMANAGER_CONTAINER_NAME+this.eleNum, x, y,
+									this.theme.getSize("container", "width"),
+									containerHeight,
+									this.theme.getProperty("container", "color"));
 	};
 
     /**
@@ -123,9 +139,13 @@ function GuiManager(game)
      */
 	this.createDefaultButton = function(x, y, txt)
 	{
-		return this.createButton("btn"+this.eleNum++, x, y, __GUIMANAGER_BUTTON_WIDTH,
-		 	__GUIMANAGER_BUTTON_HEIGHT, __GUIMANAGER_BUTTON_BGCOLOR, txt,
-			__GUIMANAGER_BUTTON_FONT_COLOR,__GUIMANAGER_BUTTON_FONT);
+		var buttonTheme = this.theme.settings.button;
+		return this.createButton(__GUIMANAGER_BTN_NAME+this.eleNum++, x, y,
+								this.theme.getSize("button", "width"),
+								this.theme.getSize("button", "height"),
+								buttonTheme.color, txt,
+								buttonTheme.font_color,
+								this.theme.getFontDesc("button"));
 	};
 
     /**
@@ -139,12 +159,18 @@ function GuiManager(game)
      *    @param  {Number} h        textbox height
      *    @param  {String} bgcolor  background color (2d context descriptor)
      *    @param  {String} txt      the text to display on textbox
+     *    @param  {Effect} effect 	the effect to render with textbox
      *    @return {Core.Entity}     gui textbox entity
      */
-	this.createTextBox = function(name, x, y, w, h, txt)
+	this.createTextBox = function(name, x, y, w, h, txt, effect)
 	{
 		var e = new Entity(game, name, true, x, y, true);
-		e.insertChild(new Textbox(e, w, h, txt));
+		var textBox = new Textbox(e, w, h, txt);
+
+		if (effect)
+			textBox.effect = effect;
+
+		e.insertChild(textBox);
 
 		return e;
 	};
@@ -159,7 +185,12 @@ function GuiManager(game)
      */
 	this.createDefaultTextBox = function(x, y)
 	{
-		return this.createTextBox("tb"+this.eleNum, x, y, __GUIMANAGER_TXTBOX_WIDTH, __GUIMANAGER_TXTBOX_HEIGHT);
+		return this.createTextBox(__GUIMANAGER_TXTBOX_NAME+this.eleNum,
+										x, y,
+								  		this.theme.getSize("textbox", "width"),
+								  		this.theme.getSize("textbox", "height"),
+										"",
+										this.theme.getProperty("textbox", "effect"));
 	};
 
     /**
@@ -173,8 +204,11 @@ function GuiManager(game)
      */
 	this.createLabel = function(x, y, txt)
 	{
-		var text = new Text(game, txt, "white", "15px arial");
+		var text = new Text(game, txt,
+							this.theme.getProperty("label", "font_color"),
+							this.theme.getFontDesc("label"));
 		text.enabled = true;
+
 		var txtEntity = new Entity(game, "txt", true, x, y, true);
 		txtEntity.insertChild(text);
 
@@ -191,20 +225,31 @@ function GuiManager(game)
      */
     this.createDefaultWindow = function(x, y)
     {
+		var self = this;
+
         var window = this.createDefaultContainer(x, y);
         window.name = __GUIMANAGER_WINDOW_NAME + this.eleNum++;
 
-        var btn = this.createDefaultButton((__GUIMANAGER_BUTTON_WIDTH-window.getChild("bg").width)/2,
-                                    (__GUIMANAGER_BUTTON_HEIGHT-window.getChild("bg").height)/2, "X");
+		var factor = self.theme.getSize("window","ctl_size");
+		var btnWidth = this.theme.getSize("container", "width") * factor;
+		var btnHeight = this.theme.getSize("container", "height") * factor;
 
-        btn.name = window.name + "-x-btn";
+		var bgChild = window.getChild(__GUIMANAGER_BG_NAME);
+
+        var btn = this.createButton(window.name + __GUIMANAGER_X_SUFFIX,
+									(btnWidth-bgChild.width)/2, (btnHeight-bgChild.height)/2,
+									btnWidth, btnHeight,
+									this.theme.getProperty("button","color"),
+									"X",
+									this.theme.getProperty("button", "font_color"),
+									this.theme.getFontDesc("button"));
+
         btn.setDimentions = function() {
-            btn.transform.pos.x = (__GUIMANAGER_BUTTON_WIDTH-window.getChild("bg").width)/2;
-            btn.transform.pos.y = (__GUIMANAGER_BUTTON_HEIGHT-window.getChild("bg").height)/2;
+            btn.transform.pos.x = (btnWidth-bgChild.width)/2;
+            btn.transform.pos.y = (btnHeight-bgChild.height)/2;
         };
 
         btn.getComponentOfType(ButtonHandler).onClick = function() {
-            console.log(window.parent);
             if (window.parent == null)
                 game.getCurrentScene().delEntity(window.name);
             else
@@ -233,7 +278,7 @@ function GuiManager(game)
     }
 
 	/**
-	 *    creates a text editor
+	 *    edits an object
 	 *
 	 *    @method
 	 *    @param  {String}		id the id of the editor element
@@ -242,7 +287,27 @@ function GuiManager(game)
 	 */
 	this.editObject = function(id, obj)
 	{
-		var jscfEditor = null;
+		var self = this;
+
+		if (this.jscfEditor)
+			this.jscfEditor.destroy();
+
+		this.jscfEditor = this.createJscfEditor(id, obj);
+
+		return this.jscfEditor;
+	};
+
+	/**
+	 *    creates a text editor
+	 *
+	 *    @method
+	 *    @param  {String}		id the id of the editor element
+	 *    @param  {Object}		obj the object to edit
+	 *    @return {Object} 		the ace based jscf editor
+	 */
+	this.createJscfEditor = function(id, obj)
+	{
+		var editorObject = null;
 
 		// create editor div
 		var editor = document.createElement("div");
@@ -256,7 +321,7 @@ function GuiManager(game)
 		// set save script
 		if (obj) {
 			saveBtn.onclick = function () {
-				var code = jscfEditor.getValue();
+				var code = editorObject.getValue();
 				var fn = eval('[' + code + ']')[0];
 				obj.update = fn;
 				editor.parentNode.removeChild(editor);
@@ -264,17 +329,16 @@ function GuiManager(game)
 			};
 
 			saveBtn.innerHTML = "Save";
-			saveBtn.id = "jscf-editor-save-button";
-			editorPanel.id = "jscf-editor-panel";
+			saveBtn.id = __GUIMANAGER_JSCFEDITOR_SAVE_ID;
+			editorPanel.id = __GUIMANAGER_JSCFEDITOR_PANEL_ID;
 			editorPanel.appendChild(saveBtn);
 			document.body.appendChild(editorPanel);
 
-			// create the editor
-			jscfEditor = createEditor("jscf-editor", obj, false);
+			editorObject = createEditor(__GUIMANAGER_JSCFEDITOR_ID, obj, false);
 		}
 
-		return jscfEditor;
-	}
+		return editorObject;
+	};
 
     /**
      *    creates debug panel
@@ -285,21 +349,27 @@ function GuiManager(game)
 	this.createDebugPanel = function()
 	{
         var self = this;
-		var panelHeight = game.getCanvasHeight();
-		var panelWidth = game.getCanvasWidth()/4;
+		var panelHeight = this.theme.getSize("panel", "height");
+		var panelWidth =  this.theme.getSize("panel", "width");
+
+		/*
+		// Edit button
+		editBtn.getComponentOfType(ButtonHandler).onClick = function() {
+			self.editObject(__GUIMANAGER_JSCFEDITOR_ID, game.getCurrentScene().getEntity(tb.value()));
+		};
+		*/
 
 		// Toggle button
-		var toggleBtn = game.guiManager.createDefaultButton(0, 0, "Edit");
+		var toggleBtn = game.guiManager.createDefaultButton(0, 0, "Dark / Light");
 		toggleBtn.getComponentOfType(ButtonHandler).onClick = function() {
-			self.editObject("jscf-editor", game.getCurrentScene().getEntity(tb.value()));
-		};
+			if (self.theme.settings == __UI_LIGHT_THEME)
+				self.setTheme(__UI_DARK_THEME);
+			else
+				self.setTheme(__UI_LIGHT_THEME);
 
-		// Entity creation button
-		var createBtn = game.guiManager.createDefaultButton(0, 0, "Help Panel");
-		createBtn.getComponentOfType(ButtonHandler).onClick = function() {
-            var hp = self.createHelpPanel();
-            hp.addComponent(RectangleEditor);
-			game.getCurrentScene().addEntity(hp);
+			// restart debug panel
+			self.toggleDebugPanel();
+			self.toggleDebugPanel();
 		};
 
 		// Search entity textbox
@@ -312,32 +382,6 @@ function GuiManager(game)
 				tb.value("");
 				return;
 			}
-			var pos = ent.transform.pos;
-			transformTBx.getChildAt(0).textBox.value(pos.x);
-			transformTBy.getChildAt(0).textBox.value(pos.y);
-		});
-
-		// Transform textboxs
-		var transformTBx = game.guiManager.createDefaultTextBox(0, 0);
-		transformTBx.getChildAt(0).textBox.placeHolder("pos.x");
-		transformTBx.getChildAt(0).textBox.onsubmit(function() {
-			var ent = game.getCurrentScene().getEntity(tb.value());
-			if (!ent) {
-				tb.value("");
-				return;
-			}
-			ent.transform.pos.x = parseInt(transformTBx.getChildAt(0).textBox.value());
-		});
-
-		var transformTBy = game.guiManager.createDefaultTextBox(0, 0);
-		transformTBy.getChildAt(0).textBox.placeHolder("pos.y");
-		transformTBy.getChildAt(0).textBox.onsubmit(function() {
-			var ent = game.getCurrentScene().getEntity(tb.value());
-			if (!ent) {
-				tb.value("");
-				return;
-			}
-			ent.transform.pos.y = parseInt(transformTBy.getChildAt(0).textBox.value());
 		});
 
         // FPS label
@@ -383,19 +427,15 @@ function GuiManager(game)
         // Create the panel
 		var panel = game.guiManager.createContainer(__GUIMANAGER_DEBUG_PANEL_NAME,
                                                     panelWidth/2, panelHeight/2, panelWidth,
-                                                    panelHeight, __GUIMANAGER_CONTAINER_COLOR);
+                                                    panelHeight, this.theme.getProperty("container","color"));
         panel.addComponent(LayoutHandler);
         panel.getComponentOfType(LayoutHandler).layoutType = LinedLayout;
 
         panel.insertChild(fpsLabel);
+		panel.insertChild(toggleBtn);
         panel.insertChild(searchTB);
-        panel.insertChild(transformLabel);
-        panel.insertChild(transformTBx);
-        panel.insertChild(transformTBy);
-        panel.insertChild(createBtn);
-        panel.insertChild(toggleBtn);
         panel.insertChild(listLabel);
-        panel.addChild("panelScript", panelScript);
+        panel.addChild(__GUIMANAGER_LIST_PANEL_NAME, panelScript);
 
 		return panel;
 	};
@@ -422,8 +462,10 @@ function GuiManager(game)
     this.createHelpPanel = function()
     {
         const HELP_TEXT = "Welcome to the JSCF editor!\n- Use left-click to drag entities\n- Use right-click to resize\n- Use ~ button to toggle";
-        const DP_WIDTH = game.getCanvasWidth()/4 + 50; // + margin
-        var helpPanel = this.createDefaultWindow(DP_WIDTH, game.getCanvasWidth()/4);
+		const PANEL_WIDTH = this.theme.getSize("panel", "width");
+        const DP_WIDTH =  PANEL_WIDTH + this.theme.getSize("panel", "margin");
+
+        var helpPanel = this.createDefaultWindow(DP_WIDTH, PANEL_WIDTH);
         helpPanel.name = __GUIMANAGER_HELP_PANEL_NAME + this.eleNum++;
         helpPanel.insertChild(this.createLabel(0, 0, HELP_TEXT));
 

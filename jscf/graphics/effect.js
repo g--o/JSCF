@@ -15,8 +15,15 @@ function Effect(pre_render, post_render)
 
 /**
  * shadowFx
- * @param  {Context} ctx the cnavas context
+ * @param  {Context} 		ctx	 the cnavas context
  * @return {Graphics.Effect}     the effect of adding shadow to renderable object.
+ */
+var noneFx = new Effect(function(ctx) {}, function(ctx) {});
+
+/**
+ * shadowFx
+ * @param  {Context} 		ctx the cnavas context
+ * @return {Graphics.Effect}    the effect of adding shadow to renderable object.
  */
 var shadowFx = new Effect(function(ctx) {
 							ctx.shadowBlur = 10;

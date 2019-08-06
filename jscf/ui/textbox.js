@@ -23,6 +23,13 @@ function Textbox(parent, w, h, txt)
      */
 	this.parent = parent;
 
+	/**
+	 *    effect (defaults to shadow effect)
+	 *
+	 *    @type {Graphics.Effect}
+	 */
+	this.effect = shadowFx;
+
     /**
      *    textbox of CanvasInput object
      *
@@ -106,12 +113,12 @@ function Textbox(parent, w, h, txt)
 	this.render = function()
 	{
 		var ctx = this.parent.game.graphics.context;
-		shadowFx.pre_render(ctx);
+		this.effect.pre_render(ctx);
 		ctx.save();
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		var ret = this.textBox.render(true);
 		ctx.restore();
-		shadowFx.post_render(ctx);
+		this.effect.post_render(ctx);
 
 		return ret;
 	}
