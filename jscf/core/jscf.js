@@ -7,10 +7,9 @@
   * @param  {Number} canvasHeight The height of the game canvas
   * @param  {Number} fps          The frames per second to lock to
   * @param  {String} assetDir     The assets directory
-  * @param  {Boolean} debugMode   Whether or not to run in debug mode
   * @constructor
   */
-function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
+function Game(canvasWidth, canvasHeight, fps, assetDir) {
 
     // c'tor
     this.init = function()
@@ -25,7 +24,6 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
         this.graphics = null;
         this.update = null;
         this.automated = true;
-        this.debugMode = debugMode ? debugMode : false;
 
         /**
          *    current state
@@ -154,6 +152,8 @@ function Game(canvasWidth, canvasHeight, fps, assetDir, debugMode) {
             this.sceneManager.update();
         if (this.update)
             this.update();
+        if (this.automated)
+            this.guiManager.resetFocus();
 
         this.lastDelay = (this.lastDelay + this.time.getDeltaTime())/2.0;
         setTimeout(this.updateLoop.bind(this), this.lastDelay);

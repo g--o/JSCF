@@ -40,7 +40,7 @@ function ButtonHandler(owner, speed)
 	{
 		if (!ButtonHandler.active)
 			return;
-		
+
 		var transform = owner.getGlobalTransform();
 		this.bb.setTransform(transform);
 
@@ -48,7 +48,7 @@ function ButtonHandler(owner, speed)
 		var my = owner.game.inputManager.getMouseY();
 		var mDown = owner.game.inputManager.isMouseDown();
 
-		if (this.bb.containsPoint(mx, my)) {
+		if (this.bb.containsPoint(mx, my) && owner.game.guiManager.focus()) {
 			if (transform.scale.length() < __BUTTON_HANDLER_HOVER_MAX)
 				owner.transform.scale.scalarMul(this.hover_speed);
 

@@ -149,7 +149,7 @@ function Theme(settings, canvasWidth, canvasHeight)
 	/**
 	 *    Standard size getter
 	 *
-	 *    @param  {String} name   	the requested object
+	 *    @param  {String} name   	the requested object. use width/height for lengths.
 	 *    @param  {String} property the property
 	 *    @return {Number}      	the requested size
 	 *

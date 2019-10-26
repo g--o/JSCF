@@ -42,6 +42,16 @@ function Text(game, txt, style, font)
         this.maxHeight = parseInt(ctx.font.match(/\d+/), 10) + this.lineMargin;
     };
 
+	/**
+	 *    gets currently set text
+	 *
+	 *    @return {String}	the text
+	 */
+	this.getText = function()
+	{
+		return this.txt;
+	};
+
     /**
      *    get the dimentions of text element if to be rendered.
      *

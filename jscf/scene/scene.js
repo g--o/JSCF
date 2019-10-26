@@ -9,6 +9,7 @@ function Scene(game)
 {
     this.max_euid = 0;
     this.entities = {};
+    this.entities_keys = [];
 
     /**
      *    is scene paused
@@ -55,14 +56,13 @@ function Scene(game)
             return false;
 
         // Normal update
-        for (entityName in this.entities) {
-            if (this.entities.hasOwnProperty(entityName)) {
-                var entity = this.entities[entityName];
-                if (!entity)
-                    continue;
-                if (entity.update && entity.auto_update)
-                    entity.update();
-            }
+        for (var i = 0; i < this.entities_keys.length; ++i) {
+            var entityName = this.entities_keys[i];
+            var entity = this.entities[entityName];
+            if (!entity)
+                continue;
+            if (entity.update && entity.auto_update)
+                entity.update();
         }
         // Physics update
         this.physicsEngine.update(game.time.getDeltaTime());
@@ -81,12 +81,11 @@ function Scene(game)
         if (this.paused)
             return false;
 
-        for (entityName in this.entities) {
-            if (this.entities.hasOwnProperty(entityName)) {
-                var entity = this.entities[entityName];
-                if (entity && entity.auto_render) {
-                    entity.render();
-                }
+        for (var i = this.entities_keys.length; i >= 0; --i) {
+            var entityName = this.entities_keys[i];
+            var entity = this.entities[entityName];
+            if (entity && entity.auto_render) {
+                entity.render();
             }
         }
 
@@ -127,6 +126,7 @@ function Scene(game)
     {
         if (!(entity.name in this.entities)) {
             this.entities[entity.name] = entity;
+            this.entities_keys.unshift(entity.name);
             return entity;
         } else {
             return false;
@@ -145,6 +145,7 @@ function Scene(game)
         if (!(entityName in this.entities))
             return false;
 
+        this.entities_keys = __delete_array_element(this.entities_keys, entityName);
         this.entities[entityName].destroy();
         delete this.entities[entityName];
         return true;
@@ -223,4 +224,9 @@ function Scene(game)
         this.max_euid++;
         return "entity_" + this.max_euid;
     };
+}
+
+function __delete_array_element(arr, value)
+{
+    return arr.filter(function(item) { return item !== value; });
 }
