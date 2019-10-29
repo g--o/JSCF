@@ -180,11 +180,47 @@ function InputManager(canvas)
         mouseY = e.clientY - canvas.offsetTop;
     }
 
+    function updateDrop(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        var files = e.dataTransfer.files; // Array of all files
+
+        for (var i=0, file; file=files[i]; i++) {
+            var reader = new FileReader();
+            reader.onload = function(e2) {
+                InputManager.droppedFileCallback(e2.target.result);
+            }
+            reader.readAsText(file);
+        }
+    }
+
+    function readTextFile(file){
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function ()
+        {
+            if(rawFile.readyState === 4)
+            {
+                if(rawFile.status === 200 || rawFile.status == 0)
+                {
+                    var allText = rawFile.responseText;
+                    alert(allText);
+                }
+            }
+        }
+        rawFile.send(null);
+    }
+
     document.addEventListener("keydown", updateKeyTrue);
     document.addEventListener("keyup", updateKeyFalse);
     document.addEventListener("mousemove", updateMousePosition);
-    document.addEventListener('contextmenu', function() { event.preventDefault() } );
+    document.addEventListener("contextmenu", function(ev) { ev.preventDefault() } );
+    window.addEventListener("dragover",function(e){ e = e || event; e.preventDefault(); },false);
+    window.addEventListener("drop",updateDrop,false);
     this.setOnMouseDown(updateMouseDown);
     this.setOnMouseUp(updateMouseUp);
 
 }
+
+InputManager.droppedFileCallback = function() { console.log("[JSCF] file dropped!"); };

@@ -7,9 +7,6 @@
  */
 function Scene(game)
 {
-    this.max_euid = 0;
-    this.entities = {};
-    this.entities_keys = [];
 
     /**
      *    is scene paused
@@ -224,9 +221,84 @@ function Scene(game)
         this.max_euid++;
         return "entity_" + this.max_euid;
     };
+
+    /**
+     *    serialize scene data
+     *
+     *    @method
+     *    @return {Object} scene data representation object
+     */
+    this.serialize = function()
+    {
+        this.pause();
+        var ents = JSON.stringify(this.entities, __get_circular_replaces());
+        this.resume();
+
+        return ents;
+    };
+
+    /**
+     *    loads scene from serialized data
+     *
+     *    @method
+     *    @param  {Object} data the data
+     */
+    this.deserialize = function(data)
+    {
+        this.pause();
+        this.entities = JSON.parse(data, __func_reviver);
+        this.resume();
+    };
+
+    /**
+     *    the file drop handler
+     *
+     *    @method
+     *    @param  {String} file file data
+     */
+    this.onFileDrop = function(file)
+    {
+        this.deserialize(file);
+    };
+
+    this.init = function()
+    {
+        var self = this;
+        this.max_euid = 0;
+        this.entities = {};
+        this.entities_keys = [];
+        InputManager.droppedFileCallback = this.onFileDrop.bind(this);
+    };
+
+    this.init();
 }
 
 function __delete_array_element(arr, value)
 {
     return arr.filter(function(item) { return item !== value; });
 }
+
+const __get_circular_replaces = () => {
+  const seen = new WeakSet();
+  return (key, value) => {
+    // if we get a function give us the code for that function
+    if (typeof value === 'function')
+        return value.toString();
+
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value))
+        return;
+      seen.add(value);
+    }
+    return value;
+  };
+};
+
+const __func_reviver = (key, value) => {
+    if (typeof value === 'string'
+        && value.indexOf('function ') === 0) {
+      let functionTemplate = `(${value}).call(this)`;
+      return new Function(functionTemplate);
+    }
+    return value;
+};

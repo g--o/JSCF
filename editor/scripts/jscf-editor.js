@@ -87,10 +87,7 @@ function JSCFEditor (game)
 	{
 		var self = this;
 
-		if (obj instanceof Entity) {
-			this.jscfEditor = null;
-			this.createInspectionPanel(obj);
-		} else {
+		if (obj instanceof Script || obj instanceof Function || obj instanceof String){
 			if (this.jscfEditor)
 				this.jscfEditor.destroy();
 
@@ -106,6 +103,9 @@ function JSCFEditor (game)
 			}
 
 			this.jscfEditor = this.createJscfEditor(id, value, callback);
+		} else {
+			this.jscfEditor = null;
+			this.createInspectionPanel(obj);
 		}
 
 		return this.jscfEditor;
@@ -245,6 +245,10 @@ function JSCFEditor (game)
 			}
 		};
 
+		var saveBtn = guim.createDefaultButton(0,0,"Save",function() {
+			SceneUtils.saveToFile(game.getCurrentScene().serialize(), "scene");
+		});
+
 		// Create the panel
 		var panel = guim.createContainer(__GUIMANAGER_DEBUG_PANEL_NAME,
 										panelWidth/2, panelHeight/2, panelWidth,
@@ -253,6 +257,7 @@ function JSCFEditor (game)
 		panel.getComponentOfType(LayoutHandler).layoutType = LinedLayout;
 
 		panel.insertChild(fpsLabel);
+		panel.insertChild(saveBtn);
 		panel.insertChild(toggleBtn);
 		panel.insertChild(searchTB);
 		panel.insertChild(listLabel);
@@ -288,16 +293,20 @@ function JSCFEditor (game)
 		panel.insertChild(label);
 		panel.setDimentions(panelWidth, panelHeight);
 
-		if (obj.transform) {
-			panel.insertChild(guim.createLabel(0,0,"transform"));
-			var transTB = game.guiManager.createDefaultTextBox(0, 0, obj.transform);
-			var tb = transTB.getChildAt(0).textBox;
-			tb.onsubmit(function() {
-				var array = tb.value().split(",");
-				obj.transform.pos.x = parseInt(array[0]);
-				obj.transform.pos.y = parseInt(array[1]);
-			});
-			panel.insertChild(transTB);
+		if (!(obj instanceof Entity)) {
+			for (prop in obj) {
+				var propType = typeof(obj[prop]);
+				if (obj.hasOwnProperty(prop) &&
+				propType != "function" &&
+				propType != "object") {
+					panel.insertChild(guim.createLabel(0,0,prop));
+					var propTB = game.guiManager.createDefaultTextBox(0, 0, obj[prop]);
+					var tb = propTB.getChildAt(0).textBox;
+					tb.prop = prop;
+					tb.onsubmit(set_property.bind(tb, obj));
+					panel.insertChild(propTB);
+				}
+			}
 		}
 
 		for (var name in obj.children) {
@@ -317,7 +326,9 @@ function JSCFEditor (game)
 				panel.insertChild(editBtn);
 			} else {
 				// Textbox field
-				panel.insertChild(guim.createDefaultTextBox(0, 0, c));
+				// var tb = guim.createDefaultTextBox(0, 0, c);
+				// panel.insertChild(tb);
+				;
 			}
 		}
 
@@ -333,7 +344,7 @@ function JSCFEditor (game)
 
 		// add layout handler
 		panel.addComponent(LayoutHandler);
-		panel.getComponentOfType(LayoutHandler).layoutType = LinedLayout;
+		panel.getComponentOfType(LayoutHandler).layoutType = FitLayout;
 
 		game.getCurrentScene().addEntity(panel);
 	};
@@ -411,4 +422,9 @@ function JSCFEditor (game)
 	}
 
 	this.init();
+}
+
+function set_property(obj)
+{
+	obj[this.prop] = this.value();
 }

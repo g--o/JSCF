@@ -179,6 +179,7 @@ function GuiManager(game, utheme)
 			textBox.effect = effect;
 
 		e.insertChild(textBox);
+		e.addComponent(ButtonHandler);
 
 		return e;
 	};
