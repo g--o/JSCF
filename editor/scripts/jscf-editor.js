@@ -8,6 +8,20 @@ const __JSCFEDITOR_PANEL_ID 		= "jscf-editor-panel";
 // keybinds
 const __JSCFEDITOR_KB_DEV_TOGGLE = 192;
 
+/**
+ * conservingBind: keeps code but applies native binding
+ * https://stackoverflow.com/questions/34255580/bind-that-does-not-return-native-code-in-javascript
+ */
+function conservingBind(fun, ctx){
+    var newFun = function(){
+        return  eval('[' + fun + ']')[0].apply(ctx, arguments);
+    }
+    newFun.toString = function(){
+        return fun.toString();
+    }
+    return newFun;
+}
+
 function JSCFEditor (game)
 {
 
@@ -92,7 +106,10 @@ function JSCFEditor (game)
 				this.jscfEditor.destroy();
 
 			// default callback & value
-			var callback = function(newval) { obj.update = eval('[' + newval + ']')[0]; }
+			var callback = function(newval) {
+				/*obj.update = eval('[' + newval + ']')[0];*/
+				obj.update = conservingBind(newval, obj);
+		 	}
 			var value = obj.update;
 
 			// default for text object
@@ -216,22 +233,28 @@ function JSCFEditor (game)
 
 		// Panel script
 		var panelScript = new Script(null);
+		/* set internal script vars */
+		panelScript.listLabel = listLabel;
+		panelScript.tb = tb;
+		panelScript.fpsLabel = fpsLabel;
 		panelScript.lastTime = game.time.getTimeFromStart();
-		panelScript.update = function()
+		panelScript.update = conservingBind(function()
 		{
 			var newTime = game.time.getTimeFromStart();
-			if (newTime - panelScript.lastTime > 1000) {
-				panelScript.lastTime = newTime;
+			if (newTime - this.lastTime > 1000) {
+				this.lastTime = newTime;
 
 				const NEW_LINE =  "\n";
-				var txt = listLabel.getChildAt(0);
+				var txt = this.listLabel.getChildAt(0);
 
 				if (txt.enabled) {
 					var entities = Object.keys(game.getCurrentScene().entities);
 					var finalText = "";
 					var curText = "";
 					for (var i = 0; i < entities.length; i++) {
-						curText = guim.buildString(game.getCurrentScene().getEntity(entities[i]), tb.value()) + NEW_LINE;
+						curText = game.guiManager.buildString(
+							game.getCurrentScene().getEntity(entities[i]), this.tb.value())
+							 + NEW_LINE;
 						finalText += curText;
 					}
 					txt.setText(finalText);
@@ -239,11 +262,11 @@ function JSCFEditor (game)
 					txt.setText("");
 				}
 
-				var fpsTxt = fpsLabel.getChildAt(0);
+				var fpsTxt = this.fpsLabel.getChildAt(0);
 				var maxDeltaTime = Math.max(game.time.getDeltaTime(), game.renderTime.getDeltaTime());
 				fpsTxt.setText(parseInt(1.0/maxDeltaTime).toString() + " fps");
 			}
-		};
+		}, panelScript);
 
 		var saveBtn = guim.createDefaultButton(0,0,"Save",function() {
 			SceneUtils.saveToFile(game.getCurrentScene().serialize(), "scene");
@@ -313,7 +336,7 @@ function JSCFEditor (game)
 			if (!obj.children.hasOwnProperty(name))
 				continue;
 			var c = obj.children[name];
-			var repr_string = c.name ? c.name : name;
+			var repr_string = guim.beautifyObjectString(c);
 
 			panel.insertChild(guim.createLabel(0, 0, repr_string));
 			if (c.toString() == "[object Object]") {
@@ -324,11 +347,6 @@ function JSCFEditor (game)
 					self.editObject(__JSCFEDITOR_ID, this.obj);
 				}).bind(editBtn);
 				panel.insertChild(editBtn);
-			} else {
-				// Textbox field
-				// var tb = guim.createDefaultTextBox(0, 0, c);
-				// panel.insertChild(tb);
-				;
 			}
 		}
 

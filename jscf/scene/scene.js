@@ -258,7 +258,8 @@ function Scene(game)
      */
     this.onFileDrop = function(file)
     {
-        this.deserialize(file);
+        if (game.debug)
+            this.deserialize(file);
     };
 
     this.init = function()

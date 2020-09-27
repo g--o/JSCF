@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: ButtonHandler</title>
+    <title>Namespace: FitLayout</title>
     
     
     
@@ -1994,7 +1994,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="Components.ButtonHandler.html">Class: ButtonHandler</h1>
+        <h1 class="page-title" data-filename="UI.FitLayout.html">Namespace: FitLayout</h1>
         
 
 
@@ -2003,10 +2003,8 @@
     
 <header>
     <div class="header content-size">
-        <h2><span class="ancestors"><a href="Components.html">Components</a>.</span>ButtonHandler
+        <h2><span class="ancestors"><a href="UI.html">UI</a>.</span>FitLayout
         </h2>
-        
-            <div class="class-description">the button handler component.</div>
         
     </div>
 </header>  
@@ -2017,16 +2015,64 @@
     
     
         
+            <div class="description">Fit layout static class</div>
+        
+        
+        
+<dl class="details">
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl class="list-methods">
+            
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="ButtonHandler">
-            <a class="share-icon" href="#ButtonHandler"><span class="glyphicon glyphicon-link"></span></a>
+        <h4 class="name" id=".calcPreferredSize">
+            <a class="share-icon" href="#.calcPreferredSize"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">
-                new Components.ButtonHandler
+                UI.FitLayout.calcPreferredSize
             </span>
-            <span class="signature">(owner, speed)</span>
+            <span class="signature">(target)</span>
             
-            
+            <span class="access-signature">static</span>
             
             
         </h4>
@@ -2038,6 +2084,10 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        The method calculates a target children container preferred size based on its content.
+    </div>
     
 
     
@@ -2067,7 +2117,7 @@
 	
         <tr>
             
-                <td class="name"><code>owner</code></td>
+                <td class="name"><code>target</code></td>
             
             
             <td class="type">
@@ -2083,30 +2133,7 @@
             
             <td class="description last">
                 
-                the entity the component's being applied to.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>speed</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                animation speed (ticks per second).</td>
+                the entity to contain</td>
         </tr>
 	
 	
@@ -2151,145 +2178,21 @@
     
 </dd>
 
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
         
-        <dl class="list-members">
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id=".active">
-            <a class="share-icon" href="#.active"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">Components.ButtonHandler.active</span>
-            <span class="type-signature type">Boolean</span>
+        <h4 class="name" id=".doLayout">
+            <a class="share-icon" href="#.doLayout"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                UI.FitLayout.doLayout
+            </span>
+            <span class="signature">(target)</span>
             
             <span class="access-signature">static</span>
             
             
         </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        quick enabler/disabler of all button handler
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".component_name">
-            <a class="share-icon" href="#.component_name"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">Components.ButtonHandler.component_name</span>
-            <span class="type-signature type">String</span>
-            
-            <span class="access-signature">static</span>
-            
-            
-        </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        the component name
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl class="list-methods">
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="onClick">
-            <a class="share-icon" href="#onClick"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                onClick
-            </span>
-            <span class="signature">()</span>
-            
-            
-            
-            
-        </h4>
     
         
     </div>
@@ -2300,7 +2203,7 @@
     
     
     <div class="description">
-        stub callback function for click; override if needed.
+        The method orders the target children container based on specific rules the manager implements.
     </div>
     
 
@@ -2309,77 +2212,50 @@
     
     
     
-    
-    
-<dl class="details">
-    
         
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
 
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="update">
-            <a class="share-icon" href="#update"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">
-                update
-            </span>
-            <span class="signature">()</span>
+                <td class="name"><code>target</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Core.Entity.html">Core.Entity</a></span>
+
+
+            
+            </td>
             
             
             
-            
-        </h4>
-    
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        updates button handler component (position, effects, clicks, hovers, etc..)
-    </div>
-    
-
-    
-    
-    
-    
+            <td class="description last">
+                
+                the container to apply changes to.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -2439,7 +2315,7 @@
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Sun Sep 27 2020 20:39:09 GMT+0300 (Israel Daylight Time)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Sun Sep 27 2020 20:39:10 GMT+0300 (Israel Daylight Time)
             </div>
         </footer>
     </div>

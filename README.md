@@ -15,7 +15,7 @@ Lastly, JSCF should be desktop AND mobile targeted, while keeping good performan
 ## Gettting JSCF
 JSCF is in development. Only prototype version is available. You can get a prototype build from [release/jscf.js](release/jscf.js).
 
-jscf.js is a *minified* version. To work with non-compact code you need to manually include the core modules + needed modules & components. This helps loading only whatever is neccessary and helps us debug problems.
+jscf.js is a *minified* version. To work with non-compact code you need to manually include the core modules + needed modules & components. This helps loading only whatever is neccessary and helps debug problems.
 
 ## Screenshots
 **Pong Demo:**
@@ -31,7 +31,7 @@ jscf.js is a *minified* version. To work with non-compact code you need to manua
 ![Debug panel screenshot](screenshots/debug-panel-light.png)
 
 ## Examples
-For now you can look at the tests directory for examples. Later in development online demos will be available.
+For online demos, links and more try the JSCF [website](https://g--o.github.io/web-JSCF/).
 
 ## Features
 #### User end

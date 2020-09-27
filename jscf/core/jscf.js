@@ -24,6 +24,7 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         this.graphics = null;
         this.update = null;
         this.automated = true;
+        this.debug = false;
 
         /**
          *    current state
@@ -84,7 +85,7 @@ function Game(canvasWidth, canvasHeight, fps, assetDir) {
         var self = this;
         window.onerror = function (msg, url, lineNo, columnNo, error) {
             if (self.debug)
-                self.warn(msg + ": " + error);
+                self.warn(msg + ": " + error + "\n " + url);
             return false;
         };
 

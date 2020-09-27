@@ -337,6 +337,38 @@
             </ul>
         </li>
     
+        <li class="item" data-name="UI.FitLayout">
+            <span class="title namespace ">
+                
+                <span class="namespaceTag">
+                    <span class="glyphicon glyphicon-folder-open"></span>
+                </span>
+                
+                <a href="UI.FitLayout.html">UI.FitLayout</a>
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li class="parent  " data-name="UI.FitLayout.calcPreferredSize"><a href="UI.FitLayout.html#.calcPreferredSize">calcPreferredSize</a></li>
+            
+                <li class="parent  " data-name="UI.FitLayout.doLayout"><a href="UI.FitLayout.html#.doLayout">doLayout</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="UI.Layout">
             <span class="title namespace ">
                 
@@ -1571,17 +1603,23 @@
             
                 <li class="parent  " data-name="Scene.Scene#delEntity"><a href="Scene.Scene.html#delEntity">delEntity</a></li>
             
+                <li class="parent  " data-name="Scene.Scene#deserialize"><a href="Scene.Scene.html#deserialize">deserialize</a></li>
+            
                 <li class="parent  " data-name="Scene.Scene#getChildName"><a href="Scene.Scene.html#getChildName">getChildName</a></li>
             
                 <li class="parent  " data-name="Scene.Scene#getEntity"><a href="Scene.Scene.html#getEntity">getEntity</a></li>
             
                 <li class="parent  " data-name="Scene.Scene#getEntityName"><a href="Scene.Scene.html#getEntityName">getEntityName</a></li>
             
+                <li class="parent  " data-name="Scene.Scene#onFileDrop"><a href="Scene.Scene.html#onFileDrop">onFileDrop</a></li>
+            
                 <li class="parent  " data-name="Scene.Scene#pause"><a href="Scene.Scene.html#pause">pause</a></li>
             
                 <li class="parent  " data-name="Scene.Scene#render"><a href="Scene.Scene.html#render">render</a></li>
             
                 <li class="parent  " data-name="Scene.Scene#resume"><a href="Scene.Scene.html#resume">resume</a></li>
+            
+                <li class="parent  " data-name="Scene.Scene#serialize"><a href="Scene.Scene.html#serialize">serialize</a></li>
             
                 <li class="parent  " data-name="Scene.Scene#update"><a href="Scene.Scene.html#update">update</a></li>
             
@@ -1720,6 +1758,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li class="parent  " data-name="UI.GuiManager#beautifyObjectString"><a href="UI.GuiManager.html#beautifyObjectString">beautifyObjectString</a></li>
             
                 <li class="parent  " data-name="UI.GuiManager#buildString"><a href="UI.GuiManager.html#buildString">buildString</a></li>
             
@@ -2133,6 +2173,152 @@
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="beautifyObjectString">
+            <a class="share-icon" href="#beautifyObjectString"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                beautifyObjectString
+            </span>
+            <span class="signature">(o)</span><span class="type-signature">String</span>
+            
+            
+            
+            
+        </h4>
+    
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        beautify child representation
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>o</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                an object</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        String
+                        
+                    
+            </td>
+            <td class="description last">a name & type string representation</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="buildString">
             <a class="share-icon" href="#buildString"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">
@@ -2154,7 +2340,7 @@
     
     
     <div class="description">
-        builds string description of an object
+        builds string description of an object hirarchy
     </div>
     
 
@@ -4984,7 +5170,7 @@
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Sat Oct 26 2019 04:21:06 GMT+0300 (Israel Daylight Time)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Sun Sep 27 2020 20:39:10 GMT+0300 (Israel Daylight Time)
             </div>
         </footer>
     </div>
