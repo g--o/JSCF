@@ -339,17 +339,15 @@ function GuiManager(game, utheme)
 	 * @return {String}	a name & type string representation
 	 */
 	 this.beautifyObjectString = function(o){
-		if (o instanceof Entity)
-			return o.name + " (Entity)";
-
 		var repr = "";
-		if (o.constructor.component_name) {
-			// if (o.constructor.component_name == Script.component_name)
-			// 	repr += o.name + " ";
-		 	repr += o.constructor.component_name + " (Component)";
-		} else {
-			repr += name + " (" + o.constructor.name + ")";
+		if (o.constructor.component_name)
+		 	repr += o.constructor.component_name + "\n(Component)";
+		else {
+			if (o.name)
+				repr += o.name + " ";
+			repr += "(" + o.constructor.name + ")";
 		}
+
 		return repr;
 	 };
 

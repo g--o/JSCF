@@ -124,6 +124,13 @@ function Textbox(parent, w, h, txt)
 	};
 
 	/**
+	 * toggles the readonly property
+	 */
+	this.toggleEnabled = function() {
+		this.textBox._readonly = !this.textBox._readonly;
+	};
+
+	/**
 	 *    destroys CanvasInput related objects
 	 *
 	 *    @method
