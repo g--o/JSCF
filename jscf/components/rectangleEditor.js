@@ -5,6 +5,7 @@
 const __RECTANGLE_EDITOR_NAME = "[rectangle_editor]";
 const __RECTANGLE_DEFAULT_ACTIVE_STYLE = "red";
 const __RECTANGLE_DEFAULT_PASSIVE_STYLE = "black";
+const __RECTANGLE_GRAB_BUTTON = 17; // ctrl
 
 /**
  * @class
@@ -48,7 +49,8 @@ function RectangleEditor(owner, style)
 			this.rectangle.height = dims.y;
 		}
 
-		if (this.bb.containsPoint(mx, my) && this.parent.game.inputManager.isMouseDown()) {
+		if (this.bb.containsPoint(mx, my) && this.parent.game.inputManager.isMouseDown()
+				&& this.parent.game.inputManager.isKeyDown(__RECTANGLE_GRAB_BUTTON)) {
 			if (this.parent.game.inputManager.isLMBDown()) {
 				this.selectOwner();
 				this.parent.transform.pos = mousePos;

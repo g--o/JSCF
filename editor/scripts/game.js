@@ -11,6 +11,15 @@ function loadResources()
 function loadScene()
 {
 	game.debug = true;
+	game.inputManager.setOnMouseDown(function() {
+		if (game.inputManager.isKeyDown(__RECTANGLE_GRAB_BUTTON)) {
+			var tb = game.getCurrentScene().getEntity(__GUIMANAGER_DEBUG_PANEL_NAME).getChildAt(6);
+			var name = "";
+			if (RectangleEditor.currently_selected)
+				name = RectangleEditor.currently_selected.name;
+			tb.getChildAt(0).textBox.value(name);
+		}
+	});
 	editor.toggleDebugPanel();
 }
 

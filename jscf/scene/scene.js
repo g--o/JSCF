@@ -177,7 +177,8 @@ function Scene(game)
     this.createEntity = function(name, x, y, firstChild)
     {
         var e = new Entity(game, name, true, x, y, true);
-        e.addChild(this.getChildName(e, firstChild), firstChild);
+        if (firstChild)
+            e.addChild(this.getChildName(e, firstChild), firstChild);
         return this.addEntity(e);
     };
 
@@ -191,7 +192,8 @@ function Scene(game)
     this.createNewEntity = function(firstChild)
     {
         var e = new Entity(game, this.getEntityName(), true, 0, 0, true);
-        e.addChild(this.getChildName(e, firstChild), firstChild);
+        if (firstChild)
+            e.addChild(this.getChildName(e, firstChild), firstChild);
         return this.addEntity(e);
     };
 

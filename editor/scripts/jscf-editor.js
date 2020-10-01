@@ -1,12 +1,19 @@
 // JSCFEditor consts
+const __JSCFEDITOR_ADD_WINDOW_NAME  = "add-window";
 const __JSCFEDITOR_HELP_PANEL_NAME  = "help-panel";
 const __JSCFEDITOR_LIST_PANEL_NAME  = "panel-script";
 const __JSCFEDITOR_ID               = "jscf-editor";
 const __JSCFEDITOR_SAVE_ID          = "jscf-editor-save-button";
 const __JSCFEDITOR_CANCEL_ID        = "jscf-editor-cancel-button";
 const __JSCFEDITOR_PANEL_ID         = "jscf-editor-panel";
+// debug panel consts
+const __JSCFEDITOR_HELP_TEXT        = "Welcome to the JSCF editor!\n\
+- Mod key: left ctrl\n\
+- Use Mod+left-click to drag entities\n\
+- Use Mod+right-click to resize\n\
+- Use ~ button to toggle";
 // keybinds
-const __JSCFEDITOR_KB_DEV_TOGGLE = 192;
+const __JSCFEDITOR_KB_DEV_TOGGLE    = 192;
 
 /**
  * conservingBind: keeps code but applies native binding
@@ -273,6 +280,11 @@ function JSCFEditor (game)
             SceneUtils.saveToFile(game.getCurrentScene().serialize(), "scene");
         });
 
+        var createBtn = guim.createDefaultButton(0,0,"Create Entity",function() {
+            var e = game.getCurrentScene().createNewEntity();
+            tb.value(e.name);
+        });
+
         // Create the panel
         var panel = guim.createContainer(__GUIMANAGER_DEBUG_PANEL_NAME,
                                         panelWidth/2, panelHeight/2, panelWidth,
@@ -281,8 +293,9 @@ function JSCFEditor (game)
         panel.getComponentOfType(LayoutHandler).layoutType = LinedLayout;
 
         panel.insertChild(fpsLabel);
-        panel.insertChild(saveBtn);
         panel.insertChild(toggleBtn);
+        panel.insertChild(saveBtn);
+        panel.insertChild(createBtn);
         panel.insertChild(searchTB);
         panel.insertChild(listLabel);
         panel.addChild(__JSCFEDITOR_LIST_PANEL_NAME, panelScript);
@@ -369,6 +382,13 @@ function JSCFEditor (game)
         // seperator
         panel.insertChild(guim.createLabel(0,0,"______________________"));
 
+        // add button
+        var addBtn = guim.createDefaultButton(0, 0, "Add");
+        addBtn.getComponentOfType(ButtonHandler).onClick = function() {
+            game.getCurrentScene().addEntity(self.createAddWindow(obj, panel));
+        };
+        panel.insertChild(addBtn);
+
         // close button
         var closeBtn = guim.createDefaultButton(0, 0, "Close");
         closeBtn.getComponentOfType(ButtonHandler).onClick = function() {
@@ -384,22 +404,68 @@ function JSCFEditor (game)
     };
 
     /**
-     *    create help panel
+     * creates add property window for object
+     *
+     * @method
+     * @param  {Entity} obj the object to add property to
+     * @param  {Entity} panel the creating panel
+     * @return {Entity} the window entity
+     */
+    this.createAddWindow = function(obj, panel)
+    {
+        var guim = game.guiManager;
+
+        const PANEL_WIDTH = guim.theme.getSize("panel", "width");
+        const DP_WIDTH =  PANEL_WIDTH + guim.theme.getSize("panel", "margin");
+        const COMPONENT_LIST = [ LayoutHandler, ButtonHandler, Script, Collider, Rigidbody, RectangleEditor ];
+
+        var addWindow = guim.createDefaultWindow(DP_WIDTH*2, PANEL_WIDTH);
+        addWindow.name = guim.generateUIName(__JSCFEDITOR_ADD_WINDOW_NAME);
+        addWindow.addComponent(LayoutHandler);
+        addWindow.getComponentOfType(LayoutHandler).layoutType = FitLayout;
+
+        var self = this;
+        var closeFn = function() {
+            game.getCurrentScene().delEntity(panel.name);
+            self.createInspectionPanel(obj);
+            game.getCurrentScene().delEntity(addWindow.name);
+        };
+
+        for (var i = 0; i < COMPONENT_LIST.length; i++) {
+            var btn = guim.createDefaultButton(0,0,COMPONENT_LIST[i].component_name,null);
+            btn.componentType = COMPONENT_LIST[i];
+            btn.getComponentOfType(ButtonHandler).onClick = function() {
+                obj.addComponent(this.componentType);
+                closeFn();
+            }.bind(btn);
+            addWindow.insertChild(btn);
+        }
+
+        var planeBtn = guim.createDefaultButton(0,0,"Plane",function() {
+            obj.insertChild(new Plane(game,100,100,"black"));
+            closeFn();
+        });
+        addWindow.insertChild(planeBtn);
+
+        return addWindow;
+    };
+
+    /**
+     *    create help window
      *
      *    @method
      *    @return {Core.Entity} a help popup entity
      */
-    this.createHelpPanel = function()
+    this.createHelpWindow = function()
     {
         var guim = game.guiManager;
 
-        const HELP_TEXT = "Welcome to the JSCF editor!\n- Use left-click to drag entities\n- Use right-click to resize\n- Use ~ button to toggle";
         const PANEL_WIDTH = guim.theme.getSize("panel", "width");
         const DP_WIDTH =  PANEL_WIDTH + guim.theme.getSize("panel", "margin");
 
         var helpPanel = guim.createDefaultWindow(DP_WIDTH*2, PANEL_WIDTH);
         helpPanel.name = guim.generateUIName(__JSCFEDITOR_HELP_PANEL_NAME);
-        helpPanel.insertChild(guim.createLabel(0, 0, HELP_TEXT));
+        helpPanel.insertChild(guim.createLabel(0, 0, __JSCFEDITOR_HELP_TEXT));
 
         return helpPanel;
     };
@@ -437,7 +503,7 @@ function JSCFEditor (game)
         // Create debug panel
         var debugPanel = this.createDebugPanel();
         // Create debug help panel
-        var helpPanel = this.createHelpPanel();
+        var helpPanel = this.createHelpWindow();
 
         // Insert panels
         game.getCurrentScene().addEntity(debugPanel);
