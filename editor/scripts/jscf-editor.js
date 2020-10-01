@@ -53,11 +53,12 @@ function JSCFEditor (game)
         ace.config.loadModule('ace/ext/tern', function () {
             editor.setOptions({
                 enableTern: {
-                    defs: ['browser', 'ecma5'],     // http://ternjs.net/doc/manual.html#option_defs
-                    plugins: {                      // http://ternjs.net/doc/manual.html#plugins
+                    defs: ['jscf', 'browser', 'ecma5'],     // http://ternjs.net/doc/manual.html#option_defs
+                    plugins: {                              // http://ternjs.net/doc/manual.html#plugins
                         doc_comment: {
                             fullDocs: true
-                        }
+                        },
+                        node: {},
                     },
                     useWorker: useWebWorker,
                     switchToDoc: function (name, start) {
