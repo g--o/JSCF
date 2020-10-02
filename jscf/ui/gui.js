@@ -313,8 +313,7 @@ function GuiManager(game, utheme)
             if (!ents.hasOwnProperty(e))
                 continue;
 
-			var hasComponent = (ents[e].hasComponentOfType(RectangleEditor));
-            if (ents[e].name != __GUIMANAGER_DEBUG_PANEL_NAME && !hasComponent)
+            if (!(ents[e].hasComponentOfType(RectangleEditor)))
                 ents[e].addComponent(RectangleEditor);
         }
     };

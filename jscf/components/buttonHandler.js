@@ -5,6 +5,7 @@
 const __BUTTON_HANDLER_NAME = "[builtin_button_handler]";
 const __BUTTON_HANDLER_HOVER_SPEED = 1.1;
 const __BUTTON_HANDLER_HOVER_MAX = 1.5;
+const __BUTTON_HANDLER_ESCAPE_BUTTON = 17; // ctrl
 
 /**
  * @class
@@ -47,6 +48,7 @@ function ButtonHandler(owner, speed)
 		var mx = owner.game.inputManager.getMouseX();
 		var my = owner.game.inputManager.getMouseY();
 		var mDown = owner.game.inputManager.isMouseDown();
+		var grabbed = owner.game.inputManager.isKeyDown(__BUTTON_HANDLER_ESCAPE_BUTTON);
 
 		if (this.bb.containsPoint(mx, my) && owner.game.guiManager.focus()) {
 			if (transform.scale.length() < __BUTTON_HANDLER_HOVER_MAX)
@@ -60,7 +62,8 @@ function ButtonHandler(owner, speed)
 
 		if (this.pressed && !mDown) {
 			this.pressed = false;
-			this.onClick();
+			if (!grabbed)
+				this.onClick();
 		}
 	};
 

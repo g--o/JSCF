@@ -38,6 +38,17 @@ var LayoutHandler = function(owner)
 		this.layoutType.doLayout(this.parent);
 		this.update = null;
 	};
+
+	/**
+	 * updates dimensions in a layout conserving way
+	 *
+	 * @param {Number} w width
+	 * @param {Number} h height
+	 */
+	this.setDimentions = function(w,h)
+	{
+		this.layoutType.doLayout(this.parent);
+	};
 };
 
 /**

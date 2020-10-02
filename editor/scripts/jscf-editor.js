@@ -42,8 +42,8 @@ function JSCFEditor (game)
     this.createEditor = function(editor_id, script_object, useWebWorker)
     {
         // fetch script
-        const COMMENT = ""; // "// WARNING! scripting anonymous functions may be fatal here!\r\n";
-        document.getElementById(editor_id).innerHTML = COMMENT + script_object;
+        const COMMENT = ""; // "// this = " + script_object.constructor.name;
+        document.getElementById(editor_id).innerHTML = COMMENT + "\n" + script_object;
 
         //create editor
         var editor = ace.edit(editor_id);
@@ -389,6 +389,21 @@ function JSCFEditor (game)
         };
         panel.insertChild(addBtn);
 
+        // delete button
+        var delBtn = guim.createDefaultButton(0, 0, "Delete");
+        delBtn.getComponentOfType(ButtonHandler).onClick = function() {
+            if (obj.constructor.component_name) {
+                obj.parent.delComponent(obj.name);
+            } else {
+                if (obj.parent)
+                    obj.parent.delEntity(obj.name);
+                else
+                    game.getCurrentScene().delEntity(obj.name);
+            }
+            SceneUtils.deleteParent(game, delBtn);
+        };
+        panel.insertChild(delBtn);
+
         // close button
         var closeBtn = guim.createDefaultButton(0, 0, "Close");
         closeBtn.getComponentOfType(ButtonHandler).onClick = function() {
@@ -416,11 +431,13 @@ function JSCFEditor (game)
         var guim = game.guiManager;
 
         const PANEL_WIDTH = guim.theme.getSize("panel", "width");
+        const PANEL_HEIGHT = guim.theme.getSize("panel","height");
         const DP_WIDTH =  PANEL_WIDTH + guim.theme.getSize("panel", "margin");
         const COMPONENT_LIST = [ LayoutHandler, ButtonHandler, Script, Collider, Rigidbody, RectangleEditor ];
 
         var addWindow = guim.createDefaultWindow(DP_WIDTH*2, PANEL_WIDTH);
         addWindow.name = guim.generateUIName(__JSCFEDITOR_ADD_WINDOW_NAME);
+        addWindow.setDimentions(PANEL_WIDTH,PANEL_HEIGHT/2);
         addWindow.addComponent(LayoutHandler);
         addWindow.getComponentOfType(LayoutHandler).layoutType = FitLayout;
 
@@ -440,6 +457,14 @@ function JSCFEditor (game)
             }.bind(btn);
             addWindow.insertChild(btn);
         }
+
+        addWindow.insertChild(guim.createLabel(0,0,"prefabs"));
+
+        var entityBtn = guim.createDefaultButton(0,0,"Empty Entity",function() {
+            obj.insertChild(new Entity(game, game.getCurrentScene().getEntityName(), true, 0,0, true));
+            closeFn();
+        });
+        addWindow.insertChild(entityBtn);
 
         var planeBtn = guim.createDefaultButton(0,0,"Plane",function() {
             obj.insertChild(new Plane(game,100,100,"black"));
@@ -518,6 +543,16 @@ function JSCFEditor (game)
         // keybind trigger debug panel
         game.inputManager.setOnKeyUpSpec(__JSCFEDITOR_KB_DEV_TOGGLE, function() {
             self.toggleDebugPanel();
+        });
+
+        game.inputManager.setOnMouseDown(function() {
+            if (game.inputManager.isKeyDown(__RECTANGLE_GRAB_BUTTON)) {
+                var tb = game.getCurrentScene().getEntity(__GUIMANAGER_DEBUG_PANEL_NAME).getChildAt(6);
+                var name = "";
+                if (RectangleEditor.currently_selected)
+                    name = RectangleEditor.currently_selected.name;
+                tb.getChildAt(0).textBox.value(name);
+            }
         });
     }
 

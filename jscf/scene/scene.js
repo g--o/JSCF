@@ -8,6 +8,10 @@
 function Scene(game)
 {
 
+    this.max_euid = 0;
+    this.entities = {};
+    this.entities_keys = [];
+
     /**
      *    is scene paused
      *
@@ -266,10 +270,6 @@ function Scene(game)
 
     this.init = function()
     {
-        var self = this;
-        this.max_euid = 0;
-        this.entities = {};
-        this.entities_keys = [];
         InputManager.droppedFileCallback = this.onFileDrop.bind(this);
     };
 
