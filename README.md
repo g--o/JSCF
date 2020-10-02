@@ -4,54 +4,49 @@
 
 **JavaScript Canvas Framework.**
 
-This is a game & ui library **based on vanilla JS & CanvasInput only!**
+This is a framework and engine for canvas and javascript **based on pure JS & CanvasInput only**.
 The approach is to allow extendibility while adhering to concepts from popular
 engines like *Unity*. It's open source and free now and forever.
 
-Another goal is to keep JSCF as independent library as possible and as cross-platform & backwards-compatible as possible.
-
-Lastly, JSCF should be desktop AND mobile targeted, while keeping good performance.
+JSCF tries to be as independent library as possible and as cross-platform & as backwards-compatible as possible, so that it can be incorporated in different contexts.
 
 ## Gettting JSCF
-JSCF is in development. Only prototype version is available. You can get a prototype build from [release/jscf.js](release/jscf.js).
+JSCF is in development. Only prototype version is available. You can get a prototype build from [release/jscf.js](release/jscf.js), and editor from the `editor` directory.
 
-jscf.js is a *minified* version. To work with non-compact code you need to manually include the core modules + needed modules & components. This helps loading only whatever is neccessary and helps debug problems.
+jscf.js is a *minified* version. see the wiki for non-compact code hacking.
 
 ## Screenshots
+**Editor:**
+
+![Debug panel screenshot](screenshots/debug-panel.png)
+
 **Pong Demo:**
 
 ![Pong screenshot](screenshots/pong.png)
 
-**Debug Panel:**
-
-![Debug panel screenshot](screenshots/debug-panel.png)
-
-**Debug Panel Light Theme:**
-
-![Debug panel screenshot](screenshots/debug-panel-light.png)
-
 ## Examples
-For online demos, links and more try the JSCF [website](https://g--o.github.io/web-JSCF/).
+For online editor, demos, links and more try the JSCF [website](https://g--o.github.io/web-JSCF/).
 
 ## Features
 #### User end
 - Editor & Meta-Editor
+- External code editor HUD (with autocomplete etc.)
 - GUI Widgets
 - Themes
-
-#### Graphics
-- Basic rects renderer
-- Sprite renderer
-- Animator
 
 #### Management
 - Components System
 - Input management
 - Entities & simple hirarchy
-- Scripts (vanilla JS)
+- Scripting (with pure JS)
 - Asset manager
 - Scene manager
 - Colliders
+
+#### Graphics
+- Sprite renderer
+- Animator
+- Basic rects renderer
 
 #### Miscellaneous
 - Simple Physics Engine
