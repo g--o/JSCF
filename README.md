@@ -1,7 +1,5 @@
 # JSCF
 
-[![Join the chat at https://gitter.im/JSCF/Lobby](https://badges.gitter.im/JSCF/Lobby.svg)](https://gitter.im/JSCF/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 **JavaScript Canvas Framework.**
 
 This is a framework and engine for canvas and javascript **based on pure JS & CanvasInput only**.
@@ -14,6 +12,12 @@ JSCF tries to be as independent library as possible and as cross-platform & as b
 JSCF is in development. Only prototype version is available. You can get a prototype build from [release/jscf.js](release/jscf.js), and editor from the `editor` directory.
 
 jscf.js is a *minified* version. see the wiki for non-compact code hacking.
+
+## Help up!
+
+**JSCF isn't finished** -- it's still young and you can help shape it. You can start by reading CONTRIBUTING.md and looking for open issues.
+
+**Share your JSCF projects** - let me know about your experience in JSCF projects, i'll be happy to support and be supported.
 
 ## Screenshots
 **Editor:**
@@ -56,12 +60,6 @@ For online editor, demos, links and more try the JSCF [website](https://g--o.git
 ## Documentation
 
 The latest docs are always in the doc folder, but you can check our [wiki](https://github.com/g--o/JSCF/wiki), it also points to online API docs (they might should refer to latest stable version).
-
-## Help up!
-
-**JSCF needs your help!** There's a work to be done and a lot of refinement, please consider contributing. You can start by reading CONTRIBUTING.md. There's a great need for help for *the world editor* and *bug fixing*.
-
-**Share your JSCF projects!** - let us know about your JSCF projects, we'll be happy to support and be supported.
 
 ## License
 Published under Apache 2.0
